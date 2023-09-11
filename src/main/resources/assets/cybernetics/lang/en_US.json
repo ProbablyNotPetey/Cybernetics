@@ -1,0 +1,9 @@
+{
+    "container.cybernetics.freezer": "Freezer",
+    "container.cybernetics.cyberware_station": "Cyberware Station",
+
+    "block.cybernetics.freezer": "Freezer",
+    "block.cybernetics.cyberware_station": "Cyberware Station",
+
+    "jei.cybernetics.cyberware_crafting": "Cyberware Crafting"
+}

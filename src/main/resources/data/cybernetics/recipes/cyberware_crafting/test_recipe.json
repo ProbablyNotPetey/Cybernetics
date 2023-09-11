@@ -1,0 +1,30 @@
+{
+    "type": "cybernetics:cyberware_crafting",
+    "input": {
+        "item": "minecraft:raw_iron"
+    },
+    "ingredients": [
+        {
+            "item": "minecraft:white_wool"
+        },
+        {
+            "item": "minecraft:orange_wool"
+        },
+        {
+            "item": "minecraft:magenta_wool"
+        },
+        {
+            "item": "minecraft:light_blue_wool"
+        },
+        {
+            "item": "minecraft:yellow_wool"
+        },
+        {
+            "item": "minecraft:lime_wool"
+        }
+    ],
+    "output": {
+        "item": "minecraft:iron_ingot",
+        "count": 2
+    }
+}
