@@ -1,7 +1,6 @@
 package com.vivi.cybernetics.menu;
 
-import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.capability.CyberwareInventory;
+import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.util.ToggleableSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;

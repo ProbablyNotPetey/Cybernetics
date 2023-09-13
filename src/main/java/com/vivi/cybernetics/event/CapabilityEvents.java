@@ -1,6 +1,9 @@
-package com.vivi.cybernetics.capability;
+package com.vivi.cybernetics.event;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.block.entity.SurgicalChamberBlockEntity;
+import com.vivi.cybernetics.capability.PlayerCyberwareProvider;
+import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -15,9 +18,9 @@ import net.minecraftforge.fml.common.Mod;
 public class CapabilityEvents {
 
     @SubscribeEvent
-    public static void onAttachCapabilitiesEvent(AttachCapabilitiesEvent<Entity> event) {
-        if(event.getObject() instanceof Player) {
-            if(!event.getObject().getCapability(PlayerCyberwareProvider.PLAYER_CYBERWARE).isPresent()) {
+    public static <T> void onAttachCapabilitiesEvent(AttachCapabilitiesEvent<T> event) {
+        if(event.getObject() instanceof Player player) {
+            if(!player.getCapability(PlayerCyberwareProvider.PLAYER_CYBERWARE).isPresent()) {
                 event.addCapability(new ResourceLocation(Cybernetics.MOD_ID, "cyberware"), new PlayerCyberwareProvider());
             }
         }

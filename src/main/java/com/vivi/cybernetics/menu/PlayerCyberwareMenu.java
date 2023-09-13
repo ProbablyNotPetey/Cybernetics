@@ -2,21 +2,18 @@ package com.vivi.cybernetics.menu;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.block.entity.SurgicalChamberBlockEntity;
-import com.vivi.cybernetics.capability.CyberwareInventory;
+import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.capability.PlayerCyberwareProvider;
 import com.vivi.cybernetics.cyberware.CyberwareSection;
 import com.vivi.cybernetics.registry.ModMenuTypes;
 import com.vivi.cybernetics.util.ToggleableSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.ItemStackHandler;
-import org.apache.commons.compress.utils.Lists;
 
 import java.util.LinkedHashMap;
 import java.util.List;

@@ -1,15 +1,11 @@
-package com.vivi.cybernetics.capability;
+package com.vivi.cybernetics.cyberware;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.cyberware.CyberwareSection;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
-import net.minecraftforge.items.wrapper.EmptyHandler;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
