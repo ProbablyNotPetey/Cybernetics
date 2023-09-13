@@ -7,6 +7,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+//todo: implement IItemHandler, do something similar to CombinedInvWrapper
 public class CyberwareInventory {
 
     private final LinkedHashMap<String, ItemStackHandler> parts = new LinkedHashMap<>();

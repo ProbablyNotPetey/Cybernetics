@@ -6,6 +6,7 @@ import com.vivi.cybernetics.capability.CyberwareInventory;
 import com.vivi.cybernetics.capability.PlayerCyberwareProvider;
 import com.vivi.cybernetics.registry.ModMenuTypes;
 import com.vivi.cybernetics.util.ToggleableSlot;
+import io.netty.buffer.Unpooled;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,6 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+//todo: refactor into abstract class. Make 2 menus, one for players one for surgical chamber.
 public class PlayerCyberwareMenu extends AbstractContainerMenu {
 
     private Player player;
@@ -31,19 +33,30 @@ public class PlayerCyberwareMenu extends AbstractContainerMenu {
     private final int invY = 174;
     private final Map<String, List<Integer>> partSlotMap = new LinkedHashMap<>();
     private SurgicalChamberBlockEntity blockEntity;
+    private final boolean isBlockEntity;
 
-    public PlayerCyberwareMenu(int pContainerId, Inventory inventory, Player player, FriendlyByteBuf buf) {
-        this(pContainerId, inventory, player);
-        boolean flag = buf.readBoolean();
-        if(flag) {
-        Cybernetics.LOGGER.info("Block pos: " + buf.readBlockPos());
-        }
+    public PlayerCyberwareMenu(int containerId, Inventory inventory, Player player) {
+        this(containerId, inventory, player, null);
     }
 
-    public PlayerCyberwareMenu(int pContainerId, Inventory inventory, Player player) {
+    public PlayerCyberwareMenu(int pContainerId, Inventory inventory, Player player, FriendlyByteBuf buf) {
         super(ModMenuTypes.PLAYER_CYBERWARE_MENU.get(), pContainerId);
-        Cybernetics.LOGGER.info("On Client? " + player.level.isClientSide);
-//        this.blockEntity = (SurgicalChamberBlockEntity) blockEntity;
+        if(buf != null) {
+            isBlockEntity = buf.readBoolean();
+        }
+        else {
+            isBlockEntity = false;
+        }
+
+        Cybernetics.LOGGER.info("Is block entity? " + isBlockEntity);
+
+
+        if(isBlockEntity) {
+            this.blockEntity = (SurgicalChamberBlockEntity) player.level.getBlockEntity(buf.readBlockPos());
+        }
+
+
+//        Cybernetics.LOGGER.info("On Client? " + player.level.isClientSide);
         this.player = player;
         this.inventory = inventory;
 
@@ -59,7 +72,7 @@ public class PlayerCyberwareMenu extends AbstractContainerMenu {
                     ItemStackHandler handler = entry.getValue();
                     List<Integer> slots = Lists.newArrayList();
                     for (int i = 0; i < handler.getSlots(); i++) {
-                        addSlot(new CyberwareSlot(handler, i, x + i * 19 - 1, y + yOffset + 1, player));
+                        addSlot(new CyberwareSlot(handler, i, x + i * 19 - 1, y + yOffset + 1, player,  isBlockEntity));
                         slots.add(counter++);
                     }
                     partSlotMap.put(key, slots);
@@ -142,7 +155,7 @@ public class PlayerCyberwareMenu extends AbstractContainerMenu {
 
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
     // must assign a slot number to each of the slots used by the GUI.
-    // For this container, we can see both the tile inventory's slots as well as the player inventory slots and the hotbar.
+    // For this container, we can see both the tile inventory's slots and the player inventory slots and the hotbar.
     // Each time we add a Slot to the container, it automatically increases the slotIndex, which means
     //  0 - 8 = hotbar slots (which will map to the InventoryPlayer slot numbers 0 - 8)
     //  9 - 35 = player inventory slots (which map to the InventoryPlayer slot numbers 9 - 35)
@@ -194,7 +207,7 @@ public class PlayerCyberwareMenu extends AbstractContainerMenu {
     @Override
     public void removed(Player pPlayer) {
         super.removed(pPlayer);
-        clearCyberware(pPlayer);
+//        clearCyberware(pPlayer);
     }
 
     private void clearCyberware(Player pPlayer) {
