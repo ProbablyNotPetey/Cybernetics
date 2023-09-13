@@ -165,10 +165,10 @@ public class PlayerCyberwareScreen extends AbstractContainerScreen<PlayerCyberwa
     }
     class SectionButton extends CyberwareButton {
 
-        private String part;
-        public SectionButton(String part, int pX, int pY, int pWidth) {
+        private ResourceLocation section;
+        public SectionButton(ResourceLocation section, int pX, int pY, int pWidth) {
             super(pX, pY, pWidth);
-            this.part = part;
+            this.section = section;
         }
 
         @Override
@@ -176,7 +176,7 @@ public class PlayerCyberwareScreen extends AbstractContainerScreen<PlayerCyberwa
             if(!selected) {
                 Cybernetics.LOGGER.info("Pressed");
                 PlayerCyberwareScreen.this.updateButtons(this);
-                PlayerCyberwareScreen.this.menu.switchSlots(part);
+                PlayerCyberwareScreen.this.menu.switchSlots(section);
             }
         }
 

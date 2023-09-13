@@ -15,15 +15,15 @@ public class PlayerCyberwareProvider implements ICapabilityProvider, INBTSeriali
 
     public static Capability<CyberwareInventory> PLAYER_CYBERWARE = CapabilityManager.get(new CapabilityToken<>() { });
 
-    private CyberwareInventory container = null;
+    private CyberwareInventory cyberwareInventory = null;
     private final LazyOptional<CyberwareInventory> lazyContainer = LazyOptional.of(this::getOrCreate);
 
     private CyberwareInventory getOrCreate() {
-        if(container == null) {
-            container = new CyberwareInventory();
+        if(cyberwareInventory == null) {
+            cyberwareInventory = CyberwareInventory.create();
         }
 
-        return container;
+        return cyberwareInventory;
     }
 
 
@@ -37,13 +37,11 @@ public class PlayerCyberwareProvider implements ICapabilityProvider, INBTSeriali
 
     @Override
     public CompoundTag serializeNBT() {
-        CompoundTag tag = new CompoundTag();
-        getOrCreate().saveNBT(tag);
-        return tag;
+        return getOrCreate().serializeNBT();
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        getOrCreate().loadNBT(tag);
+        getOrCreate().deserializeNBT(tag);
     }
 }

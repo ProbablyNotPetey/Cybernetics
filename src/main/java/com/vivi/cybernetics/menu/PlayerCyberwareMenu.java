@@ -6,15 +6,14 @@ import com.vivi.cybernetics.capability.CyberwareInventory;
 import com.vivi.cybernetics.capability.PlayerCyberwareProvider;
 import com.vivi.cybernetics.registry.ModMenuTypes;
 import com.vivi.cybernetics.util.ToggleableSlot;
-import io.netty.buffer.Unpooled;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.compress.utils.Lists;
 
@@ -72,7 +71,7 @@ public class PlayerCyberwareMenu extends AbstractContainerMenu {
                     ItemStackHandler handler = entry.getValue();
                     List<Integer> slots = Lists.newArrayList();
                     for (int i = 0; i < handler.getSlots(); i++) {
-                        addSlot(new CyberwareSlot(handler, i, x + i * 19 - 1, y + yOffset + 1, player,  isBlockEntity));
+                        addSlot(new CyberwareSlot(cyberware, i, x + i * 19 - 1, y + yOffset + 1, player, isBlockEntity));
                         slots.add(counter++);
                     }
                     partSlotMap.put(key, slots);
@@ -113,28 +112,37 @@ public class PlayerCyberwareMenu extends AbstractContainerMenu {
         return pPlayer.isAlive();
     }
 
-    public void switchSlots(String part) {
-        partSlotMap.forEach((k, v) -> {
-            if(k.equals(part)) {
-                v.forEach(slot -> {
-                    if(getSlot(slot) instanceof ToggleableSlot) {
-                        ((ToggleableSlot)getSlot(slot)).turnOn();
-                    }
-                });
+    public void switchSlots(ResourceLocation section) {
+//        partSlotMap.forEach((k, v) -> {
+//            if(k.equals(section)) {
+//                v.forEach(slot -> {
+//                    if(getSlot(slot) instanceof ToggleableSlot) {
+//                        ((ToggleableSlot)getSlot(slot)).turnOn();
+//                    }
+//                });
+//            }
+//            else {
+//                v.forEach(slot -> {
+//                    if(getSlot(slot) instanceof ToggleableSlot) {
+//                        ((ToggleableSlot)getSlot(slot)).turnOff();
+//                    }
+//                });
+//            }
+//        });
+
+        for(int i = 0; i < cyberware.getSlots(); i++) {
+            if(cyberware.getSectionFromSlot(i).id.equals(section)) {
+                ((ToggleableSlot)getSlot(i)).turnOn();
             }
             else {
-                v.forEach(slot -> {
-                    if(getSlot(slot) instanceof ToggleableSlot) {
-                        ((ToggleableSlot)getSlot(slot)).turnOff();
-                    }
-                });
+                ((ToggleableSlot)getSlot(i)).turnOff();
             }
-        });
+        }
     }
 
-    public List<String> getParts() {
-        return partSlotMap.keySet().stream().toList();
-    }
+//    public List<String> getParts() {
+//        return partSlotMap.keySet().stream().toList();
+//    }
 
     private void addPlayerInventory(Inventory inv) {
         for(int r = 0; r < 3; r++) {
@@ -210,22 +218,22 @@ public class PlayerCyberwareMenu extends AbstractContainerMenu {
 //        clearCyberware(pPlayer);
     }
 
-    private void clearCyberware(Player pPlayer) {
-        if(player == pPlayer && cyberware != null) {
-            if (!player.isAlive() || player instanceof ServerPlayer && ((ServerPlayer)player).hasDisconnected()) {
-                for(int j = 0; j < cyberware.getSize(); j++) {
-                    player.drop(cyberware.removeItem(j), false);
-                }
-
-            } else {
-                for(int i = 0; i < cyberware.getSize(); i++) {
-                    Inventory inventory = player.getInventory();
-                    if (inventory.player instanceof ServerPlayer) {
-                        inventory.placeItemBackInInventory(cyberware.removeItem(i));
-                    }
-                }
-
-            }
-        }
-    }
+//    private void clearCyberware(Player pPlayer) {
+//        if(player == pPlayer && cyberware != null) {
+//            if (!player.isAlive() || player instanceof ServerPlayer && ((ServerPlayer)player).hasDisconnected()) {
+//                for(int j = 0; j < cyberware.getSize(); j++) {
+//                    player.drop(cyberware.removeItem(j), false);
+//                }
+//
+//            } else {
+//                for(int i = 0; i < cyberware.getSize(); i++) {
+//                    Inventory inventory = player.getInventory();
+//                    if (inventory.player instanceof ServerPlayer) {
+//                        inventory.placeItemBackInInventory(cyberware.removeItem(i));
+//                    }
+//                }
+//
+//            }
+//        }
+//    }
 }

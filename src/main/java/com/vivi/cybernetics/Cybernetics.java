@@ -3,10 +3,7 @@ package com.vivi.cybernetics;
 import com.mojang.logging.LogUtils;
 import com.vivi.cybernetics.client.gui.CyberwareStationScreen;
 import com.vivi.cybernetics.client.gui.PlayerCyberwareScreen;
-import com.vivi.cybernetics.registry.ModBlocks;
-import com.vivi.cybernetics.registry.ModItems;
-import com.vivi.cybernetics.registry.ModMenuTypes;
-import com.vivi.cybernetics.registry.ModRecipeTypes;
+import com.vivi.cybernetics.registry.*;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -38,9 +35,10 @@ public class Cybernetics {
         //Registration
         ModBlocks.register(modEventBus);
         ModItems.register(modEventBus);
+        modEventBus.addListener(ModBlocks::registerBlockItems);
+
         ModMenuTypes.register(modEventBus);
         ModRecipeTypes.register(modEventBus);
-        modEventBus.addListener(ModBlocks::registerBlockItems);
 
         //Setup
 

@@ -6,8 +6,10 @@ import net.minecraftforge.items.SlotItemHandler;
 public class ToggleableSlot extends SlotItemHandler {
     protected boolean isOn = true;
 
+
     public ToggleableSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
         super(itemHandler, index, xPosition, yPosition);
+
     }
 
     public ToggleableSlot turnOn() {
