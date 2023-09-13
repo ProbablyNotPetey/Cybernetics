@@ -41,6 +41,14 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
         }
     }
 
+    public List<CyberwareSection> getSections() {
+        List<CyberwareSection> output = new ArrayList<>();
+        for(int i = 0; i < itemHandler.length; i++) {
+            output.add((CyberwareSection) itemHandler[i]);
+        }
+        return output;
+    }
+
 
     public CyberwareSection getSectionFromSlot(int slot) {
         int index = getIndexForSlot(slot);

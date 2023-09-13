@@ -33,10 +33,10 @@ public class PlayerCyberwareScreen extends AbstractContainerScreen<PlayerCyberwa
         super.init();
         buttons.clear();
 
-        for(int i = 0; i < menu.getParts().size(); i++) {
+        for(int i = 0; i < menu.getSections().size(); i++) {
             int j = i % 3;
             int k = i / 3;
-            addCyberwareButton(new SectionButton(menu.getParts().get(i), leftPos + 10 + j*25, topPos + 10 + k*25, 20));
+            addCyberwareButton(new SectionButton(menu.getSections().get(i).id, leftPos + 10 + j*25, topPos + 10 + k*25, 20));
         }
 
 //        addCyberwareButton(new SectionButton("head", leftPos + 10, topPos + 10, 20));

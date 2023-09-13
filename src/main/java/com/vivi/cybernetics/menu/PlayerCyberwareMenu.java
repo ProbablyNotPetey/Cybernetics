@@ -4,6 +4,7 @@ import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.block.entity.SurgicalChamberBlockEntity;
 import com.vivi.cybernetics.capability.CyberwareInventory;
 import com.vivi.cybernetics.capability.PlayerCyberwareProvider;
+import com.vivi.cybernetics.cyberware.CyberwareSection;
 import com.vivi.cybernetics.registry.ModMenuTypes;
 import com.vivi.cybernetics.util.ToggleableSlot;
 import net.minecraft.network.FriendlyByteBuf;
@@ -66,16 +67,25 @@ public class PlayerCyberwareMenu extends AbstractContainerMenu {
                 int x = 12, y = 135;
 
                 int yOffset = 0, counter = 0;
-                for (Map.Entry<String, ItemStackHandler> entry : cyberware.getParts().entrySet()) {
-                    String key = entry.getKey();
-                    ItemStackHandler handler = entry.getValue();
-                    List<Integer> slots = Lists.newArrayList();
-                    for (int i = 0; i < handler.getSlots(); i++) {
-                        addSlot(new CyberwareSlot(cyberware, i, x + i * 19 - 1, y + yOffset + 1, player, isBlockEntity));
-                        slots.add(counter++);
-                    }
-                    partSlotMap.put(key, slots);
+//                for (Map.Entry<String, ItemStackHandler> entry : cyberware.getParts().entrySet()) {
+//                    String key = entry.getKey();
+//                    ItemStackHandler handler = entry.getValue();
+//                    List<Integer> slots = Lists.newArrayList();
+//                    for (int i = 0; i < handler.getSlots(); i++) {
+//                        addSlot(new CyberwareSlot(cyberware, i, x + i * 19 - 1, y + yOffset + 1, player, isBlockEntity));
+//                        slots.add(counter++);
+//                    }
+//                    partSlotMap.put(key, slots);
+//                }
+                for(int i = 0; i < cyberware.getSlots(); i++) {
+                    ResourceLocation last = i > 0 ? cyberware.getSectionFromSlot(i - 1).id : null;
+                    if(last != null && !last.equals(cyberware.getSectionFromSlot(i).id)) counter = 0;
+                    addSlot(new CyberwareSlot(cyberware, i, x + counter * 19 - 1, y + yOffset + 1, player, true));
+                    counter++;
                 }
+
+
+
 
 //                int[] numColsLeft = {2, 3, 3, 3, 3};
 //                int[] numColsRight = {2, 1, 1, 1, 1};
@@ -143,7 +153,9 @@ public class PlayerCyberwareMenu extends AbstractContainerMenu {
 //    public List<String> getParts() {
 //        return partSlotMap.keySet().stream().toList();
 //    }
-
+    public List<CyberwareSection> getSections() {
+        return cyberware.getSections();
+    }
     private void addPlayerInventory(Inventory inv) {
         for(int r = 0; r < 3; r++) {
             for(int c = 0; c < 9; c++) {

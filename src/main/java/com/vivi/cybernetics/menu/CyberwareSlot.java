@@ -14,6 +14,7 @@ public class CyberwareSlot extends ToggleableSlot {
     private boolean canEdit;
     private final CyberwareInventory cyberware;
     private final int index;
+    public final ResourceLocation id;
 
     public CyberwareSlot(CyberwareInventory cyberware, int index, int xPosition, int yPosition, Player player, boolean canEdit) {
         super(cyberware, index, xPosition, yPosition);
@@ -22,6 +23,7 @@ public class CyberwareSlot extends ToggleableSlot {
         this.canEdit = canEdit;
         this.cyberware = cyberware;
         this.index = index;
+        this.id = cyberware.getSectionFromSlot(index).id;
     }
 
     public CyberwareSlot(CyberwareInventory cyberware, int index, int xPosition, int yPosition, Player player) {
@@ -39,7 +41,4 @@ public class CyberwareSlot extends ToggleableSlot {
         return canEdit && super.mayPlace(stack);
     }
 
-    public ResourceLocation getSectionId() {
-        return cyberware.getSectionFromSlot(index).id;
-    }
 }
