@@ -2,7 +2,9 @@ package com.vivi.cybernetics.registry;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.menu.CyberwareStationMenu;
+import com.vivi.cybernetics.menu.CyberwareMenu;
 import com.vivi.cybernetics.menu.PlayerCyberwareMenu;
+import com.vivi.cybernetics.menu.SurgicalChamberCyberwareMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -18,7 +20,9 @@ public class ModMenuTypes {
     public static final RegistryObject<MenuType<CyberwareStationMenu>> CYBERWARE_STATION_MENU =
             MENU_TYPES.register("cyberware_station_menu", () -> IForgeMenuType.create(CyberwareStationMenu::new));
     public static final RegistryObject<MenuType<PlayerCyberwareMenu>> PLAYER_CYBERWARE_MENU =
-            MENU_TYPES.register("player_cyberware_menu", () -> IForgeMenuType.create((pContainerId, inventory, buf) -> new PlayerCyberwareMenu(pContainerId, inventory, inventory.player, buf)));
+            MENU_TYPES.register("player_cyberware_menu", () -> IForgeMenuType.create((pContainerId, inventory, buf) -> new PlayerCyberwareMenu(pContainerId, inventory, null)));
+    public static final RegistryObject<MenuType<SurgicalChamberCyberwareMenu>> SURGICAL_CHAMBER_CYBERWARE_MENU =
+            MENU_TYPES.register("surgical_chamber_cyberware_menu", () -> IForgeMenuType.create((pContainerId, inventory, buf) -> new SurgicalChamberCyberwareMenu(pContainerId, inventory, null)));
 
 
 

@@ -3,7 +3,7 @@ package com.vivi.cybernetics.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.menu.PlayerCyberwareMenu;
+import com.vivi.cybernetics.menu.CyberwareMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -17,12 +17,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 
-public class PlayerCyberwareScreen extends AbstractContainerScreen<PlayerCyberwareMenu> {
+public class PlayerCyberwareScreen<T extends CyberwareMenu> extends AbstractContainerScreen<T> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/player_cyberware.png");
 
     private final NonNullList<CyberwareButton> buttons = NonNullList.create();
 
-    public PlayerCyberwareScreen(PlayerCyberwareMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
+    public PlayerCyberwareScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         this.imageHeight = 256;
         this.inventoryLabelY = this.imageHeight - 60;
@@ -32,11 +32,14 @@ public class PlayerCyberwareScreen extends AbstractContainerScreen<PlayerCyberwa
     protected void init() {
         super.init();
         buttons.clear();
-
-        for(int i = 0; i < menu.getSections().size(); i++) {
-            int j = i % 3;
-            int k = i / 3;
-            addCyberwareButton(new SectionButton(menu.getSections().get(i).id, leftPos + 10 + j*25, topPos + 10 + k*25, 20));
+        try {
+            for (int i = 0; i < menu.getSections().size(); i++) {
+                int j = i % 3;
+                int k = i / 3;
+                addCyberwareButton(new SectionButton(menu.getSections().get(i).id, leftPos + 10 + j * 25, topPos + 10 + k * 25, 20));
+            }
+        } catch (Exception e) {
+            Cybernetics.LOGGER.error("Could not load cyberware screen", e);
         }
 
 //        addCyberwareButton(new SectionButton("head", leftPos + 10, topPos + 10, 20));
