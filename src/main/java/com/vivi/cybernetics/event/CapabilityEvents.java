@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 public class CapabilityEvents {
 
     @SubscribeEvent
-    public static <T> void onAttachCapabilitiesEvent(AttachCapabilitiesEvent<T> event) {
+    public static <T> void onAttachCapabilitiesEvent(AttachCapabilitiesEvent<Entity> event) {
         if(event.getObject() instanceof Player player) {
             if(!player.getCapability(PlayerCyberwareProvider.PLAYER_CYBERWARE).isPresent()) {
                 event.addCapability(new ResourceLocation(Cybernetics.MOD_ID, "cyberware"), new PlayerCyberwareProvider());

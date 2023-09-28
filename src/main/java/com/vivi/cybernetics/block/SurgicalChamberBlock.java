@@ -1,8 +1,8 @@
 package com.vivi.cybernetics.block;
 
+import com.vivi.cybernetics.block.entity.CyberwareStationBlockEntity;
 import com.vivi.cybernetics.block.entity.SurgicalChamberBlockEntity;
 import com.vivi.cybernetics.capability.PlayerCyberwareProvider;
-import com.vivi.cybernetics.menu.SurgicalChamberCyberwareMenu;
 import io.netty.buffer.Unpooled;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -87,11 +87,7 @@ public class SurgicalChamberBlock extends BaseEntityBlock {
         if (!level.isClientSide) {
             BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof SurgicalChamberBlockEntity be) {
-                be.getCapability(PlayerCyberwareProvider.PLAYER_CYBERWARE).ifPresent(cyberware -> {
-                    NetworkHooks.openScreen((ServerPlayer) player, new SimpleMenuProvider(((pContainerId, pPlayerInventory, pPlayer) -> new SurgicalChamberCyberwareMenu(pContainerId, pPlayerInventory, cyberware)), Component.literal("Cyberware")), buf -> {
-                        buf.writeBlockPos(pos);
-                    });
-                });
+                NetworkHooks.openScreen((ServerPlayer) player, be.getMainBlockEntity(), pos);
             } else {
                 throw new IllegalStateException("Container provider missing!");
             }
@@ -131,7 +127,7 @@ public class SurgicalChamberBlock extends BaseEntityBlock {
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
 
-    private static Direction getNeighbourDirection(BedPart pPart, Direction pDirection) {
+    public static Direction getNeighbourDirection(BedPart pPart, Direction pDirection) {
         return pPart == BedPart.FOOT ? pDirection : pDirection.getOpposite();
     }
 

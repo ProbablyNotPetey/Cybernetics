@@ -1,8 +1,7 @@
 package com.vivi.cybernetics.item;
 
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.capability.PlayerCyberwareProvider;
-import com.vivi.cybernetics.cyberware.CyberwareInventory;
-import com.vivi.cybernetics.menu.CyberwareMenu;
 import com.vivi.cybernetics.menu.PlayerCyberwareMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,7 +25,13 @@ public class TestInvItem extends Item {
         ItemStack stack = player.getItemInHand(hand);
         player.getCapability(PlayerCyberwareProvider.PLAYER_CYBERWARE).ifPresent(cyberware -> {
             if(!level.isClientSide && player instanceof ServerPlayer) {
-                NetworkHooks.openScreen((ServerPlayer) player, new SimpleMenuProvider(((pContainerId, pPlayerInventory, pPlayer) -> new PlayerCyberwareMenu(pContainerId, pPlayerInventory, cyberware)), Component.literal(("Cyberware"))), buf -> buf.writeBoolean(false));
+                try {
+                    NetworkHooks.openScreen((ServerPlayer) player, new SimpleMenuProvider(((pContainerId, pPlayerInventory, pPlayer) -> new PlayerCyberwareMenu(pContainerId, pPlayerInventory, cyberware)), Component.literal(("Cyberware"))));
+                    Cybernetics.LOGGER.info("Opening cyberware menu...");
+                }
+                catch(Exception e) {
+                    Cybernetics.LOGGER.error("Could not open Cyberware menu", e);
+                }
             }
         });
 
