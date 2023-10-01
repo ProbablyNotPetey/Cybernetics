@@ -1,19 +1,18 @@
 package com.vivi.cybernetics.block.entity;
 
 import com.vivi.cybernetics.block.SurgicalChamberBlock;
-import com.vivi.cybernetics.capability.PlayerCyberwareProvider;
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.menu.SurgicalChamberCyberwareMenu;
 import com.vivi.cybernetics.registry.ModBlocks;
+import com.vivi.cybernetics.registry.ModCapabilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
@@ -24,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class SurgicalChamberBlockEntity extends BlockEntity implements MenuProvider {
 
-    private CyberwareInventory inventory = CyberwareInventory.create();
+    private CyberwareInventory cyberware = CyberwareInventory.create();
     private LazyOptional<CyberwareInventory> lazyCyberware = LazyOptional.empty();
     private final boolean isMain;
 
@@ -42,7 +41,7 @@ public class SurgicalChamberBlockEntity extends BlockEntity implements MenuProvi
     public void onLoad() {
         super.onLoad();
         if(!isMain) return;
-        lazyCyberware = LazyOptional.of(() -> inventory);
+        lazyCyberware = LazyOptional.of(() -> cyberware);
     }
 
     @Override
@@ -53,7 +52,7 @@ public class SurgicalChamberBlockEntity extends BlockEntity implements MenuProvi
             return getMainBlockEntity().getCapability(cap, side);
         }
 
-        if(cap == PlayerCyberwareProvider.PLAYER_CYBERWARE) {
+        if(cap == ModCapabilities.PLAYER_CYBERWARE) {
             return lazyCyberware.cast();
         }
 
@@ -68,6 +67,18 @@ public class SurgicalChamberBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
+    protected void saveAdditional(CompoundTag tag) {
+        tag.put("inventory", cyberware.serializeNBT());
+        super.saveAdditional(tag);
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        cyberware.deserializeNBT(tag.getCompound("inventory"));
+    }
+
+    @Override
     public Component getDisplayName() {
         return Component.literal("Surgical Chamber");
     }
@@ -75,7 +86,7 @@ public class SurgicalChamberBlockEntity extends BlockEntity implements MenuProvi
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new SurgicalChamberCyberwareMenu(pContainerId, pPlayerInventory, inventory);
+        return new SurgicalChamberCyberwareMenu(pContainerId, pPlayerInventory, cyberware);
     }
 
     public SurgicalChamberBlockEntity getMainBlockEntity() {

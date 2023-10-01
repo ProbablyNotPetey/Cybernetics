@@ -1,9 +1,9 @@
 package com.vivi.cybernetics.event;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.block.entity.SurgicalChamberBlockEntity;
 import com.vivi.cybernetics.capability.PlayerCyberwareProvider;
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
+import com.vivi.cybernetics.registry.ModCapabilities;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -20,7 +20,7 @@ public class CapabilityEvents {
     @SubscribeEvent
     public static <T> void onAttachCapabilitiesEvent(AttachCapabilitiesEvent<Entity> event) {
         if(event.getObject() instanceof Player player) {
-            if(!player.getCapability(PlayerCyberwareProvider.PLAYER_CYBERWARE).isPresent()) {
+            if(!player.getCapability(ModCapabilities.PLAYER_CYBERWARE).isPresent()) {
                 event.addCapability(new ResourceLocation(Cybernetics.MOD_ID, "cyberware"), new PlayerCyberwareProvider());
             }
         }
@@ -30,8 +30,8 @@ public class CapabilityEvents {
     public static void onPlayerClonedEvent(PlayerEvent.Clone event) {
         event.getOriginal().reviveCaps();
         if(event.isWasDeath()) {
-            event.getOriginal().getCapability(PlayerCyberwareProvider.PLAYER_CYBERWARE).ifPresent(oldStore -> {
-                event.getEntity().getCapability(PlayerCyberwareProvider.PLAYER_CYBERWARE).ifPresent(newStore -> {
+            event.getOriginal().getCapability(ModCapabilities.PLAYER_CYBERWARE).ifPresent(oldStore -> {
+                event.getEntity().getCapability(ModCapabilities.PLAYER_CYBERWARE).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore);
                 });
             });

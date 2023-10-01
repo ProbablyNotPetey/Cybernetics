@@ -18,7 +18,7 @@ public class CyberwareSlot extends ToggleableSlot {
     public CyberwareSlot(CyberwareInventory cyberware, int index, int xPosition, int yPosition, Player player) {
         super(cyberware, index, xPosition, yPosition);
         isOn = false;
-        this.player = player;
+//        this.player = player;
         this.canEdit = true;
         this.cyberware = cyberware;
         this.index = index;

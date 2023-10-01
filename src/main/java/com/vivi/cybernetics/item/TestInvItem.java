@@ -1,8 +1,8 @@
 package com.vivi.cybernetics.item;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.capability.PlayerCyberwareProvider;
 import com.vivi.cybernetics.menu.PlayerCyberwareMenu;
+import com.vivi.cybernetics.registry.ModCapabilities;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -23,7 +23,7 @@ public class TestInvItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        player.getCapability(PlayerCyberwareProvider.PLAYER_CYBERWARE).ifPresent(cyberware -> {
+        player.getCapability(ModCapabilities.PLAYER_CYBERWARE).ifPresent(cyberware -> {
             if(!level.isClientSide && player instanceof ServerPlayer) {
                 try {
                     NetworkHooks.openScreen((ServerPlayer) player, new SimpleMenuProvider(((pContainerId, pPlayerInventory, pPlayer) -> new PlayerCyberwareMenu(pContainerId, pPlayerInventory, cyberware)), Component.literal(("Cyberware"))));

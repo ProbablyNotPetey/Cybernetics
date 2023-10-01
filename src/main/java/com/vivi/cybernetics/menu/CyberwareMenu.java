@@ -33,12 +33,12 @@ public class CyberwareMenu extends AbstractContainerMenu {
             if(last != null && !last.equals(cyberware.getSectionFromSlot(i).id)) {
                 counter = 0;
             }
-            addSlot(new CyberwareSlot(cyberware, i, x + counter * 19 - 1, y + yOffset + 1, inventory.player));
+            addSlot(new CyberwareSlot(cyberware, i, x + counter * 19 - 1, y + yOffset + 1, this.inventory.player));
             counter++;
         }
 
-        addPlayerHotbar(inventory);
-        addPlayerInventory(inventory);
+        addPlayerHotbar(this.inventory);
+        addPlayerInventory(this.inventory);
 
     }
 
@@ -61,11 +61,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        Slot sourceSlot = slots.get(index);
-        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
-        ItemStack sourceStack = sourceSlot.getItem();
-        ItemStack copyOfSourceStack = sourceStack.copy();
-        return copyOfSourceStack;
+        return cyberware.getStackInSlot(index);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.vivi.cybernetics.cyberware;
 import com.vivi.cybernetics.Cybernetics;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
@@ -34,6 +35,12 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
     public void copyFrom(CyberwareInventory other) {
         for(int i = 0; i < other.getSlots(); i++) {
             this.setStackInSlot(i, other.getStackInSlot(i));
+        }
+    }
+
+    public void clear() {
+        for(int i = 0; i < getSlots(); i++) {
+            setStackInSlot(i, ItemStack.EMPTY);
         }
     }
 

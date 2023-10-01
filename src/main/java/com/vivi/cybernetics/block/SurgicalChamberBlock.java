@@ -1,22 +1,15 @@
 package com.vivi.cybernetics.block;
 
-import com.vivi.cybernetics.block.entity.CyberwareStationBlockEntity;
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.block.entity.SurgicalChamberBlockEntity;
-import com.vivi.cybernetics.capability.PlayerCyberwareProvider;
-import io.netty.buffer.Unpooled;
+import com.vivi.cybernetics.registry.ModCapabilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -87,7 +80,14 @@ public class SurgicalChamberBlock extends BaseEntityBlock {
         if (!level.isClientSide) {
             BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof SurgicalChamberBlockEntity be) {
-                NetworkHooks.openScreen((ServerPlayer) player, be.getMainBlockEntity(), pos);
+                player.getCapability(ModCapabilities.PLAYER_CYBERWARE).ifPresent(playerCyberware -> {
+                    SurgicalChamberBlockEntity main = be.getMainBlockEntity();
+                    main.getCapability(ModCapabilities.PLAYER_CYBERWARE).ifPresent(beCyberware -> {
+                        beCyberware.copyFrom(playerCyberware);
+//                        Cybernetics.LOGGER.info(beCyberware.serializeNBT().getAsString());
+                    });
+                    NetworkHooks.openScreen((ServerPlayer) player, main, pos);
+                });
             } else {
                 throw new IllegalStateException("Container provider missing!");
             }
