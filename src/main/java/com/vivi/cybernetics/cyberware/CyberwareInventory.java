@@ -33,8 +33,9 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
     }
 
     public void copyFrom(CyberwareInventory other) {
-        for(int i = 0; i < other.getSlots(); i++) {
-            this.setStackInSlot(i, other.getStackInSlot(i));
+//        this.deserializeNBT(other.serializeNBT());
+        for(int i = 0; i < this.getSlots(); i++) {
+            this.setStackInSlot(i, other.getStackInSlot(i).copy());
         }
     }
 
@@ -58,11 +59,17 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
         return ((CyberwareSection) getHandlerFromIndex(index));
     }
 
-
-
-
-
-
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof CyberwareInventory other)) return false;
+        if(other.getSlots() != this.getSlots()) return false;
+        for(int i = 0; i < this.getSlots(); i++) {
+            if(!this.getStackInSlot(i).equals(other.getStackInSlot(i), false)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     @Override
     public CompoundTag serializeNBT() {
