@@ -26,6 +26,7 @@ public class SurgicalChamberBlockEntity extends BlockEntity implements MenuProvi
     private CyberwareInventory cyberware = CyberwareInventory.create();
     private LazyOptional<CyberwareInventory> lazyCyberware = LazyOptional.empty();
     private final boolean isMain;
+    private boolean inUse = false;
 
     public SurgicalChamberBlockEntity(BlockPos pPos, BlockState state) {
         super(ModBlocks.SURGICAL_CHAMBER_BLOCK_ENTITY.get(), pPos, state);
@@ -52,7 +53,7 @@ public class SurgicalChamberBlockEntity extends BlockEntity implements MenuProvi
             return getMainBlockEntity().getCapability(cap, side);
         }
 
-        if(cap == ModCapabilities.PLAYER_CYBERWARE) {
+        if(cap == ModCapabilities.CYBERWARE) {
             return lazyCyberware.cast();
         }
 
@@ -86,7 +87,7 @@ public class SurgicalChamberBlockEntity extends BlockEntity implements MenuProvi
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new SurgicalChamberCyberwareMenu(pContainerId, pPlayerInventory, cyberware);
+        return new SurgicalChamberCyberwareMenu(pContainerId, pPlayerInventory, cyberware, getMainBlockEntity());
     }
 
     public SurgicalChamberBlockEntity getMainBlockEntity() {
@@ -97,5 +98,14 @@ public class SurgicalChamberBlockEntity extends BlockEntity implements MenuProvi
             return (SurgicalChamberBlockEntity) level.getBlockEntity(mainPos);
         }
         return null;
+    }
+
+
+    public void setInUse(boolean b) {
+        getMainBlockEntity().inUse = b;
+    }
+
+    public boolean isInUse() {
+        return getMainBlockEntity().inUse;
     }
 }

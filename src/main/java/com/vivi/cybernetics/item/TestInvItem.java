@@ -23,7 +23,7 @@ public class TestInvItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        player.getCapability(ModCapabilities.PLAYER_CYBERWARE).ifPresent(cyberware -> {
+        player.getCapability(ModCapabilities.CYBERWARE).ifPresent(cyberware -> {
             if(!level.isClientSide && player instanceof ServerPlayer) {
                 try {
                     NetworkHooks.openScreen((ServerPlayer) player, new SimpleMenuProvider(((pContainerId, pPlayerInventory, pPlayer) -> new PlayerCyberwareMenu(pContainerId, pPlayerInventory, cyberware)), Component.literal(("Cyberware"))));

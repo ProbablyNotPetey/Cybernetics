@@ -1,6 +1,5 @@
 package com.vivi.cybernetics.block;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.block.entity.SurgicalChamberBlockEntity;
 import com.vivi.cybernetics.registry.ModCapabilities;
 import net.minecraft.core.BlockPos;
@@ -79,20 +78,39 @@ public class SurgicalChamberBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!level.isClientSide) {
             BlockEntity entity = level.getBlockEntity(pos);
-            if (entity instanceof SurgicalChamberBlockEntity be) {
-                player.getCapability(ModCapabilities.PLAYER_CYBERWARE).ifPresent(playerCyberware -> {
+            if (entity instanceof SurgicalChamberBlockEntity be && !be.getMainBlockEntity().isInUse()) {
+
+                player.getCapability(ModCapabilities.CYBERWARE).ifPresent(playerCyberware -> {
                     SurgicalChamberBlockEntity main = be.getMainBlockEntity();
-                    main.getCapability(ModCapabilities.PLAYER_CYBERWARE).ifPresent(beCyberware -> {
+                    main.getCapability(ModCapabilities.CYBERWARE).ifPresent(beCyberware -> {
                         beCyberware.copyFrom(playerCyberware);
 //                        Cybernetics.LOGGER.info(beCyberware.serializeNBT().getAsString());
                     });
                     NetworkHooks.openScreen((ServerPlayer) player, main, pos);
+                    main.setInUse(true);
                 });
             } else {
                 throw new IllegalStateException("Container provider missing!");
             }
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if(state.getBlock() != newState.getBlock()) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if(be instanceof SurgicalChamberBlockEntity) {
+                try {
+                    ((SurgicalChamberBlockEntity) be).setInUse(false);
+                } catch (NullPointerException ignored) {
+
+                }
+            } else {
+                throw new IllegalStateException("Container provider missing!");
+            }
+        }
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override

@@ -1,12 +1,15 @@
 package com.vivi.cybernetics.cyberware;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.item.CyberwareItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,24 +20,31 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
         super(itemHandler);
     }
 
+    private static List<IItemHandlerModifiable> sections = new ArrayList<>();;
+
     public static CyberwareInventory create() {
-        List<IItemHandlerModifiable> sections = new ArrayList<>();
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "head"), 2));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "eyes"), 2));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "upper_organs"), 3));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "lower_organs"), 3));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "skeleton"), 3));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "skin"), 3));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "hands"), 1));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "arms"), 1));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "legs"), 1));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "feet"), 1));
         return new CyberwareInventory(sections.toArray(new IItemHandlerModifiable[0]));
+    }
+    public static void registerCyberwareSection(CyberwareSection section) {
+        sections.add(section);
     }
 
     public void copyFrom(CyberwareInventory other) {
-//        this.deserializeNBT(other.serializeNBT());
+        copyFrom(other, null, false);
+    }
+
+    public void copyFrom(CyberwareInventory other, boolean isClone) {
+        copyFrom(other, null, isClone);
+    }
+
+    public void copyFrom(CyberwareInventory other, Player player, boolean isClone) {
         for(int i = 0; i < this.getSlots(); i++) {
+//            ItemStack oldStack = this.getStackInSlot(i);
+//            ItemStack newStack = other.getStackInSlot(i);
+//            if(player != null && !isClone && !oldStack.equals(newStack, false)) {
+//                if(oldStack.getItem() instanceof CyberwareItem) ((CyberwareItem) oldStack.getItem()).onUnequip(oldStack, player.level, player);
+//                if(newStack.getItem() instanceof CyberwareItem) ((CyberwareItem) newStack.getItem()).onEquip(newStack, player.level, player);
+//            }
             this.setStackInSlot(i, other.getStackInSlot(i).copy());
         }
     }

@@ -40,6 +40,7 @@ public class Cybernetics {
 
         ModMenuTypes.register(modEventBus);
         ModRecipeTypes.register(modEventBus);
+        ModCapabilities.registerCyberwareSections();
 
         //Setup
 
@@ -61,8 +62,6 @@ public class Cybernetics {
         MenuScreens.register(ModMenuTypes.PLAYER_CYBERWARE_MENU.get(), PlayerCyberwareScreen::new);
         MenuScreens.register(ModMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), SurgicalChamberCyberwareScreen::new);
 
-//        MenuScreens.register(ModMenuTypes.PLAYER_CYBERWARE_MENU.get(), PlayerCyberwareScreenOld::new);
-//        MenuScreens.register(ModMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), PlayerCyberwareScreen<SurgicalChamberCyberwareMenu>::new);
     }
 
 

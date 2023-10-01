@@ -181,7 +181,7 @@ public class CyberwareStationBlockEntity extends BlockEntity implements MenuProv
     @Override
     protected void saveAdditional(CompoundTag tag) {
         tag.put("inventory", itemHandler.serializeNBT());
-        tag.putInt("energy", energyHandler.getEnergyStored());
+        tag.put("energy", energyHandler.serializeNBT());
         super.saveAdditional(tag);
     }
 
