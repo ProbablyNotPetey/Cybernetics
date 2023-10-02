@@ -2,6 +2,7 @@ package com.vivi.cybernetics.cyberware;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.item.CyberwareItem;
+import com.vivi.cybernetics.registry.ModCyberware;
 import com.vivi.cybernetics.registry.ModTags;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -12,10 +13,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CyberwareInventory extends CombinedInvWrapper implements INBTSerializable<CompoundTag> {
 
@@ -23,26 +21,29 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
         super(itemHandler);
     }
 
-    private static List<IItemHandlerModifiable> sections = new ArrayList<>();;
+
 
     public static CyberwareInventory create() {
-        List<IItemHandlerModifiable> sections = new ArrayList<>();
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "head"), 5, ModTags.HEAD));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "eyes"), 4, ModTags.EYES));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "upper_organs"), 7, ModTags.UPPER_ORGANS));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "lower_organs"), 6, ModTags.LOWER_ORGANS));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "skeleton"), 4, ModTags.SKELETON));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "skin"), 3, ModTags.SKIN));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "hands"), 3, ModTags.HANDS));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "arms"), 4, ModTags.ARMS));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "legs"), 3, ModTags.LEGS));
-        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "feet"), 4, ModTags.FEET));
+
+        List<CyberwareSection> sections = new ArrayList<>();
+        ModCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getEntries().forEach(type -> {
+            sections.add(new CyberwareSection(type.getValue(), type.getKey().location()));
+        });
+        sections.sort((section1, section2) -> {
+            int idx1 = CyberwareSection.SECTION_SORT.indexOf(section1.getId());
+            int idx2 = CyberwareSection.SECTION_SORT.indexOf(section1.getId());
+            int i = 0;
+            if(idx1 == -1) {
+                idx1 = CyberwareSection.SECTION_SORT.size() + i++;
+            }
+            if(idx2 == -1) {
+                idx2 = CyberwareSection.SECTION_SORT.size() + i++;
+            }
+            return idx1 - idx2;
+        });
+
         return new CyberwareInventory(sections.toArray(new IItemHandlerModifiable[0]));
     }
-    public static void registerCyberwareSection(CyberwareSection section) {
-        sections.add(section);
-    }
-
     public void copyFrom(CyberwareInventory other) {
         copyFrom(other, null, false);
     }
@@ -100,7 +101,7 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
         CompoundTag tag = new CompoundTag();
         for(IItemHandlerModifiable handler : itemHandler) {
             CyberwareSection section = (CyberwareSection) handler;
-            tag.put(section.id.toString(), section.serializeNBT());
+            tag.put(section.getId().toString(), section.serializeNBT());
         }
         return tag;
     }
@@ -109,7 +110,7 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
     public void deserializeNBT(CompoundTag tag) {
         for(IItemHandlerModifiable handler : itemHandler) {
             CyberwareSection section = (CyberwareSection) handler;
-            section.deserializeNBT(tag.getCompound(section.id.toString()));
+            section.deserializeNBT(tag.getCompound(section.getId().toString()));
         }
     }
 

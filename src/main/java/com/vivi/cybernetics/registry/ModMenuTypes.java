@@ -19,7 +19,7 @@ public class ModMenuTypes {
     public static final RegistryObject<MenuType<CyberwareStationMenu>> CYBERWARE_STATION_MENU =
             MENU_TYPES.register("cyberware_station_menu", () -> IForgeMenuType.create(CyberwareStationMenu::new));
     public static final RegistryObject<MenuType<PlayerCyberwareMenu>> PLAYER_CYBERWARE_MENU =
-            MENU_TYPES.register("player_cyberware_menu", () -> IForgeMenuType.create((pContainerId, inventory, buf) -> new PlayerCyberwareMenu(pContainerId, inventory, inventory.player.getCapability(ModCapabilities.CYBERWARE).orElse(null))));
+            MENU_TYPES.register("player_cyberware_menu", () -> IForgeMenuType.create((pContainerId, inventory, buf) -> new PlayerCyberwareMenu(pContainerId, inventory, inventory.player.getCapability(ModCyberware.CYBERWARE).orElse(null))));
 
 
     public static final RegistryObject<MenuType<SurgicalChamberCyberwareMenu>> SURGICAL_CHAMBER_CYBERWARE_MENU =

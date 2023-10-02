@@ -15,6 +15,7 @@ public class CyberwareItem extends Item {
     private final List<CyberwareItem> incompatibilities = new ArrayList<>();
     public CyberwareItem(Properties pProperties) {
         super(pProperties);
+        incompatibilities.add(this);
     }
 
     public CyberwareItem addRequirements(Item... requirements) {

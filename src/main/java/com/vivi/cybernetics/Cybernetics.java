@@ -41,7 +41,7 @@ public class Cybernetics {
 
         ModMenuTypes.register(modEventBus);
         ModRecipeTypes.register(modEventBus);
-        ModCapabilities.registerCyberwareSections();
+        ModCyberware.register(modEventBus);
 
         //Setup
 

@@ -1,7 +1,8 @@
 package com.vivi.cybernetics.event;
 
 import com.vivi.cybernetics.Cybernetics;
-import net.minecraftforge.client.event.RenderTooltipEvent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -9,7 +10,12 @@ import net.minecraftforge.fml.common.Mod;
 public class ClientEvents {
 
     @SubscribeEvent
-    public static void onRenderTooltipColorEvent(RenderTooltipEvent.Color event) {
+    public static void onTooltipEvent(ItemTooltipEvent event) {
+        ItemStack stack = event.getItemStack();
 
+        if(!stack.isEmpty()) {
+
+
+        }
     }
 }

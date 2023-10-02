@@ -4,7 +4,7 @@ import com.vivi.cybernetics.block.SurgicalChamberBlock;
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.menu.SurgicalChamberCyberwareMenu;
 import com.vivi.cybernetics.registry.ModBlocks;
-import com.vivi.cybernetics.registry.ModCapabilities;
+import com.vivi.cybernetics.registry.ModCyberware;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -53,7 +53,7 @@ public class SurgicalChamberBlockEntity extends BlockEntity implements MenuProvi
             return getMainBlockEntity().getCapability(cap, side);
         }
 
-        if(cap == ModCapabilities.CYBERWARE) {
+        if(cap == ModCyberware.CYBERWARE) {
             return lazyCyberware.cast();
         }
 

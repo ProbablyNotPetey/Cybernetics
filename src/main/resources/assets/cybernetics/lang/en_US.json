@@ -4,6 +4,10 @@
 
     "block.cybernetics.freezer": "Freezer",
     "block.cybernetics.cyberware_station": "Cyberware Station",
+    "block.cybernetics.surgical_chamber": "Surgical Chamber",
 
-    "jei.cybernetics.cyberware_crafting": "Cyberware Crafting"
+    "jei.cybernetics.cyberware_crafting": "Cyberware Crafting",
+
+    "item.cybernetics.mk1_optics": "Mk1 Optics",
+    "item.cybernetics.night_vision_eyes": "Augment: Feline Retinas"
 }

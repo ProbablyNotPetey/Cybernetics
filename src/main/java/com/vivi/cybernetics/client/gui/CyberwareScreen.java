@@ -3,6 +3,7 @@ package com.vivi.cybernetics.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.menu.CyberwareMenu;
 import com.vivi.cybernetics.network.PacketHandler;
 import com.vivi.cybernetics.network.packet.C2SSwitchActiveSlotPacket;
@@ -27,7 +28,6 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
         super(pMenu, pPlayerInventory, pTitle);
         this.imageHeight = 256;
         this.inventoryLabelY = this.imageHeight - 60;
-        Cybernetics.LOGGER.info("Created cyberware screen");
     }
 
     @Override
@@ -38,7 +38,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
             for (int i = 0; i < menu.getCyberware().getSections().size(); i++) {
                 int j = i % 3;
                 int k = i / 3;
-                addCyberwareButton(new SectionButton(menu.getCyberware().getSections().get(i).id, leftPos + 10 + j * 25, topPos + 10 + k * 25, 20));
+                addCyberwareButton(new SectionButton(menu.getCyberware().getSections().get(i).getType(), leftPos + 10 + j * 25, topPos + 10 + k * 25, 20));
             }
         } catch (Exception e) {
             Cybernetics.LOGGER.error("Could not initialize cyberware screen", e);
@@ -153,8 +153,8 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
     }
     class SectionButton extends CyberwareButton {
 
-        private ResourceLocation section;
-        public SectionButton(ResourceLocation section, int pX, int pY, int pWidth) {
+        private CyberwareSectionType section;
+        public SectionButton(CyberwareSectionType section, int pX, int pY, int pWidth) {
             super(pX, pY, pWidth);
             this.section = section;
         }
@@ -162,7 +162,6 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
         @Override
         public void onPress() {
             if(!selected) {
-                Cybernetics.LOGGER.info("Pressed");
                 CyberwareScreen.this.updateButtons(this);
                 PacketHandler.sendToServer(new C2SSwitchActiveSlotPacket(section));
                 CyberwareScreen.this.menu.switchActiveSlots(section);
