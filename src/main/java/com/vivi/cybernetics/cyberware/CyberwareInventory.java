@@ -2,6 +2,7 @@ package com.vivi.cybernetics.cyberware;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.item.CyberwareItem;
+import com.vivi.cybernetics.registry.ModTags;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -23,6 +24,17 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
     private static List<IItemHandlerModifiable> sections = new ArrayList<>();;
 
     public static CyberwareInventory create() {
+                List<IItemHandlerModifiable> sections = new ArrayList<>();
+        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "head"), 5, ModTags.HEAD));
+        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "eyes"), 4, ModTags.EYES));
+        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "upper_organs"), 7, ModTags.UPPER_ORGANS));
+        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "lower_organs"), 6, ModTags.LOWER_ORGANS));
+        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "skeleton"), 4, ModTags.SKELETON));
+        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "skin"), 3, ModTags.SKIN));
+        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "hands"), 3, ModTags.HANDS));
+        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "arms"), 4, ModTags.ARMS));
+        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "legs"), 3, ModTags.LEGS));
+        sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "feet"), 4, ModTags.FEET));
         return new CyberwareInventory(sections.toArray(new IItemHandlerModifiable[0]));
     }
     public static void registerCyberwareSection(CyberwareSection section) {
