@@ -7,6 +7,9 @@ import com.vivi.cybernetics.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.menu.CyberwareMenu;
 import com.vivi.cybernetics.network.PacketHandler;
 import com.vivi.cybernetics.network.packet.C2SSwitchActiveSlotPacket;
+import com.vivi.cybernetics.registry.ModCyberware;
+import com.vivi.cybernetics.util.MouseHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -18,6 +21,9 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+
+import java.util.List;
+import java.util.Optional;
 
 public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerScreen<T> {
 
@@ -91,8 +97,20 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
     }
 
     @Override
-    protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        this.font.draw(pPoseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY, 4210752);
+    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+        this.font.draw(poseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY, 4210752);
+//        if(MouseHelper.isHovering(energyGuiComponent.x, energyGuiComponent.y, energyGuiComponent.width, energyGuiComponent.height, mouseX, mouseY)) {
+//            renderTooltip(poseStack, energyGuiComponent.getTooltip(menu.getStoredEnergy(), menu.getMaxEnergy()), Optional.empty(), mouseX - startX, mouseY - startY);
+//        }
+        buttons.forEach(button -> {
+            List<Component> tooltip = button.getTooltip();
+            if(tooltip != null) {
+                if(MouseHelper.isHovering(button.x, button.y, button.getWidth(), button.getHeight(), mouseX, mouseY)) {
+                    renderTooltip(poseStack, tooltip, Optional.empty(), mouseX - leftPos, mouseY - topPos);
+                }
+            }
+        });
+
     }
 
     abstract static class CyberwareButton extends AbstractButton {
@@ -126,6 +144,8 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
 
         abstract void update();
 
+        abstract List<Component> getTooltip();
+
         public void setSelected(boolean selected) {
             this.selected = selected;
         }
@@ -139,6 +159,11 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
         @Override
         void update() {
 
+        }
+
+        @Override
+        List<Component> getTooltip() {
+            return null;
         }
 
         @Override
@@ -173,6 +198,12 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
         public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
 
         }
+
+        public List<Component> getTooltip() {
+            ResourceLocation id = ModCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getKey(section);
+            return List.of(Component.translatable("tooltip." + id.getNamespace() + ".section." + id.getPath()).withStyle(ChatFormatting.RED));
+        }
+
 
         @Override
         void update() {

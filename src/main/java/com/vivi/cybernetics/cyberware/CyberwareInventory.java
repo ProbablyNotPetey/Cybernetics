@@ -30,6 +30,7 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
         ModCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getEntries().forEach(type -> {
             sections.add(new CyberwareSection(type.getValue(), type.getKey().location()));
         });
+        //todo: fix sorting
         sections.sort((section1, section2) -> {
             int idx1 = CyberwareSection.SECTION_SORT.indexOf(section1.getId());
             int idx2 = CyberwareSection.SECTION_SORT.indexOf(section1.getId());
