@@ -4,9 +4,6 @@ import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.item.CyberwareItem;
 import com.vivi.cybernetics.registry.ModTags;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -57,7 +54,7 @@ public class CyberwareSection extends ItemStackHandler {
 
     @Override
     public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-        return (stack.getItem() instanceof CyberwareItem) && (stack.is(type.getTag()) || stack.is(ModTags.ANY)) && super.isItemValid(slot, stack);
+        return (stack.getItem() instanceof CyberwareItem) && (stack.is(type.getTag()) || stack.is(ModTags.ANY_SECTION)) && super.isItemValid(slot, stack);
 //        return super.isItemValid(slot, stack);
     }
 }

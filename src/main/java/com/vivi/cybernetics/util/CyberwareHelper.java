@@ -1,9 +1,15 @@
 package com.vivi.cybernetics.util;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.item.CyberwareItem;
+import com.vivi.cybernetics.registry.ModCyberware;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CyberwareHelper {
 
@@ -21,5 +27,17 @@ public class CyberwareHelper {
             return;
         }
         ((CyberwareItem) item).addRequirements(requirements);
+    }
+
+    public static List<CyberwareSectionType> getValidCyberwareSections(ItemStack stack) {
+        List<CyberwareSectionType> out = new ArrayList<>();
+
+        ModCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getValues().forEach(type -> {
+            if(stack.is(type.getTag())) {
+                out.add(type);
+            }
+        });
+
+        return out;
     }
 }

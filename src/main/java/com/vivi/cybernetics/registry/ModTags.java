@@ -10,20 +10,20 @@ public class ModTags {
 
     public static final TagKey<Item>
             OPTICS = itemTag("optics"),
+            SKELETON = itemTag("skeleton"),
 
 
-
-            ANY = itemTag("cyberware_section/any"),
-            HEAD = itemTag("cyberware_section/head"),
-            EYES = itemTag("cyberware_section/eyes"),
-            UPPER_ORGANS = itemTag("cyberware_section/upper_organs"),
-            LOWER_ORGANS = itemTag("cyberware_section/lower_organs"),
-            SKELETON = itemTag("cyberware_section/skeleton"),
-            SKIN = itemTag("cyberware_section/skin"),
-            HANDS = itemTag("cyberware_section/hands"),
-            ARMS = itemTag("cyberware_section/arms"),
-            LEGS = itemTag("cyberware_section/legs"),
-            FEET = itemTag("cyberware_section/feet")
+            ANY_SECTION = itemTag("cyberware_section/any"),
+            HEAD_SECTION = itemTag("cyberware_section/head"),
+            EYES_SECTION = itemTag("cyberware_section/eyes"),
+            UPPER_ORGANS_SECTION = itemTag("cyberware_section/upper_organs"),
+            LOWER_ORGANS_SECTION = itemTag("cyberware_section/lower_organs"),
+            SKELETON_SECTION = itemTag("cyberware_section/skeleton"),
+            SKIN_SECTION = itemTag("cyberware_section/skin"),
+            HANDS_SECTION = itemTag("cyberware_section/hands"),
+            ARMS_SECTION = itemTag("cyberware_section/arms"),
+            LEGS_SECTION = itemTag("cyberware_section/legs"),
+            FEET_SECTION = itemTag("cyberware_section/feet")
     ;
 
 
