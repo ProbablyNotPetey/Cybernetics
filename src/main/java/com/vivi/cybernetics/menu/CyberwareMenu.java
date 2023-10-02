@@ -74,6 +74,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
     }
 
     public void switchActiveSlots(ResourceLocation section) {
+        Cybernetics.LOGGER.info("Switching slots");
         for(int i = 0; i < cyberware.getSlots(); i++) {
             if(cyberware.getSectionFromSlot(i).id.equals(section)) {
                 ((ToggleableSlot)getSlot(i)).turnOn();

@@ -4,6 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.menu.CyberwareMenu;
+import com.vivi.cybernetics.network.PacketHandler;
+import com.vivi.cybernetics.network.packet.C2SSwitchActiveSlotPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -162,7 +164,9 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
             if(!selected) {
                 Cybernetics.LOGGER.info("Pressed");
                 CyberwareScreen.this.updateButtons(this);
+                PacketHandler.sendToServer(new C2SSwitchActiveSlotPacket(section));
                 CyberwareScreen.this.menu.switchActiveSlots(section);
+
             }
         }
 

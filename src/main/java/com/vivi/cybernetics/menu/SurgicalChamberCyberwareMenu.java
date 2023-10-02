@@ -30,8 +30,9 @@ public class SurgicalChamberCyberwareMenu extends CyberwareMenu  {
         addSlotListener(new ContainerListener() {
             @Override
             public void slotChanged(AbstractContainerMenu pContainerToSend, int pDataSlotIndex, ItemStack pStack) {
-                Cybernetics.LOGGER.info("Player cyberware: " + inventory.player.getCapability(ModCapabilities.CYBERWARE).orElse(null).serializeNBT().getAsString());
-                Cybernetics.LOGGER.info("Surgical chamber cyberware: " + ((CyberwareMenu) pContainerToSend).getCyberware().serializeNBT().getAsString());
+                Cybernetics.LOGGER.info("Slot changed, is client: " + inventory.player.level.isClientSide);
+//                Cybernetics.LOGGER.info("Player cyberware: " + inventory.player.getCapability(ModCapabilities.CYBERWARE).orElse(null).serializeNBT().getAsString());
+//                Cybernetics.LOGGER.info("Surgical chamber cyberware: " + ((CyberwareMenu) pContainerToSend).getCyberware().serializeNBT().getAsString());
             }
 
             @Override

@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.vivi.cybernetics.client.gui.CyberwareStationScreen;
 import com.vivi.cybernetics.client.gui.PlayerCyberwareScreen;
 import com.vivi.cybernetics.client.gui.SurgicalChamberCyberwareScreen;
+import com.vivi.cybernetics.network.PacketHandler;
 import com.vivi.cybernetics.registry.*;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTab;
@@ -54,7 +55,7 @@ public class Cybernetics {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-
+        PacketHandler.register();
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
