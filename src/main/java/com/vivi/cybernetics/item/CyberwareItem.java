@@ -4,38 +4,45 @@ import com.vivi.cybernetics.Cybernetics;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
 public class CyberwareItem extends Item {
-    private final List<CyberwareItem> requirements = new ArrayList<>();
-    private final List<CyberwareItem> incompatibilities = new ArrayList<>();
+
+
+    /** Ingredients instead of individual Items to support tags/or
+     * <ul>
+     *     Examples:
+     *     <li>{ Ingredient.of(foo), Ingredient.of(bar) } matches both foo and bar</li>
+     *     <li>{ Ingredient.of(foo), Ingredient.of(bar, baz) } matches foo and either bar or baz</li>
+     * </ul>
+     */
+    private final List<Ingredient> requirements = new ArrayList<>();
+    private final List<Ingredient> incompatibilities = new ArrayList<>();
     public CyberwareItem(Properties pProperties) {
         super(pProperties);
-        incompatibilities.add(this);
     }
 
-    public CyberwareItem addRequirements(Item... requirements) {
-        for(Item item : requirements) {
-            this.requirements.add((CyberwareItem) item);
-        }
+    //These must be added AFTER registration!!! Common Setup is preferable, theoretically could be done on server reload
+    public CyberwareItem addRequirements(Ingredient... requirements) {
+        this.requirements.addAll(Arrays.asList(requirements));
         return this;
     }
-    public CyberwareItem addIncompatibilities(Item... incompatibilities) {
-        for(Item item : incompatibilities) {
-            this.incompatibilities.add((CyberwareItem) item);
-        }
+    public CyberwareItem addIncompatibilities(Ingredient... incompatibilities) {
+        this.incompatibilities.addAll(Arrays.asList(incompatibilities));
         return this;
     }
 
-    public List<CyberwareItem> getRequirements() {
+    public List<Ingredient> getRequirements() {
         return requirements;
     }
 
-    public List<CyberwareItem> getIncompatibilities() {
+    public List<Ingredient> getIncompatibilities() {
         return incompatibilities;
     }
 

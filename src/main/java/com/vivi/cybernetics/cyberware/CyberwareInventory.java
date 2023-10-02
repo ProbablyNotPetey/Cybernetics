@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
@@ -118,17 +119,17 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
     public boolean isItemValid(int slot, @NotNull ItemStack stack) {
         //small optimization, only loop if has req/incompatibilities
         if(stack.getItem() instanceof CyberwareItem item && (item.getRequirements().size() > 0 || item.getIncompatibilities().size() > 0)) {
-            Map<CyberwareItem, Boolean> metRequirements = new HashMap<>();
-            for(CyberwareItem req : item.getRequirements()) {
+            Map<Ingredient, Boolean> metRequirements = new HashMap<>();
+            for(Ingredient req : item.getRequirements()) {
                 metRequirements.put(req, false);
             }
             for(int i = 0; i < this.getSlots(); i++) {
                 //usually short lists so not that bad tbh
-                for(CyberwareItem incompat : item.getIncompatibilities()) {
-                    if(this.getStackInSlot(i).is(incompat)) return false;
+                for(Ingredient incompat : item.getIncompatibilities()) {
+                    if(incompat.test(this.getStackInSlot(i))) return false;
                 }
-                for(CyberwareItem req : item.getRequirements()) {
-                    if(this.getStackInSlot(i).is(req)) {
+                for(Ingredient req : item.getRequirements()) {
+                    if(req.test(this.getStackInSlot(i))) {
                         metRequirements.put(req, true);
                     }
                 }

@@ -14,6 +14,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class SurgicalChamberCyberwareMenu extends CyberwareMenu  {
@@ -48,8 +49,8 @@ public class SurgicalChamberCyberwareMenu extends CyberwareMenu  {
                         continue;
                     }
                     Cybernetics.LOGGER.info("Found cyberware");
-                    for (CyberwareItem req : item.getRequirements()) {
-                        if (cyberwareMenu.getCarried().is(req)) {
+                    for (Ingredient req : item.getRequirements()) {
+                        if (req.test(cyberwareMenu.getCarried())) {
                             Cybernetics.LOGGER.info("Moving cyberware...");
                             SurgicalChamberCyberwareMenu.this.moveItemStackTo(cyberwareMenu.getCyberware().getStackInSlot(i), cyberwareMenu.getCyberware().getSlots(), cyberwareMenu.slots.size(), false);
                             break;

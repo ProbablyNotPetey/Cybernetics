@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "cybernetics:mk1_optics",
+    "cybernetics:mk2_optics",
+    "cybernetics:mk3_optics"
+  ]
+}
