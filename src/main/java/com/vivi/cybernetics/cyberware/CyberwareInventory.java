@@ -13,7 +13,9 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CyberwareInventory extends CombinedInvWrapper implements INBTSerializable<CompoundTag> {
 
@@ -24,7 +26,7 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
     private static List<IItemHandlerModifiable> sections = new ArrayList<>();;
 
     public static CyberwareInventory create() {
-                List<IItemHandlerModifiable> sections = new ArrayList<>();
+        List<IItemHandlerModifiable> sections = new ArrayList<>();
         sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "head"), 5, ModTags.HEAD));
         sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "eyes"), 4, ModTags.EYES));
         sections.add(new CyberwareSection(new ResourceLocation(Cybernetics.MOD_ID, "upper_organs"), 7, ModTags.UPPER_ORGANS));
@@ -51,13 +53,13 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
 
     public void copyFrom(CyberwareInventory other, Player player, boolean isClone) {
         for(int i = 0; i < this.getSlots(); i++) {
-//            ItemStack oldStack = this.getStackInSlot(i);
-//            ItemStack newStack = other.getStackInSlot(i);
-//            if(player != null && !isClone && !oldStack.equals(newStack, false)) {
-//                if(oldStack.getItem() instanceof CyberwareItem) ((CyberwareItem) oldStack.getItem()).onUnequip(oldStack, player.level, player);
-//                if(newStack.getItem() instanceof CyberwareItem) ((CyberwareItem) newStack.getItem()).onEquip(newStack, player.level, player);
-//            }
-            this.setStackInSlot(i, other.getStackInSlot(i).copy());
+            ItemStack oldStack = this.getStackInSlot(i);
+            ItemStack newStack = other.getStackInSlot(i);
+            if(player != null && !isClone && !oldStack.equals(newStack, false)) {
+                if(oldStack.getItem() instanceof CyberwareItem) ((CyberwareItem) oldStack.getItem()).onUnequip(oldStack, player.level, player);
+                if(newStack.getItem() instanceof CyberwareItem) ((CyberwareItem) newStack.getItem()).onEquip(newStack, player.level, player);
+            }
+            this.setStackInSlot(i, newStack.copy());
         }
     }
 
@@ -111,4 +113,29 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
         }
     }
 
+    @Override
+    public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+        //small optimization, only loop if has req/incompatibilities
+        if(stack.getItem() instanceof CyberwareItem item && (item.getRequirements().size() > 0 || item.getIncompatibilities().size() > 0)) {
+            Map<CyberwareItem, Boolean> metRequirements = new HashMap<>();
+            for(CyberwareItem req : item.getRequirements()) {
+                metRequirements.put(req, false);
+            }
+            for(int i = 0; i < this.getSlots(); i++) {
+                //usually short lists so not that bad tbh
+                for(CyberwareItem incompat : item.getIncompatibilities()) {
+                    if(this.getStackInSlot(i).is(incompat)) return false;
+                }
+                for(CyberwareItem req : item.getRequirements()) {
+                    if(this.getStackInSlot(i).is(req)) {
+                        metRequirements.put(req, true);
+                    }
+                }
+            }
+            for(Boolean val : metRequirements.values()) {
+                if(!val) return false;
+            }
+        }
+        return super.isItemValid(slot, stack);
+    }
 }

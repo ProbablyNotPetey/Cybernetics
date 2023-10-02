@@ -2,7 +2,8 @@ package com.vivi.cybernetics.registry;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.item.CyberwareItem;
-import com.vivi.cybernetics.item.MobEffectCyberware;
+import com.vivi.cybernetics.item.MobEffectCyberwareItem;
+import com.vivi.cybernetics.item.OpticsItem;
 import com.vivi.cybernetics.item.TestInvItem;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
@@ -19,7 +20,8 @@ public class ModItems {
     public static final RegistryObject<Item>
             TEST_INV_ITEM = ITEMS.register("test_inv_item", () -> new TestInvItem(new Item.Properties().tab(Cybernetics.TAB))),
             TEST_CYBERWARE_ITEM = ITEMS.register("test_cyberware_item", () -> new CyberwareItem(cyberwareProps())),
-            NIGHT_VISION_EYES = ITEMS.register("night_vision_eyes", () -> new MobEffectCyberware(cyberwareProps(), new ImmutableTriple<>(MobEffects.NIGHT_VISION, 320, 0)))
+            MK_1_OPTICS = ITEMS.register("mk_1_optics", () -> new OpticsItem(cyberwareProps())),
+            NIGHT_VISION_EYES = ITEMS.register("night_vision_eyes", () -> new MobEffectCyberwareItem(cyberwareProps(), new ImmutableTriple<>(MobEffects.NIGHT_VISION, 319, 0)).addRequirements(MK_1_OPTICS.get()))
     ;
 
 

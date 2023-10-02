@@ -1,5 +1,6 @@
 package com.vivi.cybernetics.item;
 
+import com.vivi.cybernetics.Cybernetics;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
@@ -7,13 +8,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.tuple.Triple;
 
-public class MobEffectCyberware extends CyberwareItem {
+public class MobEffectCyberwareItem extends CyberwareItem {
 
     private final Triple<MobEffect, Integer, Integer>[] effects;
 
     //effect, duration, amplifier
     @SafeVarargs
-    public MobEffectCyberware(Properties pProperties, Triple<MobEffect, Integer, Integer>... effects) {
+    public MobEffectCyberwareItem(Properties pProperties, Triple<MobEffect, Integer, Integer>... effects) {
         super(pProperties);
         this.effects = effects;
     }

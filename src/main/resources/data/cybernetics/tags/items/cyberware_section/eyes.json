@@ -1,6 +1,7 @@
 {
     "replace": false,
     "values": [
-        "cybernetics:night_vision_eyes"
+        "cybernetics:night_vision_eyes",
+        "cybernetics:mk_1_optics"
     ]
 }

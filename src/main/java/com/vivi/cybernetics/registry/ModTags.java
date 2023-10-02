@@ -9,6 +9,7 @@ import net.minecraft.world.item.Item;
 public class ModTags {
 
     public static final TagKey<Item>
+            ANY = itemTag("cyberware_section/any"),
             HEAD = itemTag("cyberware_section/head"),
             EYES = itemTag("cyberware_section/eyes"),
             UPPER_ORGANS = itemTag("cyberware_section/upper_organs"),

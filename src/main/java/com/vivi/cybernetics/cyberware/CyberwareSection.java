@@ -2,6 +2,7 @@ package com.vivi.cybernetics.cyberware;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.item.CyberwareItem;
+import com.vivi.cybernetics.registry.ModTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -28,7 +29,7 @@ public class CyberwareSection extends ItemStackHandler {
 
     @Override
     public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-//        return (stack.getItem() instanceof CyberwareItem) && stack.is(tag) && super.isItemValid(slot, stack);
-        return super.isItemValid(slot, stack);
+        return (stack.getItem() instanceof CyberwareItem) && (stack.is(tag) || stack.is(ModTags.ANY)) && super.isItemValid(slot, stack);
+//        return super.isItemValid(slot, stack);
     }
 }

@@ -8,12 +8,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.tuple.Pair;
 
-public class AttributeCyberware extends CyberwareItem {
+public class AttributeCyberwareItem extends CyberwareItem {
 
     private final Pair<Attribute, AttributeModifier>[] attributes;
 
     @SafeVarargs
-    public AttributeCyberware(Properties pProperties, Pair<Attribute, AttributeModifier>... attributes) {
+    public AttributeCyberwareItem(Properties pProperties, Pair<Attribute, AttributeModifier>... attributes) {
         super(pProperties);
         this.attributes = attributes;
     }
