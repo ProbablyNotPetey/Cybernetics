@@ -1,6 +1,7 @@
 package com.vivi.cybernetics.network;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.network.packet.C2SOpenCyberwarePacket;
 import com.vivi.cybernetics.network.packet.C2SSwitchActiveSlotPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,6 +32,12 @@ public class PacketHandler {
                 .decoder(C2SSwitchActiveSlotPacket::new)
                 .encoder(C2SSwitchActiveSlotPacket::toBytes)
                 .consumerMainThread(C2SSwitchActiveSlotPacket::handle)
+                .add();
+
+        network.messageBuilder(C2SOpenCyberwarePacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(C2SOpenCyberwarePacket::new)
+                .encoder(C2SOpenCyberwarePacket::toBytes)
+                .consumerMainThread(C2SOpenCyberwarePacket::handle)
                 .add();
 
     }

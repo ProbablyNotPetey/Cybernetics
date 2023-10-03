@@ -30,10 +30,9 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
         ModCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getEntries().forEach(type -> {
             sections.add(new CyberwareSection(type.getValue(), type.getKey().location()));
         });
-        //todo: fix sorting
         sections.sort((section1, section2) -> {
             int idx1 = CyberwareSection.SECTION_SORT.indexOf(section1.getId());
-            int idx2 = CyberwareSection.SECTION_SORT.indexOf(section1.getId());
+            int idx2 = CyberwareSection.SECTION_SORT.indexOf(section2.getId());
             int i = 0;
             if(idx1 == -1) {
                 idx1 = CyberwareSection.SECTION_SORT.size() + i++;
@@ -41,6 +40,7 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
             if(idx2 == -1) {
                 idx2 = CyberwareSection.SECTION_SORT.size() + i++;
             }
+            Cybernetics.LOGGER.info("Index of " + section1.getId() + ": " + idx1 + ", Index of " + section2.getId() + ": " + idx2 + ". " + (idx1 - idx2));
             return idx1 - idx2;
         });
 

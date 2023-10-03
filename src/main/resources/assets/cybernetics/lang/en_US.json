@@ -28,5 +28,9 @@
     "tooltip.cybernetics.section.hands": "Hands",
     "tooltip.cybernetics.section.arms": "Arms",
     "tooltip.cybernetics.section.legs": "Legs",
-    "tooltip.cybernetics.section.feet": "Feet"
+    "tooltip.cybernetics.section.feet": "Feet",
+
+
+    "key.cybernetics.player_cyberware_menu": "View Cyberware",
+    "key.cybernetics.category": "Cybernetics"
 }
