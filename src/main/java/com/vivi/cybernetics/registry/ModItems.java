@@ -22,7 +22,6 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Cybernetics.MOD_ID);
 
     public static final RegistryObject<Item>
-            TEST_INV_ITEM = ITEMS.register("test_inv_item", () -> new TestInvItem(new Item.Properties().tab(Cybernetics.TAB))),
             MK_1_OPTICS = ITEMS.register("mk1_optics", () -> new OpticsItem(cyberwareProps())),
             MK_2_OPTICS = ITEMS.register("mk2_optics", () -> new OpticsItem(cyberwareProps())),
             MK_3_OPTICS = ITEMS.register("mk3_optics", () -> new OpticsItem(cyberwareProps())),
@@ -34,7 +33,9 @@ public class ModItems {
                     new ImmutablePair<>(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(UUID.fromString("d4490a2f-e05e-4ddf-beea-66ec7ca6e5f1"), "Seketon Armor Toughness", 2.0, AttributeModifier.Operation.ADDITION))
             )),
 
-            FIRE_RESISTANCE_SKIN = ITEMS.register("fire_resistance_skin", () -> new MobEffectCyberwareItem(cyberwareProps(), new ImmutableTriple<>(MobEffects.FIRE_RESISTANCE, 319, 0)))
+            FIRE_RESISTANCE_SKIN = ITEMS.register("fire_resistance_skin", () -> new MobEffectCyberwareItem(cyberwareProps(), new ImmutableTriple<>(MobEffects.FIRE_RESISTANCE, 319, 0))),
+
+            EMERGENCY_DEFIBRILLATOR = ITEMS.register("emergency_defibrillator", () -> new CyberwareItem(cyberwareProps()))
     ;
 
 

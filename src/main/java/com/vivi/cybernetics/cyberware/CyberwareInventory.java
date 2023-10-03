@@ -40,7 +40,6 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
             if(idx2 == -1) {
                 idx2 = CyberwareSection.SECTION_SORT.size() + i++;
             }
-            Cybernetics.LOGGER.info("Index of " + section1.getId() + ": " + idx1 + ", Index of " + section2.getId() + ": " + idx2 + ". " + (idx1 - idx2));
             return idx1 - idx2;
         });
 

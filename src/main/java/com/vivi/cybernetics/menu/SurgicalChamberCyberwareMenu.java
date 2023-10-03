@@ -34,7 +34,6 @@ public class SurgicalChamberCyberwareMenu extends CyberwareMenu  {
         addSlotListener(new ContainerListener() {
             @Override
             public void slotChanged(AbstractContainerMenu menu, int slot, ItemStack stack) {
-                Cybernetics.LOGGER.info("Slot changed, is client: " + inventory.player.level.isClientSide);
                 if(!(menu instanceof CyberwareMenu cyberwareMenu)) return;
                 if(!(cyberwareMenu.getSlot(slot) instanceof CyberwareSlot)) return;
 
@@ -43,15 +42,12 @@ public class SurgicalChamberCyberwareMenu extends CyberwareMenu  {
 //                if(pStack.is(cyberwareMenu.getSlot(slot).getItem().getItem())) return;
 //                Cybernetics.LOGGER.info("Stack: " + stack + ", Stack in slot: " + cyberwareMenu.getSlot(slot).getItem());
 //                Cybernetics.LOGGER.info("Is pickup: " + stack.is(cyberwareMenu.getSlot(slot).getItem().getItem()));
-                Cybernetics.LOGGER.info("Removing cyberware depending on " + cyberwareMenu.getCarried());
                 for(int i = 0; i < cyberwareMenu.getCyberware().getSlots(); i++) {
                     if (!(cyberwareMenu.getCyberware().getStackInSlot(i).getItem() instanceof CyberwareItem item) || !(cyberwareMenu.getCarried().getItem() instanceof CyberwareItem)) {
                         continue;
                     }
-                    Cybernetics.LOGGER.info("Found cyberware");
                     for (Ingredient req : item.getRequirements()) {
                         if (req.test(cyberwareMenu.getCarried())) {
-                            Cybernetics.LOGGER.info("Moving cyberware...");
                             SurgicalChamberCyberwareMenu.this.moveItemStackTo(cyberwareMenu.getCyberware().getStackInSlot(i), cyberwareMenu.getCyberware().getSlots(), cyberwareMenu.slots.size(), false);
                             break;
                         }

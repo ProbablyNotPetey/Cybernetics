@@ -12,10 +12,9 @@ public class PlayerCyberwareMenu extends CyberwareMenu {
         super(ModMenuTypes.PLAYER_CYBERWARE_MENU.get(), pContainerId, inventory, cyberware);
         slots.forEach(slot -> {
             if(slot instanceof CyberwareSlot) {
-//                ((CyberwareSlot) slot).setCanEdit(false);
+                ((CyberwareSlot) slot).setCanEdit(false);
             }
         });
 
-        Cybernetics.LOGGER.info("Created player cyberware. Client: " + inventory.player.level.isClientSide);
     }
 }
