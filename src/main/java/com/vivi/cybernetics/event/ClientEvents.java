@@ -26,31 +26,6 @@ import java.util.List;
 public class ClientEvents {
 
     @SubscribeEvent
-    public static void onTooltipEvent(ItemTooltipEvent event) {
-        ItemStack stack = event.getItemStack();
-
-        if(!stack.isEmpty() && stack.getItem() instanceof CyberwareItem) {
-
-            MutableComponent sectionTooltip = Component.translatable("tooltip.cybernetics.cyberware").append(": ");
-
-            if(stack.is(ModTags.ANY_SECTION)) {
-                sectionTooltip.append(Component.translatable("tooltip.cybernetics.section.any"));
-            }
-            else {
-                List<CyberwareSectionType> sections = CyberwareHelper.getValidCyberwareSections(stack);
-                for (int i = 0; i < sections.size(); i++) {
-                    ResourceLocation id = ModCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getKey(sections.get(i));
-                    sectionTooltip.append(Component.translatable("tooltip." + id.getNamespace() + ".section." + id.getPath()));
-                    if(i < sections.size() - 1) sectionTooltip.append(", ");
-                }
-            }
-
-            sectionTooltip = sectionTooltip.withStyle(ChatFormatting.RED);
-            event.getToolTip().add(sectionTooltip);
-        }
-    }
-
-    @SubscribeEvent
     public static void onRegisterKeybindignsEvent(RegisterKeyMappingsEvent event) {
         event.register(ModKeybinds.PLAYER_CYBERWARE_MENU);
     }

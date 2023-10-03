@@ -9,7 +9,7 @@
     "item.cybernetics.mk1_optics": "Mk1 Optics",
     "item.cybernetics.mk2_optics": "Mk2 Optics",
     "item.cybernetics.mk3_optics": "Mk3 Optics",
-    "item.cybernetics.night_vision_eyes": "Feline Retinas",
+    "item.cybernetics.night_vision_eyes": "Enhanced Light Receptors",
     "item.cybernetics.fire_resistance_skin": "Thermal-Proof Plating",
     "item.cybernetics.reinforced_skeleton": "Reinforced Carbon Fiber Skeleton",
     "item.cybernetics.titanium_skeleton": "Titanium Skeleton",
@@ -18,7 +18,9 @@
     "jei.cybernetics.cyberware_crafting": "Cyberware Crafting",
 
 
-    "tooltip.cybernetics.cyberware": "Cyberware",
+    "tooltip.cybernetics.section": "Cyberware",
+    "tooltip.cybernetics.requirements": "Requires",
+    "tooltip.cybernetics.incompatibilities": "Incompatible with",
     "tooltip.cybernetics.section.any": "Any Section",
     "tooltip.cybernetics.section.head": "Head",
     "tooltip.cybernetics.section.eyes": "Eyes",
@@ -31,7 +33,17 @@
     "tooltip.cybernetics.section.legs": "Legs",
     "tooltip.cybernetics.section.feet": "Feet",
 
+    "tooltip.cybernetics.mk1_optics.description": "Mk1 Optics.",
+    "tooltip.cybernetics.mk2_optics.description": "Mk2 Optics.",
+    "tooltip.cybernetics.mk3_optics.description": "Mk3 Optics.",
+    "tooltip.cybernetics.night_vision_eyes.description": "An _augment_ to any _Optics_, allowing for _perfect vision_ even in _total darkness_.",
+    "tooltip.cybernetics.night_vision_eyes.requirements": "Any Optics",
+    "tooltip.cybernetics.fire_resistance_skin.description": "A thin layer of _heat-proof plating_ embedded into the _skin_. Renders the user _immune_ to fire and other _extreme heat_.",
+    "tooltip.cybernetics.reinforced_skeleton.description": "A _replacement_ for much of the user's _skeleton_, significantly increasing its _durability_ and _sturdiness_. Gives the user permanent _+2 armor_.",
+    "tooltip.cybernetics.titanium_skeleton.description": "A significantly stronger _replacement_ for the user's _skeleton_, made of pure _titanium_. Gives the user permanent _+5 armor_ and _+2 armor toughness_.",
+    "tooltip.cybernetics.emergency_defibrillator.description": "An emergency _AED unit_ that will _restart the heart_ in cases of sudden trauma. _Revives_ the user once when they _die_, giving them temporary _regeneration_ and some health back. Cooldown: _2 minutes_.",
 
     "key.cybernetics.player_cyberware_menu": "View Cyberware",
-    "key.cybernetics.category": "Cybernetics"
+    "key.cybernetics.category": "Cybernetics",
+    "tooltip.cybernetics.description.shift": "Hold _[Shift]_ for description"
 }

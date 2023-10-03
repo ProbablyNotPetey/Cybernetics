@@ -22,16 +22,16 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Cybernetics.MOD_ID);
 
     public static final RegistryObject<Item>
-            MK_1_OPTICS = ITEMS.register("mk1_optics", () -> new OpticsItem(cyberwareProps())),
-            MK_2_OPTICS = ITEMS.register("mk2_optics", () -> new OpticsItem(cyberwareProps())),
-            MK_3_OPTICS = ITEMS.register("mk3_optics", () -> new OpticsItem(cyberwareProps())),
+            MK_1_OPTICS = ITEMS.register("mk1_optics", () -> new OpticsItem(cyberwareProps()).hideIncompatibilities()),
+            MK_2_OPTICS = ITEMS.register("mk2_optics", () -> new OpticsItem(cyberwareProps()).hideIncompatibilities()),
+            MK_3_OPTICS = ITEMS.register("mk3_optics", () -> new OpticsItem(cyberwareProps()).hideIncompatibilities()),
             NIGHT_VISION_EYES = ITEMS.register("night_vision_eyes", () -> new MobEffectCyberwareItem(cyberwareProps(), new ImmutableTriple<>(MobEffects.NIGHT_VISION, 319, 0))),
 
-            REINFORCED_SKELETON = ITEMS.register("reinforced_skeleton", () -> new AttributeCyberwareItem(cyberwareProps(), new ImmutablePair<>(Attributes.ARMOR, new AttributeModifier(UUID.fromString("1a9c9f62-d28f-48fb-8c9e-b688046f7099"), "Skeleton Armor", 2.0, AttributeModifier.Operation.ADDITION)))),
+            REINFORCED_SKELETON = ITEMS.register("reinforced_skeleton", () -> new AttributeCyberwareItem(cyberwareProps(), new ImmutablePair<>(Attributes.ARMOR, new AttributeModifier(UUID.fromString("1a9c9f62-d28f-48fb-8c9e-b688046f7099"), "Skeleton Armor", 2.0, AttributeModifier.Operation.ADDITION))).hideIncompatibilities()),
             TITANIUM_SKELETON = ITEMS.register("titanium_skeleton", () -> new AttributeCyberwareItem(cyberwareProps(),
                     new ImmutablePair<>(Attributes.ARMOR, new AttributeModifier(UUID.fromString("d4490a2f-e05e-4ddf-beea-66ec7ca6e5f1"), "Skeleton Armor", 5.0, AttributeModifier.Operation.ADDITION)),
                     new ImmutablePair<>(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(UUID.fromString("d4490a2f-e05e-4ddf-beea-66ec7ca6e5f1"), "Seketon Armor Toughness", 2.0, AttributeModifier.Operation.ADDITION))
-            )),
+            ).hideIncompatibilities()),
 
             FIRE_RESISTANCE_SKIN = ITEMS.register("fire_resistance_skin", () -> new MobEffectCyberwareItem(cyberwareProps(), new ImmutableTriple<>(MobEffects.FIRE_RESISTANCE, 319, 0))),
 

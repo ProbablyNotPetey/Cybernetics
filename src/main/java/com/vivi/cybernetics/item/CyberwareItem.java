@@ -1,11 +1,24 @@
 package com.vivi.cybernetics.item;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.cyberware.CyberwareSectionType;
+import com.vivi.cybernetics.registry.ModCyberware;
+import com.vivi.cybernetics.registry.ModTags;
+import com.vivi.cybernetics.util.CyberwareHelper;
+import com.vivi.cybernetics.util.TooltipHelper;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +37,11 @@ public class CyberwareItem extends Item {
      */
     private final List<Ingredient> requirements = new ArrayList<>();
     private final List<Ingredient> incompatibilities = new ArrayList<>();
+
+    private boolean showRequirements = true;
+    private boolean showIncompatibilities = true;
+    private boolean showDescription = true;
+
     public CyberwareItem(Properties pProperties) {
         super(pProperties);
     }
@@ -46,6 +64,19 @@ public class CyberwareItem extends Item {
         return incompatibilities;
     }
 
+    public CyberwareItem hideRequirements() {
+        showRequirements = false;
+        return this;
+    }
+    public CyberwareItem hideIncompatibilities() {
+        showIncompatibilities = false;
+        return this;
+    }
+    public CyberwareItem hideDescription() {
+        showDescription = false;
+        return this;
+    }
+
     public void cyberwareTick(ItemStack stack, Level level, Player player) {
 
     }
@@ -56,5 +87,53 @@ public class CyberwareItem extends Item {
 
     public void onUnequip(ItemStack stack, Level level, Player player) {
 
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
+        ResourceLocation id = ForgeRegistries.ITEMS.getKey(this);
+
+        addSectionTooltip(stack, tooltip);
+        if(showRequirements && requirements.size() > 0) {
+            MutableComponent requirementsTooltip = Component.translatable("tooltip.cybernetics.requirements").append(": ")
+                    .append(Component.translatable("tooltip." + id.getNamespace() + "." + id.getPath() + ".requirements"));
+            tooltip.add(requirementsTooltip.withStyle(ChatFormatting.AQUA));
+        }
+        if(showIncompatibilities && incompatibilities.size() > 1) {
+            MutableComponent incompatibilitiesTooltip = Component.translatable("tooltip.cybernetics.incompatibilities").append(": ")
+                    .append(Component.translatable("tooltip." + id.getNamespace() + "." + id.getPath() + ".incompatibilities"));
+            tooltip.add(incompatibilitiesTooltip.withStyle(ChatFormatting.RED));
+        }
+        if(showDescription) {
+            if(Screen.hasShiftDown()) {
+                tooltip.addAll(TooltipHelper.processTooltip(Component.translatable("tooltip." + id.getNamespace() + "." + id.getPath() + ".description"), ChatFormatting.GRAY, ChatFormatting.RED, 40));
+            }
+            else {
+                tooltip.addAll(TooltipHelper.processTooltip(Component.translatable("tooltip.cybernetics.description.shift"), ChatFormatting.GRAY, ChatFormatting.RED, 40));
+            }
+        }
+    }
+
+    private void addSectionTooltip(ItemStack stack, List<Component> pTooltipComponents) {
+
+        if(!stack.isEmpty() && stack.getItem() instanceof CyberwareItem) {
+
+            MutableComponent sectionTooltip = Component.translatable("tooltip.cybernetics.section").append(": ");
+
+            if(stack.is(ModTags.ANY_SECTION)) {
+                sectionTooltip.append(Component.translatable("tooltip.cybernetics.section.any"));
+            }
+            else {
+                List<CyberwareSectionType> sections = CyberwareHelper.getValidCyberwareSections(stack);
+                for (int i = 0; i < sections.size(); i++) {
+                    ResourceLocation id = ModCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getKey(sections.get(i));
+                    sectionTooltip.append(Component.translatable("tooltip." + id.getNamespace() + ".section." + id.getPath()));
+                    if(i < sections.size() - 1) sectionTooltip.append(", ");
+                }
+            }
+
+            sectionTooltip = sectionTooltip.withStyle(ChatFormatting.RED);
+            pTooltipComponents.add(sectionTooltip);
+        }
     }
 }
