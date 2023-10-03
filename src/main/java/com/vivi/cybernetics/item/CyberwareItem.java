@@ -95,14 +95,14 @@ public class CyberwareItem extends Item {
 
         addSectionTooltip(stack, tooltip);
         if(showRequirements && requirements.size() > 0) {
-            MutableComponent requirementsTooltip = Component.translatable("tooltip.cybernetics.requirements").append(": ")
-                    .append(Component.translatable("tooltip." + id.getNamespace() + "." + id.getPath() + ".requirements"));
-            tooltip.add(requirementsTooltip.withStyle(ChatFormatting.AQUA));
+            MutableComponent requirementsTooltip = Component.translatable("tooltip.cybernetics.requirements").append(": ").withStyle(ChatFormatting.GRAY)
+                    .append(Component.translatable("tooltip." + id.getNamespace() + "." + id.getPath() + ".requirements").withStyle(ChatFormatting.AQUA));
+            tooltip.add(requirementsTooltip);
         }
         if(showIncompatibilities && incompatibilities.size() > 1) {
-            MutableComponent incompatibilitiesTooltip = Component.translatable("tooltip.cybernetics.incompatibilities").append(": ")
-                    .append(Component.translatable("tooltip." + id.getNamespace() + "." + id.getPath() + ".incompatibilities"));
-            tooltip.add(incompatibilitiesTooltip.withStyle(ChatFormatting.RED));
+            MutableComponent incompatibilitiesTooltip = Component.translatable("tooltip.cybernetics.incompatibilities").append(": ").withStyle(ChatFormatting.GRAY)
+                    .append(Component.translatable("tooltip." + id.getNamespace() + "." + id.getPath() + ".incompatibilities").withStyle(ChatFormatting.RED));
+            tooltip.add(incompatibilitiesTooltip);
         }
         if(showDescription) {
             if(Screen.hasShiftDown()) {
@@ -118,7 +118,7 @@ public class CyberwareItem extends Item {
 
         if(!stack.isEmpty() && stack.getItem() instanceof CyberwareItem) {
 
-            MutableComponent sectionTooltip = Component.translatable("tooltip.cybernetics.section").append(": ");
+            MutableComponent sectionTooltip = Component.translatable("tooltip.cybernetics.section").append(": ").withStyle(ChatFormatting.GRAY);
 
             if(stack.is(ModTags.ANY_SECTION)) {
                 sectionTooltip.append(Component.translatable("tooltip.cybernetics.section.any"));
@@ -127,12 +127,11 @@ public class CyberwareItem extends Item {
                 List<CyberwareSectionType> sections = CyberwareHelper.getValidCyberwareSections(stack);
                 for (int i = 0; i < sections.size(); i++) {
                     ResourceLocation id = ModCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getKey(sections.get(i));
-                    sectionTooltip.append(Component.translatable("tooltip." + id.getNamespace() + ".section." + id.getPath()));
-                    if(i < sections.size() - 1) sectionTooltip.append(", ");
+                    sectionTooltip.append(Component.translatable("tooltip." + id.getNamespace() + ".section." + id.getPath()).withStyle(ChatFormatting.RED));
+                    if(i < sections.size() - 1) sectionTooltip.append(", ").withStyle(ChatFormatting.GRAY);
                 }
             }
 
-            sectionTooltip = sectionTooltip.withStyle(ChatFormatting.RED);
             pTooltipComponents.add(sectionTooltip);
         }
     }
