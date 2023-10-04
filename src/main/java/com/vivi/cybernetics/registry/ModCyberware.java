@@ -29,12 +29,12 @@ public class ModCyberware {
             EYES = CYBERWARE_SECTION_TYPES.register("eyes", () -> new CyberwareSectionType(ModTags.EYES_SECTION, 4, 16, 0)),
             UPPER_ORGANS = CYBERWARE_SECTION_TYPES.register("upper_organs", () -> new CyberwareSectionType(ModTags.UPPER_ORGANS_SECTION, 7, 32, 0)),
             LOWER_ORGANS = CYBERWARE_SECTION_TYPES.register("lower_organs", () -> new CyberwareSectionType(ModTags.LOWER_ORGANS_SECTION, 6, 48, 0)),
-            SKELETON = CYBERWARE_SECTION_TYPES.register("skeleton", () -> new CyberwareSectionType(ModTags.SKELETON_SECTION, 4, 64, 0)),
-            SKIN = CYBERWARE_SECTION_TYPES.register("skin", () -> new CyberwareSectionType(ModTags.SKIN_SECTION, 3, 80, 0)),
-            HANDS = CYBERWARE_SECTION_TYPES.register("hands", () -> new CyberwareSectionType(ModTags.HANDS_SECTION, 3, 96, 0)),
-            ARMS = CYBERWARE_SECTION_TYPES.register("arms", () -> new CyberwareSectionType(ModTags.ARMS_SECTION, 4, 112, 0)),
-            LEGS = CYBERWARE_SECTION_TYPES.register("legs", () -> new CyberwareSectionType(ModTags.LEGS_SECTION, 3, 128, 0)),
-            FEET = CYBERWARE_SECTION_TYPES.register("feet", () -> new CyberwareSectionType(ModTags.FEET_SECTION, 4, 144, 0))
+            SKELETON = CYBERWARE_SECTION_TYPES.register("skeleton", () -> new CyberwareSectionType(ModTags.SKELETON_SECTION, 4, 0, 16)),
+            SKIN = CYBERWARE_SECTION_TYPES.register("skin", () -> new CyberwareSectionType(ModTags.SKIN_SECTION, 3, 16, 16)),
+            HANDS = CYBERWARE_SECTION_TYPES.register("hands", () -> new CyberwareSectionType(ModTags.HANDS_SECTION, 3, 32, 16)),
+            ARMS = CYBERWARE_SECTION_TYPES.register("arms", () -> new CyberwareSectionType(ModTags.ARMS_SECTION, 4, 48, 16)),
+            LEGS = CYBERWARE_SECTION_TYPES.register("legs", () -> new CyberwareSectionType(ModTags.LEGS_SECTION, 3, 0, 32)),
+            FEET = CYBERWARE_SECTION_TYPES.register("feet", () -> new CyberwareSectionType(ModTags.FEET_SECTION, 4, 16, 32))
         ;
 
     public static void register(IEventBus eventBus) {

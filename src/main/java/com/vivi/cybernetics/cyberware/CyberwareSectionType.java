@@ -15,15 +15,23 @@ public class CyberwareSectionType {
     private final int textureX;
     private final int textureY;
 
+    private final int textureWidth;
+    private final int textureHeight;
+
+    public CyberwareSectionType(TagKey<Item> tag, int size, int textureX, int textureY) {
+        this(tag, size, DEFAULT_TEXTURE, textureX, textureY);
+    }
     public CyberwareSectionType(TagKey<Item> tag, int size, ResourceLocation texture, int textureX, int textureY) {
+        this(tag, size, texture, textureX, textureY, 64, 64);
+    }
+    public CyberwareSectionType(TagKey<Item> tag, int size, ResourceLocation texture, int textureX, int textureY, int textureWidth, int textureHeight) {
         this.tag = tag;
         this.size = size;
         this.texture = texture;
         this.textureX = textureX;
         this.textureY = textureY;
-    }
-    public CyberwareSectionType(TagKey<Item> tag, int size, int textureX, int textureY) {
-        this(tag, size, DEFAULT_TEXTURE, textureX, textureY);
+        this.textureWidth = textureWidth;
+        this.textureHeight = textureHeight;
     }
 
     public TagKey<Item> getTag() {
@@ -50,5 +58,13 @@ public class CyberwareSectionType {
 
     public int getTextureY() {
         return textureY;
+    }
+
+    public int getTextureWidth() {
+        return textureWidth;
+    }
+
+    public int getTextureHeight() {
+        return textureHeight;
     }
 }
