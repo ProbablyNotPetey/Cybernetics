@@ -209,5 +209,13 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
         void update() {
 
         }
+
+        @Override
+        public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+            super.renderButton(pPoseStack, pMouseX, pMouseY, pPartialTick);
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShaderTexture(0, section.getTexture());
+            this.blit(pPoseStack, this.x + 2, this.y + 2, section.getTextureX(), section.getTextureY(), 16, 16);
+        }
     }
 }

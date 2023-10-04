@@ -1,0 +1,19 @@
+package com.vivi.cybernetics.datagen;
+
+import com.vivi.cybernetics.Cybernetics;
+import net.minecraft.data.DataGenerator;
+import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+
+@Mod.EventBusSubscriber(modid = Cybernetics.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+public class DataGenerators {
+
+    @SubscribeEvent
+    public static void onGatherDataEvent(GatherDataEvent event) {
+        DataGenerator generator = event.getGenerator();
+
+        generator.addProvider(event.includeClient(), new ItemModelGenerator(generator, event.getExistingFileHelper()));
+
+    }
+}

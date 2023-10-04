@@ -52,8 +52,8 @@ public class ModItems {
         CyberwareHelper.addIncompatibilities(MK_2_OPTICS.get(), Ingredient.of(ModTags.OPTICS));
         CyberwareHelper.addIncompatibilities(MK_3_OPTICS.get(), Ingredient.of(ModTags.OPTICS));
 
-        CyberwareHelper.addIncompatibilities(REINFORCED_SKELETON.get(), Ingredient.of(ModTags.SKELETON));
-        CyberwareHelper.addIncompatibilities(TITANIUM_SKELETON.get(), Ingredient.of(ModTags.SKELETON));
+        CyberwareHelper.addIncompatibilities(REINFORCED_SKELETON.get(), Ingredient.of(ModTags.SKELETONS));
+        CyberwareHelper.addIncompatibilities(TITANIUM_SKELETON.get(), Ingredient.of(ModTags.SKELETONS));
 
 
 

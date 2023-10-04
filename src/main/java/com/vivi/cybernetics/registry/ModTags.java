@@ -10,7 +10,7 @@ public class ModTags {
 
     public static final TagKey<Item>
             OPTICS = itemTag("optics"),
-            SKELETON = itemTag("skeleton"),
+            SKELETONS = itemTag("skeletons"),
 
 
             ANY_SECTION = itemTag("cyberware_section/any"),
