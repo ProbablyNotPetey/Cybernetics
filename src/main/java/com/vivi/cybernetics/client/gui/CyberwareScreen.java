@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -21,6 +22,7 @@ import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.stats.StatsCounter;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,6 +36,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends ModAbstractContain
     public static final ResourceLocation TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/player_cyberware.png");
 
     private long startTime;
+    private LocalPlayer fakePlayer;
     public CyberwareScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         this.imageHeight = 256;
@@ -45,6 +48,15 @@ public class CyberwareScreen<T extends CyberwareMenu> extends ModAbstractContain
         super.init();
         addRenderableWidget(new MyButton(10, 10, 20));
         startTime = getGameTime();
+        LocalPlayer player = Minecraft.getInstance().player;
+        fakePlayer = new LocalPlayer(Minecraft.getInstance(), Minecraft.getInstance().level, player.connection, player.getStats(), player.getRecipeBook(), false, false);
+
+    }
+
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+        fakePlayer.tickCount++;
     }
 
     @Override
@@ -67,9 +79,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends ModAbstractContain
             this.blit(pPoseStack, leftPos + menu.getSlot(i).x - 1, topPos + menu.getSlot(i).y - 1, 176, v, 18, 18);
         }
 
-//        Entity skeleton = new Skeleton(EntityType.SKELETON, Minecraft.getInstance().player.level);
-        Player player = Minecraft.getInstance().player;
-        RenderHelper.renderEntity(player, pPoseStack, leftPos + 130, topPos + 123, 60, 0.0f);
+        RenderHelper.renderEntity(fakePlayer, pPoseStack, leftPos + 130, topPos + 126, 60, getGameTime() - startTime + getPartialTick());
 
     }
 

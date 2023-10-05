@@ -7,6 +7,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.vivi.cybernetics.Cybernetics;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.world.entity.Entity;
@@ -63,7 +64,7 @@ public class RenderHelper {
             MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
             dispatcher.setRenderShadow(false);
             RenderSystem.runAsFancy(() -> {
-                dispatcher.render(entity, 0.0, 0.0, 0.0, 0.0F, 1.0F, poseStack, buffer, 15728880);
+                dispatcher.render(entity, 0.0, 0.0, 0.0, 0.0F, 1.0F, poseStack, buffer, LightTexture.FULL_BRIGHT);
             });
             buffer.endBatch();
         }
@@ -85,12 +86,12 @@ public class RenderHelper {
         }
 
         dispatcher.setRenderShadow(true);
-        Lighting.setupFor3DItems();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.enableDepthTest();
+//        RenderSystem.enableDepthTest();
         Minecraft.getInstance().gameRenderer.lightTexture().turnOffLightLayer();
         poseStack.popPose();
         RenderSystem.applyModelViewMatrix();
+        Lighting.setupFor3DItems();
 
 
     }
