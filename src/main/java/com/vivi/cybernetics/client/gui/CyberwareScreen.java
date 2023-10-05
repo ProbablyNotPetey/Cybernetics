@@ -1,30 +1,39 @@
 package com.vivi.cybernetics.client.gui;
 
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.client.gui.util.ModAbstractContainerScreen;
 import com.vivi.cybernetics.menu.CyberwareMenu;
 import com.vivi.cybernetics.util.Easing;
+import com.vivi.cybernetics.util.RenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerScreen<T> {
+public class CyberwareScreen<T extends CyberwareMenu> extends ModAbstractContainerScreen<T> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/player_cyberware.png");
 
-    private final List<WidgetMovement> widgetsToMove = new ArrayList<>();
-
+    private long startTime;
     public CyberwareScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         this.imageHeight = 256;
@@ -35,6 +44,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
     protected void init() {
         super.init();
         addRenderableWidget(new MyButton(10, 10, 20));
+        startTime = getGameTime();
     }
 
     @Override
@@ -43,17 +53,6 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
         super.render(pPoseStack, pMouseX, pMouseY, frameTimeDelta);
         renderTooltip(pPoseStack, pMouseX, pMouseY);
 
-        //on the client so this is fine
-        long currentGameTime = Minecraft.getInstance().player.level.getGameTime();
-        float partialTick = Minecraft.getInstance().getPartialTick();
-        for(int i = 0; i < widgetsToMove.size(); i++) {
-            WidgetMovement movement = widgetsToMove.get(i);
-            movement.update(currentGameTime, partialTick);
-            if(movement.isDone()) {
-                widgetsToMove.remove(i);
-                i--;
-            }
-        }
     }
 
     @Override
@@ -68,18 +67,19 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
             this.blit(pPoseStack, leftPos + menu.getSlot(i).x - 1, topPos + menu.getSlot(i).y - 1, 176, v, 18, 18);
         }
 
-//        InventoryScreen.renderEntityInInventory(leftPos + 130, topPos + 123, 50, (float)(leftPos + 130) - pMouseX, (float)(topPos + 40) - pMouseY, Minecraft.getInstance().player);
+//        Entity skeleton = new Skeleton(EntityType.SKELETON, Minecraft.getInstance().player.level);
+        Player player = Minecraft.getInstance().player;
+        RenderHelper.renderEntity(player, pPoseStack, leftPos + 130, topPos + 123, 60, 0.0f);
 
     }
 
-    public void moveWidget(AbstractWidget widget, int newX, int newY, int duration) {
-        long currentGameTime = Minecraft.getInstance().player.level.getGameTime();
-        widgetsToMove.add(new WidgetMovement(widget, newX, newY, currentGameTime, duration));
-    }
-    public void moveWidget(AbstractWidget widget, int newX, int newY, int duration, Easing easing) {
-        long currentGameTime = Minecraft.getInstance().player.level.getGameTime();
-        widgetsToMove.add(new WidgetMovement(widget, newX, newY, currentGameTime, duration, easing));
-    }
+
+
+
+
+
+
+
 
 
     abstract static class CyberwareButton extends AbstractButton {

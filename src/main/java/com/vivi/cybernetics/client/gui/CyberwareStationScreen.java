@@ -3,6 +3,7 @@ package com.vivi.cybernetics.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.client.gui.util.EnergyGuiComponent;
 import com.vivi.cybernetics.menu.CyberwareStationMenu;
 import com.vivi.cybernetics.util.MouseHelper;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;

@@ -1,4 +1,4 @@
-package com.vivi.cybernetics.client.gui;
+package com.vivi.cybernetics.client.gui.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;

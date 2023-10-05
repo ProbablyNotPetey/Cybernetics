@@ -1,4 +1,4 @@
-package com.vivi.cybernetics.client.gui;
+package com.vivi.cybernetics.client.gui.util;
 
 import com.vivi.cybernetics.util.Easing;
 import net.minecraft.client.gui.components.AbstractWidget;
