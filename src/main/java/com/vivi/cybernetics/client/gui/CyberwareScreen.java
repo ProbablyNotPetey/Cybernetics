@@ -3,32 +3,27 @@ package com.vivi.cybernetics.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.menu.CyberwareMenu;
-import com.vivi.cybernetics.network.PacketHandler;
-import com.vivi.cybernetics.network.packet.C2SSwitchActiveSlotPacket;
-import com.vivi.cybernetics.registry.ModCyberware;
-import com.vivi.cybernetics.util.MouseHelper;
-import net.minecraft.ChatFormatting;
+import com.vivi.cybernetics.util.Easing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerScreen<T> {
-
     public static final ResourceLocation TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/player_cyberware.png");
-    private final NonNullList<CyberwareButton> buttons = NonNullList.create();
+
+    private final List<WidgetMovement> widgetsToMove = new ArrayList<>();
 
     public CyberwareScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -39,40 +34,26 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
     @Override
     protected void init() {
         super.init();
-        buttons.clear();
-        try {
-            for (int i = 0; i < menu.getCyberware().getSections().size(); i++) {
-                int j = i % 3;
-                int k = i / 3;
-                addCyberwareButton(new SectionButton(menu.getCyberware().getSections().get(i).getType(), leftPos + 10 + j * 25, topPos + 10 + k * 25, 20));
-            }
-        } catch (Exception e) {
-            Cybernetics.LOGGER.error("Could not initialize cyberware screen", e);
-        }
+        addRenderableWidget(new MyButton(10, 10, 20));
     }
 
     @Override
-    protected void containerTick() {
-        super.containerTick();
-        updateButtons(null);
-    }
-
-    public void updateButtons(CyberwareButton activeButton) {
-        buttons.forEach(button -> {
-//            Cybernetics.LOGGER.info("" + button.selected);
-            if(activeButton != null) {
-                button.setSelected(button == activeButton);
-            }
-            button.update();
-        });
-//        Cybernetics.LOGGER.info("Buttons updated");
-    }
-
-    @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float frameTimeDelta) {
         renderBackground(pPoseStack);
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        super.render(pPoseStack, pMouseX, pMouseY, frameTimeDelta);
         renderTooltip(pPoseStack, pMouseX, pMouseY);
+
+        //on the client so this is fine
+        long currentGameTime = Minecraft.getInstance().player.level.getGameTime();
+        float partialTick = Minecraft.getInstance().getPartialTick();
+        for(int i = 0; i < widgetsToMove.size(); i++) {
+            WidgetMovement movement = widgetsToMove.get(i);
+            movement.update(currentGameTime, partialTick);
+            if(movement.isDone()) {
+                widgetsToMove.remove(i);
+                i--;
+            }
+        }
     }
 
     @Override
@@ -87,31 +68,19 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
             this.blit(pPoseStack, leftPos + menu.getSlot(i).x - 1, topPos + menu.getSlot(i).y - 1, 176, v, 18, 18);
         }
 
-        InventoryScreen.renderEntityInInventory(leftPos + 130, topPos + 123, 50, (float)(leftPos + 130) - pMouseX, (float)(topPos + 40) - pMouseY, Minecraft.getInstance().player);
+//        InventoryScreen.renderEntityInInventory(leftPos + 130, topPos + 123, 50, (float)(leftPos + 130) - pMouseX, (float)(topPos + 40) - pMouseY, Minecraft.getInstance().player);
 
     }
 
-    private void addCyberwareButton(CyberwareButton button) {
-        addRenderableWidget(button);
-        buttons.add(button);
+    public void moveWidget(AbstractWidget widget, int newX, int newY, int duration) {
+        long currentGameTime = Minecraft.getInstance().player.level.getGameTime();
+        widgetsToMove.add(new WidgetMovement(widget, newX, newY, currentGameTime, duration));
+    }
+    public void moveWidget(AbstractWidget widget, int newX, int newY, int duration, Easing easing) {
+        long currentGameTime = Minecraft.getInstance().player.level.getGameTime();
+        widgetsToMove.add(new WidgetMovement(widget, newX, newY, currentGameTime, duration, easing));
     }
 
-    @Override
-    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-        this.font.draw(poseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY, 4210752);
-//        if(MouseHelper.isHovering(energyGuiComponent.x, energyGuiComponent.y, energyGuiComponent.width, energyGuiComponent.height, mouseX, mouseY)) {
-//            renderTooltip(poseStack, energyGuiComponent.getTooltip(menu.getStoredEnergy(), menu.getMaxEnergy()), Optional.empty(), mouseX - startX, mouseY - startY);
-//        }
-        buttons.forEach(button -> {
-            List<Component> tooltip = button.getTooltip();
-            if(tooltip != null) {
-                if(MouseHelper.isHovering(button.x, button.y, button.getWidth(), button.getHeight(), mouseX, mouseY)) {
-                    renderTooltip(poseStack, tooltip, Optional.empty(), mouseX - leftPos, mouseY - topPos);
-                }
-            }
-        });
-
-    }
 
     abstract static class CyberwareButton extends AbstractButton {
 
@@ -128,7 +97,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
         @Override
         public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, CyberwareScreen.TEXTURE);
+            RenderSystem.setShaderTexture(0, CyberwareScreenOld.TEXTURE);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 //            Cybernetics.LOGGER.info("Active? " + this.active + ", Selected? " + this.selected + ", isHoveredOrFocused? " + this.isHoveredOrFocused());
             int u = 176;
@@ -150,10 +119,11 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
             this.selected = selected;
         }
     }
-    class TextButton extends CyberwareButton {
 
-        public TextButton(int pX, int pY, int pWidth, Component pMessage) {
-            super(pX, pY, pWidth, pMessage);
+    class MyButton extends CyberwareButton {
+
+        public MyButton(int pX, int pY, int pWidth) {
+            super(pX, pY, pWidth);
         }
 
         @Override
@@ -168,54 +138,12 @@ public class CyberwareScreen<T extends CyberwareMenu> extends AbstractContainerS
 
         @Override
         public void onPress() {
-
+            CyberwareScreen.this.moveWidget(this, 120, 120, 40, Easing.BACK_IN_OUT);
         }
 
         @Override
         public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
 
-        }
-    }
-    class SectionButton extends CyberwareButton {
-
-        private CyberwareSectionType section;
-        public SectionButton(CyberwareSectionType section, int pX, int pY, int pWidth) {
-            super(pX, pY, pWidth);
-            this.section = section;
-        }
-
-        @Override
-        public void onPress() {
-            if(!selected) {
-                CyberwareScreen.this.updateButtons(this);
-                PacketHandler.sendToServer(new C2SSwitchActiveSlotPacket(section));
-                CyberwareScreen.this.menu.switchActiveSlots(section);
-
-            }
-        }
-
-        @Override
-        public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
-
-        }
-
-        public List<Component> getTooltip() {
-            ResourceLocation id = ModCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getKey(section);
-            return List.of(Component.translatable("tooltip." + id.getNamespace() + ".section." + id.getPath()).withStyle(ChatFormatting.RED));
-        }
-
-
-        @Override
-        void update() {
-
-        }
-
-        @Override
-        public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-            super.renderButton(pPoseStack, pMouseX, pMouseY, pPartialTick);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, section.getTexture());
-            this.blit(pPoseStack, this.x + 2, this.y + 2, section.getTextureX(), section.getTextureY(), 16, 16, section.getTextureWidth(), section.getTextureHeight());
         }
     }
 }

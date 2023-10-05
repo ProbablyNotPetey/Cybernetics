@@ -1,10 +1,13 @@
 package com.vivi.cybernetics;
 
 import com.mojang.logging.LogUtils;
+import com.vivi.cybernetics.client.gui.CyberwareScreen;
 import com.vivi.cybernetics.client.gui.CyberwareStationScreen;
-import com.vivi.cybernetics.client.gui.PlayerCyberwareScreen;
-import com.vivi.cybernetics.client.gui.SurgicalChamberCyberwareScreen;
+import com.vivi.cybernetics.client.gui.PlayerCyberwareScreenOld;
+import com.vivi.cybernetics.client.gui.SurgicalChamberCyberwareScreenOld;
 import com.vivi.cybernetics.item.CyberwareItem;
+import com.vivi.cybernetics.menu.PlayerCyberwareMenu;
+import com.vivi.cybernetics.menu.SurgicalChamberCyberwareMenu;
 import com.vivi.cybernetics.network.PacketHandler;
 import com.vivi.cybernetics.registry.*;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -71,8 +74,11 @@ public class Cybernetics {
 
     private void clientSetup(final FMLClientSetupEvent event) {
         MenuScreens.register(ModMenuTypes.CYBERWARE_STATION_MENU.get(), CyberwareStationScreen::new);
-        MenuScreens.register(ModMenuTypes.PLAYER_CYBERWARE_MENU.get(), PlayerCyberwareScreen::new);
-        MenuScreens.register(ModMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), SurgicalChamberCyberwareScreen::new);
+//        MenuScreens.register(ModMenuTypes.PLAYER_CYBERWARE_MENU.get(), PlayerCyberwareScreenOld::new);
+//        MenuScreens.register(ModMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), SurgicalChamberCyberwareScreenOld::new);
+
+        MenuScreens.register(ModMenuTypes.PLAYER_CYBERWARE_MENU.get(), CyberwareScreen<PlayerCyberwareMenu>::new);
+        MenuScreens.register(ModMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), CyberwareScreen<SurgicalChamberCyberwareMenu>::new);
 
     }
 
