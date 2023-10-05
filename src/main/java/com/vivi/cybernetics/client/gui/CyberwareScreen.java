@@ -5,13 +5,17 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.client.gui.util.AbstractScalableWidget;
 import com.vivi.cybernetics.client.gui.util.ModAbstractContainerScreen;
 import com.vivi.cybernetics.menu.CyberwareMenu;
 import com.vivi.cybernetics.util.Easing;
 import com.vivi.cybernetics.util.RenderHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
@@ -37,11 +41,16 @@ public class CyberwareScreen<T extends CyberwareMenu> extends ModAbstractContain
 
     private long startTime;
     private LocalPlayer fakePlayer;
+    private EntityWidget entityWidget;
     public CyberwareScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        this.imageHeight = 256;
-        this.inventoryLabelY = this.imageHeight - 60;
+        this.imageHeight = 240;
+        this.inventoryLabelY = this.imageHeight - 94;
     }
+    private int boxLeft;
+    private int boxTop;
+    private int boxRight;
+    private int boxBottom;
 
     @Override
     protected void init() {
@@ -50,7 +59,14 @@ public class CyberwareScreen<T extends CyberwareMenu> extends ModAbstractContain
         startTime = getGameTime();
         LocalPlayer player = Minecraft.getInstance().player;
         fakePlayer = new LocalPlayer(Minecraft.getInstance(), Minecraft.getInstance().level, player.connection, player.getStats(), player.getRecipeBook(), false, false);
+        boxLeft = leftPos + 8;
+        boxTop = topPos + 8;
+        boxRight = leftPos + 168;
+        boxBottom = topPos + 158;
+        entityWidget = new EntityWidget(leftPos + 57, topPos - 136, 60, fakePlayer);
+        addRenderableWidget(entityWidget);
 
+        moveWidget(entityWidget, leftPos + 57, topPos + 16, 30, Easing.QUART_OUT);
     }
 
     @Override
@@ -79,8 +95,40 @@ public class CyberwareScreen<T extends CyberwareMenu> extends ModAbstractContain
             this.blit(pPoseStack, leftPos + menu.getSlot(i).x - 1, topPos + menu.getSlot(i).y - 1, 176, v, 18, 18);
         }
 
-        RenderHelper.renderEntity(fakePlayer, pPoseStack, leftPos + 130, topPos + 126, 60, getGameTime() - startTime + getPartialTick());
+        RenderHelper.drawLine(new Vector3f(100, 100, 0), new Vector3f(200, 200, 0), new Vector4f(1.0f, 1.0f, 0.0f, 0.0f), 2, 0);
+    }
 
+    @Override
+    protected void renderLabels(PoseStack poseStack, int pMouseX, int pMouseY) {
+        this.font.draw(poseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY, 4210752);
+    }
+
+    class EntityWidget extends AbstractScalableWidget {
+
+        private final Entity entity;
+        public EntityWidget(int pX, int pY, float scale, Entity entity) {
+            super(pX, pY, (int)scale, (int)scale*2, scale, Component.empty());
+            this.entity = entity;
+            this.playSound = false;
+        }
+
+        @Override
+        public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+            super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+            enableScissor(CyberwareScreen.this.boxLeft, CyberwareScreen.this.boxTop, CyberwareScreen.this.boxRight, CyberwareScreen.this.boxBottom);
+            RenderHelper.renderEntity(entity, pPoseStack, x + scale/2, y + scale*2, scale, 7.5f * (float)Math.cos((getGameTime() - startTime + pPartialTick) / 40.0f));
+            disableScissor();
+        }
+
+        @Override
+        public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+
+        }
+
+        @Override
+        public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
+
+        }
     }
 
 

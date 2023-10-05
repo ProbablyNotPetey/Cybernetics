@@ -15,6 +15,7 @@ import java.util.List;
 public abstract class ModAbstractContainerScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
 
     protected final List<WidgetMovement> widgetsToMove = new ArrayList<>();
+    protected final List<WidgetScale> widgetsToScale = new ArrayList<>();
 
     public ModAbstractContainerScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -35,15 +36,27 @@ public abstract class ModAbstractContainerScreen<T extends AbstractContainerMenu
                 i--;
             }
         }
+        for(int i = 0; i < widgetsToScale.size(); i++) {
+            WidgetScale scale = widgetsToScale.get(i);
+            scale.update(currentGameTime, partialTick);
+            if(scale.isDone()) {
+                widgetsToScale.remove(i);
+                i--;
+            }
+        }
     }
 
     public void moveWidget(AbstractWidget widget, int newX, int newY, int duration) {
-        long currentGameTime = Minecraft.getInstance().player.level.getGameTime();
-        widgetsToMove.add(new WidgetMovement(widget, newX, newY, currentGameTime, duration));
+        widgetsToMove.add(new WidgetMovement(widget, newX, newY, getGameTime(), duration));
     }
     public void moveWidget(AbstractWidget widget, int newX, int newY, int duration, Easing easing) {
-        long currentGameTime = Minecraft.getInstance().player.level.getGameTime();
-        widgetsToMove.add(new WidgetMovement(widget, newX, newY, currentGameTime, duration, easing));
+        widgetsToMove.add(new WidgetMovement(widget, newX, newY, getGameTime(), duration, easing));
+    }
+    public void scaleWidget(AbstractScalableWidget widget, float scale, int duration) {
+        widgetsToScale.add(new WidgetScale(widget, scale, getGameTime(), duration));
+    }
+    public void scaleWidget(AbstractScalableWidget widget, float scale, int duration, Easing easing) {
+        widgetsToScale.add(new WidgetScale(widget, scale, getGameTime(), duration, easing));
     }
 
     public float getPartialTick() {
