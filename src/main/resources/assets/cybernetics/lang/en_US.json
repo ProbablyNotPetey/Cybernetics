@@ -14,6 +14,7 @@
     "item.cybernetics.reinforced_skeleton": "Reinforced Carbon Fiber Skeleton",
     "item.cybernetics.titanium_skeleton": "Titanium Skeleton",
     "item.cybernetics.emergency_defibrillator": "Emergency Defibrillator",
+    "item.cybernetics.oxygen_recycler": "Oxygen Recycler",
 
     "jei.cybernetics.cyberware_crafting": "Cyberware Crafting",
 
@@ -42,6 +43,7 @@
     "tooltip.cybernetics.reinforced_skeleton.description": "A replacement for much of the user's skeleton, significantly increasing its _durability_ and _sturdiness_. Gives the user permanent _+2 armor_.",
     "tooltip.cybernetics.titanium_skeleton.description": "A significantly stronger replacement for the user's skeleton, made of pure _titanium_. Gives the user permanent _+5 armor_ and _+2 armor toughness_.",
     "tooltip.cybernetics.emergency_defibrillator.description": "An emergency AED unit that will restart the heart in cases of sudden trauma. _Revives_ the user _once_ when they die, giving them temporary _regeneration_ and some health back.\nCooldown: _2 minutes_",
+    "tooltip.cybernetics.oxygen_recycler.description": "A mechanical pump connected directly to the lungs, allowing the body to save oxygen produced elsewhere to maintain the user's breath. Gives a _75%_ chance to _not consume air bubbles_. Stacks with Respiration.",
 
     "key.cybernetics.player_cyberware_menu": "View Cyberware",
     "key.cybernetics.category": "Cybernetics",

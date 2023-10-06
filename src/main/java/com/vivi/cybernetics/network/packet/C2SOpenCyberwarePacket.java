@@ -24,7 +24,7 @@ public class C2SOpenCyberwarePacket extends Packet {
 
     @Override
     public void toBytes(FriendlyByteBuf buf) {
-        super.toBytes(buf);
+
     }
 
     @Override

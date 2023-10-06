@@ -1,8 +1,7 @@
 package com.vivi.cybernetics.network;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.network.packet.C2SOpenCyberwarePacket;
-import com.vivi.cybernetics.network.packet.C2SSwitchActiveSlotPacket;
+import com.vivi.cybernetics.network.packet.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -28,6 +27,8 @@ public class PacketHandler {
 
         INSTANCE = network;
 
+        //C2S
+
         network.messageBuilder(C2SSwitchActiveSlotPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(C2SSwitchActiveSlotPacket::new)
                 .encoder(C2SSwitchActiveSlotPacket::toBytes)
@@ -38,6 +39,20 @@ public class PacketHandler {
                 .decoder(C2SOpenCyberwarePacket::new)
                 .encoder(C2SOpenCyberwarePacket::toBytes)
                 .consumerMainThread(C2SOpenCyberwarePacket::handle)
+                .add();
+
+        network.messageBuilder(C2SDoubleJumpInputPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(C2SDoubleJumpInputPacket::new)
+                .encoder(C2SDoubleJumpInputPacket::toBytes)
+                .consumerMainThread(C2SDoubleJumpInputPacket::handle)
+                .add();
+
+        //S2C
+
+        network.messageBuilder(S2CDoubleJumpPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(S2CDoubleJumpPacket::new)
+                .encoder(S2CDoubleJumpPacket::toBytes)
+                .consumerMainThread(S2CDoubleJumpPacket::handle)
                 .add();
 
     }

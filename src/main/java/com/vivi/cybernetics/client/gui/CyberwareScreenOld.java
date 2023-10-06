@@ -32,8 +32,8 @@ public class CyberwareScreenOld<T extends CyberwareMenu> extends AbstractContain
 
     public CyberwareScreenOld(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        this.imageHeight = 256;
-        this.inventoryLabelY = this.imageHeight - 60;
+        this.imageHeight = 240;
+        this.inventoryLabelY = this.imageHeight - 94;
     }
 
     @Override
