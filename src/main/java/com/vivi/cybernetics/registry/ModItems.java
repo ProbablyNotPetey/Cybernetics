@@ -38,7 +38,12 @@ public class ModItems {
             EMERGENCY_DEFIBRILLATOR = ITEMS.register("emergency_defibrillator", () -> new CyberwareItem(cyberwareProps())),
             OXYGEN_RECYCLER = ITEMS.register("oxygen_recycler", () -> new CyberwareItem(cyberwareProps())),
             REINFORCED_TENDONS = ITEMS.register("reinforced_tendons", () -> new ReinforcedTendonsItem(cyberwareProps())),
-            SOUND_ABSORBENT_FEET = ITEMS.register("sound_absorbent_feet", () -> new CyberwareItem(cyberwareProps()))
+
+            BIONIC_FEET = ITEMS.register("bionic_feet", () -> new CyberwareItem(cyberwareProps())),
+            SOUND_ABSORBENT_FEET = ITEMS.register("sound_absorbent_feet", () -> new CyberwareItem(cyberwareProps())),
+            SPEED_LEGS = ITEMS.register("speed_legs", () -> new MobEffectCyberwareItem(cyberwareProps(), new ImmutableTriple<>(MobEffects.MOVEMENT_SPEED, 319, 1))),
+            JUMP_BOOST_FEET = ITEMS.register("jump_boost_feet", () -> new MobEffectCyberwareItem(cyberwareProps(), new ImmutableTriple<>(MobEffects.JUMP, 319, 2))),
+            FULL_SPEED_FEET = ITEMS.register("full_speed_feet", () -> new CyberwareItem(cyberwareProps()))
     ;
 
 
@@ -58,9 +63,15 @@ public class ModItems {
         CyberwareHelper.addIncompatibilities(REINFORCED_SKELETON.get(), Ingredient.of(ModTags.SKELETONS));
         CyberwareHelper.addIncompatibilities(TITANIUM_SKELETON.get(), Ingredient.of(ModTags.SKELETONS));
 
+        CyberwareHelper.addIncompatibilities(FULL_SPEED_FEET.get(), Ingredient.of(ModItems.SOUND_ABSORBENT_FEET.get()));
+        CyberwareHelper.addIncompatibilities(SOUND_ABSORBENT_FEET.get(), Ingredient.of(ModItems.FULL_SPEED_FEET.get()));
+
 
 
         CyberwareHelper.addRequirements(NIGHT_VISION_EYES.get(), Ingredient.of(ModTags.OPTICS));
+        CyberwareHelper.addRequirements(SOUND_ABSORBENT_FEET.get(), Ingredient.of(ModItems.BIONIC_FEET.get()));
+        CyberwareHelper.addRequirements(FULL_SPEED_FEET.get(), Ingredient.of(ModItems.BIONIC_FEET.get()));
+        CyberwareHelper.addRequirements(JUMP_BOOST_FEET.get(), Ingredient.of(ModItems.BIONIC_FEET.get()));
     }
 
 }

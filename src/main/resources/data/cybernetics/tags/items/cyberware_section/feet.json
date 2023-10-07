@@ -1,6 +1,9 @@
 {
     "replace": false,
     "values": [
-        "cybernetics:sound_absorbent_feet"
+        "cybernetics:sound_absorbent_feet",
+        "cybernetics:bionic_feet",
+        "cybernetics:jump_boost_feet",
+        "cybernetics:full_speed_feet"
     ]
 }
