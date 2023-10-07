@@ -1,8 +1,8 @@
 package com.vivi.cybernetics.menu;
 
 import com.vivi.cybernetics.block.entity.CyberwareStationBlockEntity;
-import com.vivi.cybernetics.registry.ModBlocks;
-import com.vivi.cybernetics.registry.ModMenuTypes;
+import com.vivi.cybernetics.registry.CybBlocks;
+import com.vivi.cybernetics.registry.CybMenuTypes;
 import com.vivi.cybernetics.util.ModEnergyStorage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -14,8 +14,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.SlotItemHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class CyberwareStationMenu extends AbstractContainerMenu {
 
@@ -30,7 +28,7 @@ public class CyberwareStationMenu extends AbstractContainerMenu {
     }
 
     public CyberwareStationMenu(int id, Inventory inv, BlockEntity blockEntity, ContainerData data) {
-        super(ModMenuTypes.CYBERWARE_STATION_MENU.get(), id);
+        super(CybMenuTypes.CYBERWARE_STATION_MENU.get(), id);
         checkContainerSize(inv, 8);
         checkContainerDataCount(data, 2);
         this.blockEntity = (CyberwareStationBlockEntity) blockEntity;
@@ -134,7 +132,7 @@ public class CyberwareStationMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, ModBlocks.CYBERWARE_STATION_BLOCK.get());
+        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, CybBlocks.CYBERWARE_STATION_BLOCK.get());
     }
 
     //is progress > 0

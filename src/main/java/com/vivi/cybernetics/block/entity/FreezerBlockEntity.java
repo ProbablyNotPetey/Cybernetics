@@ -2,7 +2,7 @@ package com.vivi.cybernetics.block.entity;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.block.FreezerBlock;
-import com.vivi.cybernetics.registry.ModBlocks;
+import com.vivi.cybernetics.registry.CybBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Vec3i;
@@ -19,7 +19,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -54,7 +53,7 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity {
 
 
     public FreezerBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlocks.FREEZER_BLOCK_ENTITY.get(), pPos, pBlockState);
+        super(CybBlocks.FREEZER_BLOCK_ENTITY.get(), pPos, pBlockState);
     }
 
     @Override

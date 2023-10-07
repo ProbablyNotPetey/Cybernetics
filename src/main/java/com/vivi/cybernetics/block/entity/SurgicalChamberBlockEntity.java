@@ -3,8 +3,8 @@ package com.vivi.cybernetics.block.entity;
 import com.vivi.cybernetics.block.SurgicalChamberBlock;
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.menu.SurgicalChamberCyberwareMenu;
-import com.vivi.cybernetics.registry.ModBlocks;
-import com.vivi.cybernetics.registry.ModCyberware;
+import com.vivi.cybernetics.registry.CybBlocks;
+import com.vivi.cybernetics.registry.CybCyberware;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -29,7 +29,7 @@ public class SurgicalChamberBlockEntity extends BlockEntity implements MenuProvi
     private boolean inUse = false;
 
     public SurgicalChamberBlockEntity(BlockPos pPos, BlockState state) {
-        super(ModBlocks.SURGICAL_CHAMBER_BLOCK_ENTITY.get(), pPos, state);
+        super(CybBlocks.SURGICAL_CHAMBER_BLOCK_ENTITY.get(), pPos, state);
         isMain = state.getValue(SurgicalChamberBlock.PART) == BedPart.HEAD;
     }
 
@@ -53,7 +53,7 @@ public class SurgicalChamberBlockEntity extends BlockEntity implements MenuProvi
             return getMainBlockEntity().getCapability(cap, side);
         }
 
-        if(cap == ModCyberware.CYBERWARE) {
+        if(cap == CybCyberware.CYBERWARE) {
             return lazyCyberware.cast();
         }
 
@@ -94,7 +94,7 @@ public class SurgicalChamberBlockEntity extends BlockEntity implements MenuProvi
         if(isMain) return this;
         BlockPos mainPos = getBlockPos().relative(SurgicalChamberBlock.getNeighbourDirection(BedPart.FOOT, getBlockState().getValue(SurgicalChamberBlock.FACING)));
         BlockState mainState = level.getBlockState(mainPos);
-        if(mainState.is(ModBlocks.SURGICAL_CHAMBER_BLOCK.get()) && mainState.getValue(SurgicalChamberBlock.PART) == BedPart.HEAD) {
+        if(mainState.is(CybBlocks.SURGICAL_CHAMBER_BLOCK.get()) && mainState.getValue(SurgicalChamberBlock.PART) == BedPart.HEAD) {
             return (SurgicalChamberBlockEntity) level.getBlockEntity(mainPos);
         }
         return null;

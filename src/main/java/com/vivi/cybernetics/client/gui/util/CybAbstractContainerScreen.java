@@ -12,12 +12,12 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ModAbstractContainerScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
+public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
 
     protected final List<WidgetMovement> widgetsToMove = new ArrayList<>();
     protected final List<WidgetScale> widgetsToScale = new ArrayList<>();
 
-    public ModAbstractContainerScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
+    public CybAbstractContainerScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
     }
 

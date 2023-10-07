@@ -9,7 +9,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class ModRecipeTypes {
+public class CybRecipeTypes {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, Cybernetics.MOD_ID);
 
     public static final RegistryObject<RecipeSerializer<CyberwareStationRecipe>> CYBERWARE_CRAFTING_SERIALIZER =

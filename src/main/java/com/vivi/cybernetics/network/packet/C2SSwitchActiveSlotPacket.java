@@ -1,15 +1,11 @@
 package com.vivi.cybernetics.network.packet;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.menu.CyberwareMenu;
-import com.vivi.cybernetics.registry.ModCyberware;
+import com.vivi.cybernetics.registry.CybCyberware;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -24,12 +20,12 @@ public class C2SSwitchActiveSlotPacket extends Packet {
 
     public C2SSwitchActiveSlotPacket(FriendlyByteBuf buf) {
         ResourceLocation id = buf.readResourceLocation();
-        section = ModCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getValue(id);
+        section = CybCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getValue(id);
     }
 
     @Override
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeResourceLocation(ModCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getKey(section));
+        buf.writeResourceLocation(CybCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getKey(section));
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.vivi.cybernetics.datagen;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.registry.ModItems;
+import com.vivi.cybernetics.registry.CybItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -13,8 +13,6 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +23,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        Set<RegistryObject<Item>> items = new HashSet<>(ModItems.ITEMS.getEntries());
+        Set<RegistryObject<Item>> items = new HashSet<>(CybItems.ITEMS.getEntries());
         items.removeIf(i -> i.get() instanceof BlockItem);
 
         items.forEach(item -> {

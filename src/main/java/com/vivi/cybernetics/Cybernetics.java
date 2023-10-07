@@ -38,13 +38,13 @@ public class Cybernetics {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         //Registration
-        ModBlocks.register(modEventBus);
-        ModItems.register(modEventBus);
-        modEventBus.addListener(ModBlocks::registerBlockItems);
+        CybBlocks.register(modEventBus);
+        CybItems.register(modEventBus);
+        modEventBus.addListener(CybBlocks::registerBlockItems);
 
-        ModMenuTypes.register(modEventBus);
-        ModRecipeTypes.register(modEventBus);
-        ModCyberware.register(modEventBus);
+        CybMenuTypes.register(modEventBus);
+        CybRecipeTypes.register(modEventBus);
+        CybCyberware.register(modEventBus);
 
         //Setup
 
@@ -66,16 +66,16 @@ public class Cybernetics {
             }
         });
 
-        ModItems.cyberwareIncompatReq();
+        CybItems.cyberwareIncompatReq();
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
-        MenuScreens.register(ModMenuTypes.CYBERWARE_STATION_MENU.get(), CyberwareStationScreen::new);
-        MenuScreens.register(ModMenuTypes.PLAYER_CYBERWARE_MENU.get(), PlayerCyberwareScreenOld::new);
-        MenuScreens.register(ModMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), SurgicalChamberCyberwareScreenOld::new);
+        MenuScreens.register(CybMenuTypes.CYBERWARE_STATION_MENU.get(), CyberwareStationScreen::new);
+        MenuScreens.register(CybMenuTypes.PLAYER_CYBERWARE_MENU.get(), PlayerCyberwareScreenOld::new);
+        MenuScreens.register(CybMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), SurgicalChamberCyberwareScreenOld::new);
 
-//        MenuScreens.register(ModMenuTypes.PLAYER_CYBERWARE_MENU.get(), CyberwareScreen<PlayerCyberwareMenu>::new);
-//        MenuScreens.register(ModMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), CyberwareScreen<SurgicalChamberCyberwareMenu>::new);
+//        MenuScreens.register(CybMenuTypes.PLAYER_CYBERWARE_MENU.get(), CyberwareScreen<PlayerCyberwareMenu>::new);
+//        MenuScreens.register(CybMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), CyberwareScreen<SurgicalChamberCyberwareMenu>::new);
 
     }
 

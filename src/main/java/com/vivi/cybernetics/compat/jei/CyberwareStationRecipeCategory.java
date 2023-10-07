@@ -3,8 +3,7 @@ package com.vivi.cybernetics.compat.jei;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.recipe.CyberwareStationRecipe;
-import com.vivi.cybernetics.registry.ModBlocks;
-import mezz.jei.api.constants.VanillaTypes;
+import com.vivi.cybernetics.registry.CybBlocks;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
@@ -34,7 +33,7 @@ public class CyberwareStationRecipeCategory implements IRecipeCategory<Cyberware
 
     public CyberwareStationRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, x, y, 168, 72);
-        this.icon = helper.createDrawableItemStack(new ItemStack(ModBlocks.CYBERWARE_STATION_BLOCK.get()));
+        this.icon = helper.createDrawableItemStack(new ItemStack(CybBlocks.CYBERWARE_STATION_BLOCK.get()));
         this.arrow = helper.drawableBuilder(TEXTURE, 0, 176, 105, 14)
                 .buildAnimated(100, IDrawableAnimated.StartDirection.LEFT, false);
     }

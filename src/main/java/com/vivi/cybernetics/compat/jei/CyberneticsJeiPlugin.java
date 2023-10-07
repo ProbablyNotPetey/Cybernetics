@@ -4,8 +4,8 @@ import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.CyberwareStationScreen;
 import com.vivi.cybernetics.menu.CyberwareStationMenu;
 import com.vivi.cybernetics.recipe.CyberwareStationRecipe;
-import com.vivi.cybernetics.registry.ModBlocks;
-import com.vivi.cybernetics.registry.ModMenuTypes;
+import com.vivi.cybernetics.registry.CybBlocks;
+import com.vivi.cybernetics.registry.CybMenuTypes;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.recipe.RecipeType;
@@ -44,7 +44,7 @@ public class CyberneticsJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.CYBERWARE_STATION_BLOCK.get()), CYBERWARE_CRAFTING_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(CybBlocks.CYBERWARE_STATION_BLOCK.get()), CYBERWARE_CRAFTING_TYPE);
     }
 
     @Override
@@ -54,6 +54,6 @@ public class CyberneticsJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        registration.addRecipeTransferHandler(CyberwareStationMenu.class, ModMenuTypes.CYBERWARE_STATION_MENU.get(), CYBERWARE_CRAFTING_TYPE, 0, 7, 8, 36);
+        registration.addRecipeTransferHandler(CyberwareStationMenu.class, CybMenuTypes.CYBERWARE_STATION_MENU.get(), CYBERWARE_CRAFTING_TYPE, 0, 7, 8, 36);
     }
 }

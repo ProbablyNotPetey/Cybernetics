@@ -4,7 +4,7 @@ import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.item.CyberwareItem;
-import com.vivi.cybernetics.registry.ModCyberware;
+import com.vivi.cybernetics.registry.CybCyberware;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -35,7 +35,7 @@ public class CyberwareHelper {
     public static List<CyberwareSectionType> getValidCyberwareSections(ItemStack stack) {
         List<CyberwareSectionType> out = new ArrayList<>();
 
-        ModCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getValues().forEach(type -> {
+        CybCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getValues().forEach(type -> {
             if(stack.is(type.getTag())) {
                 out.add(type);
             }
@@ -62,6 +62,6 @@ public class CyberwareHelper {
      * Gets a player's cyberware as a lazy optional.
      */
     public static LazyOptional<CyberwareInventory> getCyberware(Player player) {
-        return player.getCapability(ModCyberware.CYBERWARE);
+        return player.getCapability(CybCyberware.CYBERWARE);
     }
 }

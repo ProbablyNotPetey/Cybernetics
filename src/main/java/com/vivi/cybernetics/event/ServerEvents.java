@@ -2,8 +2,7 @@ package com.vivi.cybernetics.event;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.item.CyberwareItem;
-import com.vivi.cybernetics.registry.ModCyberware;
-import com.vivi.cybernetics.registry.ModItems;
+import com.vivi.cybernetics.registry.CybItems;
 import com.vivi.cybernetics.util.CyberwareHelper;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -38,12 +37,12 @@ public class ServerEvents {
 
         if(player.isCreative() || player.isSpectator()) return;
 
-        if(CyberwareHelper.hasCyberwareItem(player, ModItems.EMERGENCY_DEFIBRILLATOR.get()) && !player.getCooldowns().isOnCooldown(ModItems.EMERGENCY_DEFIBRILLATOR.get())) {
+        if(CyberwareHelper.hasCyberwareItem(player, CybItems.EMERGENCY_DEFIBRILLATOR.get()) && !player.getCooldowns().isOnCooldown(CybItems.EMERGENCY_DEFIBRILLATOR.get())) {
             event.setCanceled(true);
             player.setHealth(player.getMaxHealth() / 4.0f);
             //play some sound
             player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 2));
-            player.getCooldowns().addCooldown(ModItems.EMERGENCY_DEFIBRILLATOR.get(), 2400);
+            player.getCooldowns().addCooldown(CybItems.EMERGENCY_DEFIBRILLATOR.get(), 2400);
         }
 
     }

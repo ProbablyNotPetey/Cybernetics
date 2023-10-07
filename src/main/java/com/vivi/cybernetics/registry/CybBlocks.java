@@ -22,7 +22,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Objects;
 
-public class ModBlocks {
+public class CybBlocks {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Cybernetics.MOD_ID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Cybernetics.MOD_ID);

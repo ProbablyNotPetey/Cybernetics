@@ -1,13 +1,6 @@
 package com.vivi.cybernetics.network.packet;
 
-import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.item.ReinforcedTendonsItem;
-import com.vivi.cybernetics.registry.ModItems;
-import com.vivi.cybernetics.util.CyberwareHelper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;

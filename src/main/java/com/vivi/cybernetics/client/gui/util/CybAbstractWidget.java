@@ -4,9 +4,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
 
-public abstract class ModAbstractWidget extends AbstractWidget {
+public abstract class CybAbstractWidget extends AbstractWidget {
     protected boolean playSound = true;
-    public ModAbstractWidget(int pX, int pY, int pWidth, int pHeight, Component pMessage) {
+    public CybAbstractWidget(int pX, int pY, int pWidth, int pHeight, Component pMessage) {
         super(pX, pY, pWidth, pHeight, pMessage);
     }
 

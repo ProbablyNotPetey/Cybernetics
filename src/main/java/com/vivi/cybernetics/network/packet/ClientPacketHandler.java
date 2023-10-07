@@ -1,9 +1,7 @@
 package com.vivi.cybernetics.network.packet;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.item.ReinforcedTendonsItem;
-import com.vivi.cybernetics.registry.ModCyberware;
 import com.vivi.cybernetics.util.CyberwareHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;

@@ -1,6 +1,6 @@
 package com.vivi.cybernetics.mixin;
 
-import com.vivi.cybernetics.registry.ModItems;
+import com.vivi.cybernetics.registry.CybItems;
 import com.vivi.cybernetics.util.CyberwareHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -14,20 +14,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class EntityMixin {
 
     @Inject(method = "getBlockJumpFactor", at = @At("HEAD"), cancellable = true)
-    public void cybernetics_getBlockJumpFactor(CallbackInfoReturnable<Float> cir) {
+    public void cybernetics$getBlockJumpFactor(CallbackInfoReturnable<Float> cir) {
         Entity e = (Entity) (Object) this;
         if(e instanceof Player player) {
-            if(CyberwareHelper.hasCyberwareItem(player, ModItems.FULL_SPEED_FEET.get())) {
+            if(CyberwareHelper.hasCyberwareItem(player, CybItems.FULL_SPEED_FEET.get())) {
                 cir.setReturnValue(1.0f);
             }
         }
     }
 
     @Inject(method = "getBlockSpeedFactor", at = @At("HEAD"), cancellable = true)
-    public void cybernetics_getBlockSpeedFactor(CallbackInfoReturnable<Float> cir) {
+    public void cybernetics$getBlockSpeedFactor(CallbackInfoReturnable<Float> cir) {
         Entity e = (Entity) (Object) this;
         if(e instanceof Player player) {
-            if(CyberwareHelper.hasCyberwareItem(player, ModItems.FULL_SPEED_FEET.get())) {
+            if(CyberwareHelper.hasCyberwareItem(player, CybItems.FULL_SPEED_FEET.get())) {
                 cir.setReturnValue(1.0f);
             }
         }

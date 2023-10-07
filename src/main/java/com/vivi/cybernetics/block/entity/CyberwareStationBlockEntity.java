@@ -6,7 +6,7 @@ import com.vivi.cybernetics.util.WrappedHandler;
 import com.vivi.cybernetics.block.CyberwareStationBlock;
 import com.vivi.cybernetics.menu.CyberwareStationMenu;
 import com.vivi.cybernetics.recipe.CyberwareStationRecipe;
-import com.vivi.cybernetics.registry.ModBlocks;
+import com.vivi.cybernetics.registry.CybBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -87,7 +87,7 @@ public class CyberwareStationBlockEntity extends BlockEntity implements MenuProv
 
 
     public CyberwareStationBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlocks.CYBERWARE_STATION_BLOCK_ENTITY.get(), pPos, pBlockState);
+        super(CybBlocks.CYBERWARE_STATION_BLOCK_ENTITY.get(), pPos, pBlockState);
         //data to be sent to the client screen
         this.data = new ContainerData() {
             @Override

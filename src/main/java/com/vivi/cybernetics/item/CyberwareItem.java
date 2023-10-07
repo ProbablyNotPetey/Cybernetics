@@ -1,9 +1,8 @@
 package com.vivi.cybernetics.item;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.cyberware.CyberwareSectionType;
-import com.vivi.cybernetics.registry.ModCyberware;
-import com.vivi.cybernetics.registry.ModTags;
+import com.vivi.cybernetics.registry.CybCyberware;
+import com.vivi.cybernetics.registry.CybTags;
 import com.vivi.cybernetics.util.CyberwareHelper;
 import com.vivi.cybernetics.util.TooltipHelper;
 import net.minecraft.ChatFormatting;
@@ -120,13 +119,13 @@ public class CyberwareItem extends Item {
 
             MutableComponent sectionTooltip = Component.translatable("tooltip.cybernetics.section").append(": ").withStyle(ChatFormatting.GRAY);
 
-            if(stack.is(ModTags.ANY_SECTION)) {
+            if(stack.is(CybTags.ANY_SECTION)) {
                 sectionTooltip.append(Component.translatable("tooltip.cybernetics.section.any"));
             }
             else {
                 List<CyberwareSectionType> sections = CyberwareHelper.getValidCyberwareSections(stack);
                 for (int i = 0; i < sections.size(); i++) {
-                    ResourceLocation id = ModCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getKey(sections.get(i));
+                    ResourceLocation id = CybCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getKey(sections.get(i));
                     sectionTooltip.append(Component.translatable("tooltip." + id.getNamespace() + ".section." + id.getPath()).withStyle(ChatFormatting.RED));
                     if(i < sections.size() - 1) sectionTooltip.append(", ").withStyle(ChatFormatting.GRAY);
                 }

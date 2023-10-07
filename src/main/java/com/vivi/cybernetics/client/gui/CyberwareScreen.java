@@ -1,42 +1,29 @@
 package com.vivi.cybernetics.client.gui;
 
-import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.util.AbstractScalableWidget;
-import com.vivi.cybernetics.client.gui.util.ModAbstractContainerScreen;
+import com.vivi.cybernetics.client.gui.util.CybAbstractContainerScreen;
 import com.vivi.cybernetics.menu.CyberwareMenu;
 import com.vivi.cybernetics.util.Easing;
 import com.vivi.cybernetics.util.RenderHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.AbstractButton;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.stats.StatsCounter;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.List;
 
-public class CyberwareScreen<T extends CyberwareMenu> extends ModAbstractContainerScreen<T> {
+public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContainerScreen<T> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/player_cyberware.png");
 
     private long startTime;

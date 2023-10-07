@@ -7,7 +7,7 @@ import com.vivi.cybernetics.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.menu.CyberwareMenu;
 import com.vivi.cybernetics.network.CybPackets;
 import com.vivi.cybernetics.network.packet.C2SSwitchActiveSlotPacket;
-import com.vivi.cybernetics.registry.ModCyberware;
+import com.vivi.cybernetics.registry.CybCyberware;
 import com.vivi.cybernetics.util.MouseHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -200,7 +200,7 @@ public class CyberwareScreenOld<T extends CyberwareMenu> extends AbstractContain
         }
 
         public List<Component> getTooltip() {
-            ResourceLocation id = ModCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getKey(section);
+            ResourceLocation id = CybCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getKey(section);
             return List.of(Component.translatable("tooltip." + id.getNamespace() + ".section." + id.getPath()).withStyle(ChatFormatting.RED));
         }
 

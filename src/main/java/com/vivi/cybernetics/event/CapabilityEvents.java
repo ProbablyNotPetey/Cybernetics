@@ -7,7 +7,7 @@ import com.vivi.cybernetics.capability.PlayerEnergyStorage;
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.network.CybPackets;
 import com.vivi.cybernetics.network.packet.S2CSyncCyberwarePacket;
-import com.vivi.cybernetics.registry.ModCyberware;
+import com.vivi.cybernetics.registry.CybCyberware;
 import com.vivi.cybernetics.util.CyberwareHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,10 +26,10 @@ public class CapabilityEvents {
     @SubscribeEvent
     public static <T> void onAttachCapabilitiesEvent(AttachCapabilitiesEvent<Entity> event) {
         if(event.getObject() instanceof Player player) {
-            if(!player.getCapability(ModCyberware.CYBERWARE).isPresent()) {
+            if(!player.getCapability(CybCyberware.CYBERWARE).isPresent()) {
                 event.addCapability(new ResourceLocation(Cybernetics.MOD_ID, "cyberware"), new PlayerCyberwareProvider(player));
             }
-            if(!player.getCapability(ModCyberware.PLAYER_ENERGY).isPresent()) {
+            if(!player.getCapability(CybCyberware.PLAYER_ENERGY).isPresent()) {
                 event.addCapability(new ResourceLocation(Cybernetics.MOD_ID, "energy"), new PlayerEnergyProvider());
             }
         }
@@ -39,13 +39,13 @@ public class CapabilityEvents {
     public static void onPlayerClonedEvent(PlayerEvent.Clone event) {
         event.getOriginal().reviveCaps();
         if(event.isWasDeath()) {
-            event.getOriginal().getCapability(ModCyberware.CYBERWARE).ifPresent(oldStore -> {
-                event.getEntity().getCapability(ModCyberware.CYBERWARE).ifPresent(newStore -> {
+            event.getOriginal().getCapability(CybCyberware.CYBERWARE).ifPresent(oldStore -> {
+                event.getEntity().getCapability(CybCyberware.CYBERWARE).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore, true);
                 });
             });
-            event.getOriginal().getCapability(ModCyberware.PLAYER_ENERGY).ifPresent(oldStore -> {
-                event.getEntity().getCapability(ModCyberware.PLAYER_ENERGY).ifPresent(newStore -> {
+            event.getOriginal().getCapability(CybCyberware.PLAYER_ENERGY).ifPresent(oldStore -> {
+                event.getEntity().getCapability(CybCyberware.PLAYER_ENERGY).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore);
                 });
             });

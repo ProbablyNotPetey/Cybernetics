@@ -1,7 +1,7 @@
 package com.vivi.cybernetics.capability;
 
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
-import com.vivi.cybernetics.registry.ModCyberware;
+import com.vivi.cybernetics.registry.CybCyberware;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +31,7 @@ public class PlayerCyberwareProvider implements ICapabilityProvider, INBTSeriali
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == ModCyberware.CYBERWARE) {
+        if(cap == CybCyberware.CYBERWARE) {
             return lazyContainer.cast();
         }
         return LazyOptional.empty();

@@ -1,8 +1,7 @@
 package com.vivi.cybernetics.block;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.block.entity.CyberwareStationBlockEntity;
-import com.vivi.cybernetics.registry.ModBlocks;
+import com.vivi.cybernetics.registry.CybBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -96,7 +95,7 @@ public class CyberwareStationBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, ModBlocks.CYBERWARE_STATION_BLOCK_ENTITY.get(), CyberwareStationBlockEntity::tick);
+        return createTickerHelper(type, CybBlocks.CYBERWARE_STATION_BLOCK_ENTITY.get(), CyberwareStationBlockEntity::tick);
     }
 
     @Override

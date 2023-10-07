@@ -1,11 +1,10 @@
 package com.vivi.cybernetics.menu;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.block.entity.SurgicalChamberBlockEntity;
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.item.CyberwareItem;
-import com.vivi.cybernetics.registry.ModCyberware;
-import com.vivi.cybernetics.registry.ModMenuTypes;
+import com.vivi.cybernetics.registry.CybCyberware;
+import com.vivi.cybernetics.registry.CybMenuTypes;
 import com.vivi.cybernetics.util.CyberwareHelper;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,10 +12,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerListener;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class SurgicalChamberCyberwareMenu extends CyberwareMenu  {
 
@@ -26,10 +23,10 @@ public class SurgicalChamberCyberwareMenu extends CyberwareMenu  {
         this(id, inv, (SurgicalChamberBlockEntity) inv.player.level.getBlockEntity(buf.readBlockPos()));
     }
     public SurgicalChamberCyberwareMenu(int id, Inventory inv, SurgicalChamberBlockEntity be) {
-        this(id, inv, be.getCapability(ModCyberware.CYBERWARE).orElse(null), be);
+        this(id, inv, be.getCapability(CybCyberware.CYBERWARE).orElse(null), be);
     }
     public SurgicalChamberCyberwareMenu(int pContainerId, Inventory inventory, CyberwareInventory cyberware, SurgicalChamberBlockEntity be) {
-        super(ModMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), pContainerId, inventory, cyberware);
+        super(CybMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), pContainerId, inventory, cyberware);
         this.blockEntity = be.getMainBlockEntity();
 
         addSlotListener(new ContainerListener() {

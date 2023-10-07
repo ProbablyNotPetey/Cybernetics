@@ -6,7 +6,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
-public class ModTags {
+public class CybTags {
 
     public static final TagKey<Item>
             OPTICS = itemTag("optics"),

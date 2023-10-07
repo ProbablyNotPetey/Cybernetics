@@ -1,9 +1,7 @@
 package com.vivi.cybernetics.network.packet;
 
 import com.vivi.cybernetics.menu.PlayerCyberwareMenu;
-import com.vivi.cybernetics.registry.ModCyberware;
 import com.vivi.cybernetics.util.CyberwareHelper;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;

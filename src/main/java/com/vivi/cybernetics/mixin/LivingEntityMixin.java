@@ -1,7 +1,6 @@
 package com.vivi.cybernetics.mixin;
 
-import com.vivi.cybernetics.registry.ModCyberware;
-import com.vivi.cybernetics.registry.ModItems;
+import com.vivi.cybernetics.registry.CybItems;
 import com.vivi.cybernetics.util.CyberwareHelper;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -27,10 +26,10 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "decreaseAirSupply", at = @At("HEAD"), cancellable = true)
-    public void cybenetics_decreaseAirSupply(int currentAir, CallbackInfoReturnable<Integer> cir) {
+    public void cybenetics$decreaseAirSupply(int currentAir, CallbackInfoReturnable<Integer> cir) {
         LivingEntity entity = (LivingEntity) (Object) this;
         if(entity instanceof Player player) {
-            if(CyberwareHelper.hasCyberwareItem(player, ModItems.OXYGEN_RECYCLER.get())) {
+            if(CyberwareHelper.hasCyberwareItem(player, CybItems.OXYGEN_RECYCLER.get())) {
                 if(this.random.nextInt(4) > 0) {
                     cir.setReturnValue(currentAir);
                 }

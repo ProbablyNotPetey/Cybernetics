@@ -2,7 +2,7 @@ package com.vivi.cybernetics.client.gui.util;
 
 import net.minecraft.network.chat.Component;
 
-public abstract class AbstractScalableWidget extends ModAbstractWidget {
+public abstract class AbstractScalableWidget extends CybAbstractWidget {
     protected float scale;
     public AbstractScalableWidget(int pX, int pY, int pWidth, int pHeight, float scale, Component pMessage) {
         super(pX, pY, pWidth, pHeight, pMessage);

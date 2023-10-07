@@ -1,8 +1,6 @@
 package com.vivi.cybernetics.mixin;
 
-import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.registry.ModCyberware;
-import com.vivi.cybernetics.registry.ModItems;
+import com.vivi.cybernetics.registry.CybItems;
 import com.vivi.cybernetics.util.CyberwareHelper;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -29,9 +27,9 @@ public abstract class PlayerMixin extends LivingEntity {
     }
 
     @Inject(method = "getMovementEmission", at = @At("HEAD"), cancellable = true)
-    public void cybernetics_getMovementEmission(CallbackInfoReturnable<Entity.MovementEmission> cir) {
+    public void cybernetics$getMovementEmission(CallbackInfoReturnable<Entity.MovementEmission> cir) {
         Player player = (Player) (Object) this;
-        if(CyberwareHelper.hasCyberwareItem(player, ModItems.SOUND_ABSORBENT_FEET.get())) {
+        if(CyberwareHelper.hasCyberwareItem(player, CybItems.SOUND_ABSORBENT_FEET.get())) {
             cir.setReturnValue(MovementEmission.EVENTS);
         }
     }

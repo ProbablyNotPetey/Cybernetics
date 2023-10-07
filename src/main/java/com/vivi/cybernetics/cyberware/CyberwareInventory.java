@@ -1,13 +1,10 @@
 package com.vivi.cybernetics.cyberware;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.item.CyberwareItem;
 import com.vivi.cybernetics.network.CybPackets;
 import com.vivi.cybernetics.network.packet.S2CSyncCyberwarePacket;
-import com.vivi.cybernetics.registry.ModCyberware;
-import com.vivi.cybernetics.registry.ModTags;
+import com.vivi.cybernetics.registry.CybCyberware;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -32,7 +29,7 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
     public static CyberwareInventory create(Player owner) {
 
         List<CyberwareSection> sections = new ArrayList<>();
-        ModCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getEntries().forEach(type -> {
+        CybCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getEntries().forEach(type -> {
             sections.add(new CyberwareSection(type.getValue(), type.getKey().location()));
         });
         sections.sort((section1, section2) -> {
