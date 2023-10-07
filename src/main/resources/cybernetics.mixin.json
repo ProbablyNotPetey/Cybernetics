@@ -3,7 +3,11 @@
     "package": "com.vivi.cybernetics.mixin",
     "compatibilityLevel": "JAVA_17",
     "mixins": [
-        "LivingEntityMixin"
+        "LivingEntityMixin",
+        "PlayerMixin"
+    ],
+    "client": [
+        "client.LivingEntityRendererMixin"
     ],
     "injectors": {
         "defaultRequire": 1

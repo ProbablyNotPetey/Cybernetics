@@ -19,8 +19,9 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if(event.phase != TickEvent.Phase.END) return;
+        if(event.side.isClient()) return;
         Player player = event.player;
-        player.getCapability(ModCyberware.CYBERWARE).ifPresent(cyberware -> {
+        CyberwareHelper.getCyberware(player).ifPresent(cyberware -> {
             for(int i = 0; i < cyberware.getSlots(); i++) {
                 if (cyberware.getStackInSlot(i).getItem() instanceof CyberwareItem item) {
                     item.cyberwareTick(cyberware.getStackInSlot(i), player.level, player);

@@ -5,8 +5,12 @@ import com.vivi.cybernetics.capability.PlayerCyberwareProvider;
 import com.vivi.cybernetics.capability.PlayerEnergyProvider;
 import com.vivi.cybernetics.capability.PlayerEnergyStorage;
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
+import com.vivi.cybernetics.network.CybPackets;
+import com.vivi.cybernetics.network.packet.S2CSyncCyberwarePacket;
 import com.vivi.cybernetics.registry.ModCyberware;
+import com.vivi.cybernetics.util.CyberwareHelper;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -23,7 +27,7 @@ public class CapabilityEvents {
     public static <T> void onAttachCapabilitiesEvent(AttachCapabilitiesEvent<Entity> event) {
         if(event.getObject() instanceof Player player) {
             if(!player.getCapability(ModCyberware.CYBERWARE).isPresent()) {
-                event.addCapability(new ResourceLocation(Cybernetics.MOD_ID, "cyberware"), new PlayerCyberwareProvider());
+                event.addCapability(new ResourceLocation(Cybernetics.MOD_ID, "cyberware"), new PlayerCyberwareProvider(player));
             }
             if(!player.getCapability(ModCyberware.PLAYER_ENERGY).isPresent()) {
                 event.addCapability(new ResourceLocation(Cybernetics.MOD_ID, "energy"), new PlayerEnergyProvider());
@@ -54,5 +58,36 @@ public class CapabilityEvents {
     public static void onRegisterCapabilitiesEvent(RegisterCapabilitiesEvent event) {
         event.register(CyberwareInventory.class);
         event.register(PlayerEnergyStorage.class);
+    }
+
+
+    @SubscribeEvent
+    public static void onStartTrackingPlayer(PlayerEvent.StartTracking event) {
+        if(event.getEntity().level.isClientSide) return;
+        Entity target = event.getTarget();
+        if(target instanceof Player player) {
+            CyberwareInventory cyberware = CyberwareHelper.getCyberware(player).orElse(null);
+            if(cyberware == null) return;
+            CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware), (ServerPlayer) target);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getEntity();
+        if(player.level.isClientSide) return;
+        CyberwareInventory cyberware = CyberwareHelper.getCyberware(player).orElse(null);
+        if(cyberware == null) return;
+        Cybernetics.LOGGER.info("Cyberware on login: " + cyberware.serializeNBT());
+        CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware), (ServerPlayer) player);
+    }
+
+    @SubscribeEvent
+    public static void onChangeDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event) {
+        Player player = event.getEntity();
+        if(player.level.isClientSide) return;
+        CyberwareInventory cyberware = CyberwareHelper.getCyberware(player).orElse(null);
+        if(cyberware == null) return;
+        CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware), (ServerPlayer) player);
     }
 }

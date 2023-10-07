@@ -6,6 +6,7 @@ import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.item.CyberwareItem;
 import com.vivi.cybernetics.registry.ModCyberware;
 import com.vivi.cybernetics.registry.ModMenuTypes;
+import com.vivi.cybernetics.util.CyberwareHelper;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -66,7 +67,7 @@ public class SurgicalChamberCyberwareMenu extends CyberwareMenu  {
     public void removed(Player player) {
         super.removed(player);
         if(player instanceof ServerPlayer) {
-            CyberwareInventory playerCyberware = player.getCapability(ModCyberware.CYBERWARE).orElse(null);
+            CyberwareInventory playerCyberware = CyberwareHelper.getCyberware(player).orElse(null);
             if(!playerCyberware.equals(cyberware)) {
                 playerCyberware.copyFrom(cyberware, player, false);
             }

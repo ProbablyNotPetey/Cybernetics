@@ -4,6 +4,7 @@ import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.registry.ModCyberware;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -15,10 +16,13 @@ public class PlayerCyberwareProvider implements ICapabilityProvider, INBTSeriali
 
     private CyberwareInventory cyberwareInventory = null;
     private final LazyOptional<CyberwareInventory> lazyContainer = LazyOptional.of(this::getOrCreate);
-
+    private final Player owner;
+    public PlayerCyberwareProvider(Player owner) {
+        this.owner = owner;
+    }
     private CyberwareInventory getOrCreate() {
         if(cyberwareInventory == null) {
-            cyberwareInventory = CyberwareInventory.create();
+            cyberwareInventory = CyberwareInventory.create(owner);
         }
 
         return cyberwareInventory;

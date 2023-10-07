@@ -9,7 +9,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
-public class PacketHandler {
+public class CybPackets {
     private static SimpleChannel INSTANCE;
 
     private static int packetId = 0;
@@ -53,6 +53,12 @@ public class PacketHandler {
                 .decoder(S2CDoubleJumpPacket::new)
                 .encoder(S2CDoubleJumpPacket::toBytes)
                 .consumerMainThread(S2CDoubleJumpPacket::handle)
+                .add();
+
+        network.messageBuilder(S2CSyncCyberwarePacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(S2CSyncCyberwarePacket::new)
+                .encoder(S2CSyncCyberwarePacket::toBytes)
+                .consumerMainThread(S2CSyncCyberwarePacket::handle)
                 .add();
 
     }

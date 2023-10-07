@@ -2,10 +2,13 @@ package com.vivi.cybernetics.cyberware;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.item.CyberwareItem;
+import com.vivi.cybernetics.network.CybPackets;
+import com.vivi.cybernetics.network.packet.S2CSyncCyberwarePacket;
 import com.vivi.cybernetics.registry.ModCyberware;
 import com.vivi.cybernetics.registry.ModTags;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -18,13 +21,15 @@ import java.util.*;
 
 public class CyberwareInventory extends CombinedInvWrapper implements INBTSerializable<CompoundTag> {
 
-    public CyberwareInventory(IItemHandlerModifiable... itemHandler) {
+    private final Player owner;
+    public CyberwareInventory(Player owner, IItemHandlerModifiable... itemHandler) {
         super(itemHandler);
+        this.owner = owner;
     }
 
 
 
-    public static CyberwareInventory create() {
+    public static CyberwareInventory create(Player owner) {
 
         List<CyberwareSection> sections = new ArrayList<>();
         ModCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getEntries().forEach(type -> {
@@ -43,21 +48,51 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
             return idx1 - idx2;
         });
 
-        return new CyberwareInventory(sections.toArray(new IItemHandlerModifiable[0]));
+        return new CyberwareInventory(owner, sections.toArray(new IItemHandlerModifiable[0]));
     }
     public void copyFrom(CyberwareInventory other) {
         copyFrom(other, null, false);
     }
 
-    public void copyFrom(CyberwareInventory other, boolean isClone) {
-        copyFrom(other, null, isClone);
+    @Override
+    public void setStackInSlot(int slot, @NotNull ItemStack stack) {
+        super.setStackInSlot(slot, stack);
+        onContentsChanged(slot);
     }
 
-    public void copyFrom(CyberwareInventory other, Player player, boolean isClone) {
+    @Override
+    public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+        ItemStack out = super.extractItem(slot, amount, simulate);
+        if(!simulate) {
+            onContentsChanged(slot);
+        }
+        return out;
+    }
+
+    @Override
+    public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+        ItemStack out =  super.insertItem(slot, stack, simulate);
+        if(!simulate) {
+            onContentsChanged(slot);
+        }
+        return out;
+    }
+
+    protected void onContentsChanged(int slot) {
+        if(owner != null && !owner.level.isClientSide) {
+            CybPackets.sendToClient(new S2CSyncCyberwarePacket(owner, this), (ServerPlayer) owner);
+        }
+    }
+
+    public void copyFrom(CyberwareInventory other, boolean shouldUpdate) {
+        copyFrom(other, null, shouldUpdate);
+    }
+
+    public void copyFrom(CyberwareInventory other, Player player, boolean shouldUpdate) {
         for(int i = 0; i < this.getSlots(); i++) {
             ItemStack oldStack = this.getStackInSlot(i);
             ItemStack newStack = other.getStackInSlot(i);
-            if(player != null && !isClone && !oldStack.equals(newStack, false)) {
+            if(player != null && !shouldUpdate && !oldStack.equals(newStack, false)) {
                 if(oldStack.getItem() instanceof CyberwareItem) ((CyberwareItem) oldStack.getItem()).onUnequip(oldStack, player.level, player);
                 if(newStack.getItem() instanceof CyberwareItem) ((CyberwareItem) newStack.getItem()).onEquip(newStack, player.level, player);
             }

@@ -1,14 +1,11 @@
 package com.vivi.cybernetics;
 
 import com.mojang.logging.LogUtils;
-import com.vivi.cybernetics.client.gui.CyberwareScreen;
 import com.vivi.cybernetics.client.gui.CyberwareStationScreen;
 import com.vivi.cybernetics.client.gui.PlayerCyberwareScreenOld;
 import com.vivi.cybernetics.client.gui.SurgicalChamberCyberwareScreenOld;
 import com.vivi.cybernetics.item.CyberwareItem;
-import com.vivi.cybernetics.menu.PlayerCyberwareMenu;
-import com.vivi.cybernetics.menu.SurgicalChamberCyberwareMenu;
-import com.vivi.cybernetics.network.PacketHandler;
+import com.vivi.cybernetics.network.CybPackets;
 import com.vivi.cybernetics.registry.*;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTab;
@@ -61,7 +58,7 @@ public class Cybernetics {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        PacketHandler.register();
+        CybPackets.register();
 
         ForgeRegistries.ITEMS.getValues().forEach(item -> {
             if(item instanceof CyberwareItem cyberItem) {

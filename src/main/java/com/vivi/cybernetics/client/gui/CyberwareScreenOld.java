@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.menu.CyberwareMenu;
-import com.vivi.cybernetics.network.PacketHandler;
+import com.vivi.cybernetics.network.CybPackets;
 import com.vivi.cybernetics.network.packet.C2SSwitchActiveSlotPacket;
 import com.vivi.cybernetics.registry.ModCyberware;
 import com.vivi.cybernetics.util.MouseHelper;
@@ -188,7 +188,7 @@ public class CyberwareScreenOld<T extends CyberwareMenu> extends AbstractContain
         public void onPress() {
             if(!selected) {
                 CyberwareScreenOld.this.updateButtons(this);
-                PacketHandler.sendToServer(new C2SSwitchActiveSlotPacket(section));
+                CybPackets.sendToServer(new C2SSwitchActiveSlotPacket(section));
                 CyberwareScreenOld.this.menu.switchActiveSlots(section);
 
             }

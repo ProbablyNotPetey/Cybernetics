@@ -1,5 +1,6 @@
 package com.vivi.cybernetics.mixin;
 
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.registry.ModCyberware;
 import com.vivi.cybernetics.registry.ModItems;
 import com.vivi.cybernetics.util.CyberwareHelper;
@@ -29,15 +30,9 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @Inject(method = "getMovementEmission", at = @At("HEAD"), cancellable = true)
     public void cybernetics_getMovementEmission(CallbackInfoReturnable<Entity.MovementEmission> cir) {
-        //todo: this needs to run on client too
-        this.getCapability(ModCyberware.CYBERWARE).ifPresent(cyberwareInventory -> {
-            for(int i = 0; i < cyberwareInventory.getSlots(); i++) {
-                if(cyberwareInventory.getStackInSlot(i).is(ModItems.SOUND_ABSORBENT_FEET.get())) {
-                    if(this.random.nextInt(4) > 0) {
-                        cir.setReturnValue(MovementEmission.NONE);
-                    }
-                }
-            }
-        });
+        Player player = (Player) (Object) this;
+        if(CyberwareHelper.hasCyberwareItem(player, ModItems.SOUND_ABSORBENT_FEET.get())) {
+            cir.setReturnValue(MovementEmission.EVENTS);
+        }
     }
 }

@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class SurgicalChamberBlockEntity extends BlockEntity implements MenuProvider {
 
-    private CyberwareInventory cyberware = CyberwareInventory.create();
+    private CyberwareInventory cyberware = CyberwareInventory.create(null);
     private LazyOptional<CyberwareInventory> lazyCyberware = LazyOptional.empty();
     private final boolean isMain;
     private boolean inUse = false;

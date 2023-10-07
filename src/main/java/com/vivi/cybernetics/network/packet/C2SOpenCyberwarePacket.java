@@ -2,6 +2,7 @@ package com.vivi.cybernetics.network.packet;
 
 import com.vivi.cybernetics.menu.PlayerCyberwareMenu;
 import com.vivi.cybernetics.registry.ModCyberware;
+import com.vivi.cybernetics.util.CyberwareHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -32,7 +33,7 @@ public class C2SOpenCyberwarePacket extends Packet {
         NetworkEvent.Context ctx = sup.get();
         ctx.enqueueWork(() -> {
             ServerPlayer player = ctx.getSender();
-            player.getCapability(ModCyberware.CYBERWARE).ifPresent(cyberware -> {
+            CyberwareHelper.getCyberware(player).ifPresent(cyberware -> {
                 NetworkHooks.openScreen(player, new SimpleMenuProvider(((pContainerId, pPlayerInventory, pPlayer) -> new PlayerCyberwareMenu(pContainerId, pPlayerInventory, cyberware)), Component.literal(("Cyberware"))));
             });
 

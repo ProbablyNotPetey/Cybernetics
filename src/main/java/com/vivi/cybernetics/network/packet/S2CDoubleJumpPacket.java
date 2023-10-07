@@ -8,6 +8,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -30,12 +32,7 @@ public class S2CDoubleJumpPacket extends Packet {
     public boolean handle(Supplier<NetworkEvent.Context> sup) {
         NetworkEvent.Context ctx = sup.get();
         ctx.enqueueWork(() -> {
-            Player player = Minecraft.getInstance().player;
-            if(player != null) {
-                ReinforcedTendonsItem.doubleJump(player);
-                //play double jump sound
-            }
-
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientPacketHandler.handleDoubleJumpPacket(ctx));
         });
         return true;
     }
