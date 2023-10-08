@@ -7,31 +7,28 @@ import net.minecraft.world.item.Item;
 
 public class CyberwareSectionType {
 
-    public static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/section_buttons.png");
+//    public static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/section_buttons.png");
+    public static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/cyberware/section/head.png");
 
     private final TagKey<Item> tag;
     private final int size;
     private final ResourceLocation texture;
-    private final int textureX;
-    private final int textureY;
+//    private final int textureX;
+//    private final int textureY;
+    private final int x;
+    private final int y;
+    private final int offset;
 
-    private final int textureWidth;
-    private final int textureHeight;
+//    private final int textureWidth;
+//    private final int textureHeight;
 
-    public CyberwareSectionType(TagKey<Item> tag, int size, int textureX, int textureY) {
-        this(tag, size, DEFAULT_TEXTURE, textureX, textureY);
-    }
-    public CyberwareSectionType(TagKey<Item> tag, int size, ResourceLocation texture, int textureX, int textureY) {
-        this(tag, size, texture, textureX, textureY, 64, 64);
-    }
-    public CyberwareSectionType(TagKey<Item> tag, int size, ResourceLocation texture, int textureX, int textureY, int textureWidth, int textureHeight) {
+    public CyberwareSectionType(TagKey<Item> tag, int size, ResourceLocation texture, int x, int y, int offset) {
         this.tag = tag;
         this.size = size;
         this.texture = texture;
-        this.textureX = textureX;
-        this.textureY = textureY;
-        this.textureWidth = textureWidth;
-        this.textureHeight = textureHeight;
+        this.x = x;
+        this.y = y;
+        this.offset = offset;
     }
 
     public TagKey<Item> getTag() {
@@ -52,19 +49,32 @@ public class CyberwareSectionType {
         return texture;
     }
 
-    public int getTextureX() {
-        return textureX;
+//    public int getTextureX() {
+//        return textureX;
+//    }
+//
+//    public int getTextureY() {
+//        return textureY;
+//    }
+//
+//    public int getTextureWidth() {
+//        return textureWidth;
+//    }
+//
+//    public int getTextureHeight() {
+//        return textureHeight;
+//    }
+
+
+    public int getX() {
+        return x;
     }
 
-    public int getTextureY() {
-        return textureY;
+    public int getY() {
+        return y;
     }
 
-    public int getTextureWidth() {
-        return textureWidth;
-    }
-
-    public int getTextureHeight() {
-        return textureHeight;
+    public int getOffset() {
+        return offset;
     }
 }

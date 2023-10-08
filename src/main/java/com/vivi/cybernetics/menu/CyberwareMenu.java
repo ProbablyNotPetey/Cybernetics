@@ -17,7 +17,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
 
     protected Inventory inventory;
     protected CyberwareInventory cyberware;
-    protected final int invX = 8;
+    protected final int invX = 24;
     protected final int invY = 158;
 
     protected CyberwareMenu(@Nullable MenuType<?> pMenuType, int pContainerId, Inventory inventory, CyberwareInventory cyberware) {

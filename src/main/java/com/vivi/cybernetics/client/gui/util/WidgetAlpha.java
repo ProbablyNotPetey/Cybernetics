@@ -3,22 +3,23 @@ package com.vivi.cybernetics.client.gui.util;
 import com.vivi.cybernetics.util.Easing;
 import net.minecraft.util.Mth;
 
-public class WidgetScale {
-    private final IScalableWidget widget;
-    private final float oldScale;
-    private final float newScale;
+public class WidgetAlpha {
+
+    private final ITransparentWidget widget;
+    private final float oldAlpha;
+    private final float newAlpha;
     private final long startTime;
     private final int duration;
     private final Easing easing;
     private boolean isDone = false;
 
-    public WidgetScale(IScalableWidget widget, float newScale, long startTime, int duration) {
-        this(widget, newScale, startTime, duration, Easing.LINEAR);
+    public WidgetAlpha(ITransparentWidget widget, float newAlpha, long startTime, int duration) {
+        this(widget, newAlpha, startTime, duration, Easing.LINEAR);
     }
-    public WidgetScale(IScalableWidget widget, float newScale, long startTime, int duration, Easing easing) {
+    public WidgetAlpha(ITransparentWidget widget, float newAlpha, long startTime, int duration, Easing easing) {
         this.widget = widget;
-        this.oldScale = widget.getScale();
-        this.newScale = newScale;
+        this.oldAlpha = widget.getAlpha();
+        this.newAlpha = newAlpha;
         this.startTime = startTime;
         this.duration = duration;
         this.easing = easing;
@@ -33,10 +34,11 @@ public class WidgetScale {
             return;
         }
         float easedPercent = easing.ease(percent);
-        widget.setScale(Mth.lerp(easedPercent, oldScale, newScale));
+        widget.setAlpha(Mth.lerp(easedPercent, oldAlpha, newAlpha));
     }
 
     public boolean isDone() {
         return isDone;
     }
+
 }

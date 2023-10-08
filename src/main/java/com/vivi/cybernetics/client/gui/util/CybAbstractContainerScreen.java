@@ -16,6 +16,7 @@ public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu
 
     protected final List<WidgetMovement> widgetsToMove = new ArrayList<>();
     protected final List<WidgetScale> widgetsToScale = new ArrayList<>();
+    protected final List<WidgetAlpha> widgetsToAlpha = new ArrayList<>();
 
     public CybAbstractContainerScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -44,6 +45,14 @@ public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu
                 i--;
             }
         }
+        for(int i = 0; i < widgetsToAlpha.size(); i++) {
+            WidgetAlpha scale = widgetsToAlpha.get(i);
+            scale.update(currentGameTime, partialTick);
+            if(scale.isDone()) {
+                widgetsToAlpha.remove(i);
+                i--;
+            }
+        }
     }
 
     public void moveWidget(AbstractWidget widget, int newX, int newY, int duration) {
@@ -52,11 +61,17 @@ public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu
     public void moveWidget(AbstractWidget widget, int newX, int newY, int duration, Easing easing) {
         widgetsToMove.add(new WidgetMovement(widget, newX, newY, getGameTime(), duration, easing));
     }
-    public void scaleWidget(AbstractScalableWidget widget, float scale, int duration) {
+    public void scaleWidget(IScalableWidget widget, float scale, int duration) {
         widgetsToScale.add(new WidgetScale(widget, scale, getGameTime(), duration));
     }
-    public void scaleWidget(AbstractScalableWidget widget, float scale, int duration, Easing easing) {
+    public void scaleWidget(IScalableWidget widget, float scale, int duration, Easing easing) {
         widgetsToScale.add(new WidgetScale(widget, scale, getGameTime(), duration, easing));
+    }
+    public void alphaWidget(ITransparentWidget widget, float scale, int duration) {
+        widgetsToAlpha.add(new WidgetAlpha(widget, scale, getGameTime(), duration));
+    }
+    public void alphaWidget(ITransparentWidget widget, float scale, int duration, Easing easing) {
+        widgetsToAlpha.add(new WidgetAlpha(widget, scale, getGameTime(), duration, easing));
     }
 
     public float getPartialTick() {

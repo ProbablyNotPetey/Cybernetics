@@ -5,9 +5,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.client.gui.util.AbstractScalableWidget;
+import com.vivi.cybernetics.client.gui.util.CybAbstractWidget;
+import com.vivi.cybernetics.client.gui.util.IScalableWidget;
 import com.vivi.cybernetics.client.gui.util.CybAbstractContainerScreen;
+import com.vivi.cybernetics.client.gui.util.ITransparentWidget;
+import com.vivi.cybernetics.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.menu.CyberwareMenu;
+import com.vivi.cybernetics.registry.CybCyberware;
 import com.vivi.cybernetics.util.Easing;
 import com.vivi.cybernetics.util.RenderHelper;
 import net.minecraft.client.Minecraft;
@@ -21,17 +25,19 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 
-import java.util.List;
+import java.util.*;
 
 public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContainerScreen<T> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/player_cyberware.png");
 
-    private long startTime;
+    private long time;
     private LocalPlayer fakePlayer;
     private EntityWidget entityWidget;
+    private List<SectionButton> sectionButtons = new ArrayList<>();
     public CyberwareScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         this.imageHeight = 240;
+        this.imageWidth = 208;
         this.inventoryLabelY = this.imageHeight - 94;
     }
     private int boxLeft;
@@ -39,27 +45,65 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
     private int boxRight;
     private int boxBottom;
 
+    private Iterator<SectionButton> sectionButtonIterator;
+
     @Override
     protected void init() {
         super.init();
         addRenderableWidget(new MyButton(10, 10, 20));
-        startTime = getGameTime();
+        time = 0L;
         LocalPlayer player = Minecraft.getInstance().player;
         fakePlayer = new LocalPlayer(Minecraft.getInstance(), Minecraft.getInstance().level, player.connection, player.getStats(), player.getRecipeBook(), false, false);
         boxLeft = leftPos + 8;
         boxTop = topPos + 8;
-        boxRight = leftPos + 168;
+        boxRight = leftPos + 200;
         boxBottom = topPos + 158;
-        entityWidget = new EntityWidget(leftPos + 57, topPos - 136, 60, fakePlayer);
+        entityWidget = new EntityWidget(leftPos + 73, topPos - 136, 60, fakePlayer);
         addRenderableWidget(entityWidget);
 
-        moveWidget(entityWidget, leftPos + 57, topPos + 16, 30, Easing.QUART_OUT);
+        moveWidget(entityWidget, leftPos + 73, topPos + 16, 30, Easing.QUART_OUT);
+
+        CybCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().forEach(type -> {
+            SectionButton button = new SectionButton(type);
+            sectionButtons.add(button);
+            addRenderableWidget(button);
+        });
+
+        sectionButtons.sort((button1, button2) -> {
+            int y = button1.y - button2.y;
+            if(y == 0) {
+                return button1.x - button2.x;
+            }
+            return y;
+        });
+
+        sectionButtonIterator = sectionButtons.iterator();
     }
 
     @Override
     protected void containerTick() {
         super.containerTick();
+        initSectionButtons();
+
         fakePlayer.tickCount++;
+        time++;
+    }
+
+    private void initSectionButtons() {
+        if(time < 25) return;
+        if(time > 26 + (2L * sectionButtons.size())) return;
+
+        if(time % 2 == 0) {
+            try {
+                SectionButton button = sectionButtonIterator.next();
+                button.setVisible(true);
+                moveWidget(button, button.x, button.y - 20, 30, Easing.CUBIC_OUT);
+                alphaWidget(button, 1.0f, 30);
+            }
+            catch(NoSuchElementException ignored) {
+
+            }
+        }
     }
 
     @Override
@@ -90,20 +134,23 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         this.font.draw(poseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY, 4210752);
     }
 
-    class EntityWidget extends AbstractScalableWidget {
+    class EntityWidget extends CybAbstractWidget implements IScalableWidget {
 
+        private float scale;
         private final Entity entity;
         public EntityWidget(int pX, int pY, float scale, Entity entity) {
-            super(pX, pY, (int)scale, (int)scale*2, scale, Component.empty());
+            super(pX, pY, (int)scale, (int)scale*2, Component.empty());
             this.entity = entity;
             this.playSound = false;
+            this.scale = scale;
         }
 
         @Override
         public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
             super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
             enableScissor(CyberwareScreen.this.boxLeft, CyberwareScreen.this.boxTop, CyberwareScreen.this.boxRight, CyberwareScreen.this.boxBottom);
-            RenderHelper.renderEntity(entity, pPoseStack, x + scale/2, y + scale*2, scale, 7.5f * (float)Math.cos((getGameTime() - startTime + pPartialTick) / 40.0f));
+            RenderHelper.renderEntity(entity, pPoseStack, x + scale/2, y + scale*2, scale, 0.0f);
+            //7.5f * (float)Math.cos((getGameTime() - startTime + pPartialTick) / 40.0f)
             disableScissor();
         }
 
@@ -116,27 +163,32 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
 
         }
+
+        @Override
+        public float getScale() {
+            return scale;
+        }
+
+        @Override
+        public void setScale(float scale) {
+            this.scale = scale;
+        }
     }
-
-
-
-
-
-
-
-
-
 
     abstract static class CyberwareButton extends AbstractButton {
 
         protected boolean selected = false;
 
-        public CyberwareButton(int pX, int pY, int pWidth, Component pMessage) {
-            super(pX, pY, pWidth, 20, pMessage);
+        public CyberwareButton(int pX, int pY, int pWidth, int pHeight, Component pMessage) {
+            super(pX, pY, pWidth, pHeight, pMessage);
+        }
+
+        public CyberwareButton(int pX, int pY, int pWidth, int pHeight) {
+            super(pX, pY, pWidth, pHeight, CommonComponents.EMPTY);
         }
 
         public CyberwareButton(int pX, int pY, int pWidth) {
-            super(pX, pY, pWidth, 20, CommonComponents.EMPTY);
+            this(pX, pY, pWidth, 20);
         }
 
         @Override
@@ -162,6 +214,10 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 
         public void setSelected(boolean selected) {
             this.selected = selected;
+        }
+
+        public void setVisible(boolean visible) {
+            this.visible = visible;
         }
     }
 
@@ -189,6 +245,58 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         @Override
         public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
 
+        }
+    }
+
+    class SectionButton extends CyberwareButton implements ITransparentWidget {
+
+        private final CyberwareSectionType type;
+        public SectionButton(CyberwareSectionType type) {
+            super(leftPos + type.getX(), topPos + type.getY() + 20, 24, 24);
+            this.type = type;
+            alpha = 0.0f;
+            visible = false;
+        }
+
+        @Override
+        public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShaderTexture(0, type.getTexture());
+            float color = this.isHoveredOrFocused() ? 1.0F : 0.65F;
+            RenderSystem.setShaderColor(color, color, color, alpha);
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.enableDepthTest();
+//            int u = this.isHoveredOrFocused() ? width : 0;
+
+            enableScissor(CyberwareScreen.this.boxLeft, CyberwareScreen.this.boxTop, CyberwareScreen.this.boxRight, CyberwareScreen.this.boxBottom);
+            blit(pPoseStack, this.x, this.y, 0, 0, this.width, this.height, this.width * 2, this.height * 2);
+            disableScissor();
+        }
+
+        @Override
+        void update() {
+
+        }
+
+        @Override
+        List<Component> getTooltip() {
+            return null;
+        }
+
+        @Override
+        public void onPress() {
+
+        }
+
+        @Override
+        public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
+
+        }
+
+        @Override
+        public float getAlpha() {
+            return alpha;
         }
     }
 }

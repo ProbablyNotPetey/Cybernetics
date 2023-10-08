@@ -210,12 +210,12 @@ public class CyberwareScreenOld<T extends CyberwareMenu> extends AbstractContain
 
         }
 
-        @Override
-        public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-            super.renderButton(pPoseStack, pMouseX, pMouseY, pPartialTick);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, section.getTexture());
-            this.blit(pPoseStack, this.x + 2, this.y + 2, section.getTextureX(), section.getTextureY(), 16, 16, section.getTextureWidth(), section.getTextureHeight());
-        }
+//        @Override
+//        public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+//            super.renderButton(pPoseStack, pMouseX, pMouseY, pPartialTick);
+//            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+//            RenderSystem.setShaderTexture(0, section.getTexture());
+//            this.blit(pPoseStack, this.x + 2, this.y + 2, section.getTextureX(), section.getTextureY(), 16, 16, section.getTextureWidth(), section.getTextureHeight());
+//        }
     }
 }
