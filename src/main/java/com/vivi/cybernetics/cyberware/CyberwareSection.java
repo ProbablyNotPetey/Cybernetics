@@ -57,4 +57,15 @@ public class CyberwareSection extends ItemStackHandler {
         return (stack.getItem() instanceof CyberwareItem) && (stack.is(type.getTag()) || stack.is(CybTags.ANY_SECTION)) && super.isItemValid(slot, stack);
 //        return super.isItemValid(slot, stack);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CyberwareSection that = (CyberwareSection) o;
+
+        if (!id.equals(that.id)) return false;
+        return type.equals(that.type);
+    }
 }

@@ -27,7 +27,7 @@ import java.util.Optional;
 
 public class CyberwareScreenOld<T extends CyberwareMenu> extends AbstractContainerScreen<T> {
 
-    public static final ResourceLocation TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/player_cyberware.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/background.png");
     private final NonNullList<CyberwareButton> buttons = NonNullList.create();
 
     public CyberwareScreenOld(T pMenu, Inventory pPlayerInventory, Component pTitle) {

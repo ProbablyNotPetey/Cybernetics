@@ -1,7 +1,8 @@
 package com.vivi.cybernetics.client.gui.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.client.gui.event.CybGuiEventListener;
+import com.vivi.cybernetics.client.gui.event.GuiEvent;
 import com.vivi.cybernetics.util.Easing;
 import com.vivi.cybernetics.util.ScheduledTask;
 import net.minecraft.client.Minecraft;
@@ -32,20 +33,31 @@ public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu
     protected void init() {
         super.init();
         time = 0L;
+        clearAll();
     }
 
     @Override
     protected void containerTick() {
         super.containerTick();
         time++;
-        tasks.forEach(task -> {
-//            Cybernetics.LOGGER.info("continuous: " + task.continuous() + ", start: " + (time >= task.startTime()) + ", end: " + (time <= task.endTime()) + ", endTime is -1: " + (task.endTime() == -1));
+        for(int i = 0; i < tasks.size(); i++) {
+            ScheduledTask task = tasks.get(i);
             if(task.continuous() && time >= task.startTime() && (task.endTime() == -1 || time <= task.endTime())) {
                 task.task().run();
             }
+            else if(task.endTime() != -1 && time > task.endTime()) {
+                tasks.remove(i);
+                i--;
+            }
             else if(time == task.startTime()) {
                 task.task().run();
+                tasks.remove(i);
+                i--;
             }
+        }
+        tasks.forEach(task -> {
+//            Cybernetics.LOGGER.info("continuous: " + task.continuous() + ", start: " + (time >= task.startTime()) + ", end: " + (time <= task.endTime()) + ", endTime is -1: " + (task.endTime() == -1));
+
         });
     }
 
@@ -73,9 +85,9 @@ public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu
             }
         }
         for(int i = 0; i < widgetsToAlpha.size(); i++) {
-            WidgetAlpha scale = widgetsToAlpha.get(i);
-            scale.update(currentGameTime, partialTick);
-            if(scale.isDone()) {
+            WidgetAlpha alphaWidget = widgetsToAlpha.get(i);
+            alphaWidget.update(currentGameTime, partialTick);
+            if(alphaWidget.isDone()) {
                 widgetsToAlpha.remove(i);
                 i--;
             }
@@ -94,11 +106,11 @@ public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu
     public void scaleWidget(IScalableWidget widget, float scale, int duration, Easing easing) {
         widgetsToScale.add(new WidgetScale(widget, scale, getGameTime(), duration, easing));
     }
-    public void alphaWidget(ITransparentWidget widget, float scale, int duration) {
-        widgetsToAlpha.add(new WidgetAlpha(widget, scale, getGameTime(), duration));
+    public void alphaWidget(ITransparentWidget widget, float alpha, int duration) {
+        widgetsToAlpha.add(new WidgetAlpha(widget, alpha, getGameTime(), duration));
     }
-    public void alphaWidget(ITransparentWidget widget, float scale, int duration, Easing easing) {
-        widgetsToAlpha.add(new WidgetAlpha(widget, scale, getGameTime(), duration, easing));
+    public void alphaWidget(ITransparentWidget widget, float alpha, int duration, Easing easing) {
+        widgetsToAlpha.add(new WidgetAlpha(widget, alpha, getGameTime(), duration, easing));
     }
     public void scheduleTask(int time, Runnable task) {
         tasks.add(new ScheduledTask(this.time + time, -1, task, false));
@@ -108,6 +120,26 @@ public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu
     }
     public void scheduleTask(int time, int endTime, Runnable task) {
         tasks.add(new ScheduledTask(this.time + time, time + endTime, task, true));
+    }
+
+    public void clearAll() {
+        widgetsToMove.clear();
+        widgetsToScale.clear();
+        widgetsToAlpha.clear();
+        tasks.clear();
+    }
+
+    public void broadcastGuiEvent(GuiEvent event) {
+        this.renderables.forEach(renderable -> {
+            if(renderable instanceof CybGuiEventListener listener) {
+                listener.onEvent(event);
+            }
+        });
+        this.onEvent(event);
+    }
+
+    public void onEvent(GuiEvent event) {
+
     }
 
 

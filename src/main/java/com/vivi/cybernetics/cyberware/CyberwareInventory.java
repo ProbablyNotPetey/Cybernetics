@@ -172,4 +172,14 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
         }
         return super.isItemValid(slot, stack);
     }
+
+    public int getLongestSectionSize() {
+        int output = 0;
+        for(int i = 0; i < itemHandler.length; i++) {
+            if(output < itemHandler[i].getSlots()) {
+                output = itemHandler[i].getSlots();
+            }
+        }
+        return output;
+    }
 }

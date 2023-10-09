@@ -25,7 +25,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
 
         this.inventory = inventory;
         this.cyberware = cyberware;
-        int x = 12, y = 135;
+        int x = 15, y = 30;
 
         int yOffset = 0, counter = 0;
 
@@ -34,7 +34,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
             if(last != null && !last.equals(cyberware.getSectionFromSlot(i).getType())) {
                 counter = 0;
             }
-            addSlot(new CyberwareSlot(cyberware, i, x + counter * 19 - 1, y + yOffset + 1, this.inventory.player));
+            addSlot(new CyberwareSlot(cyberware, i, x + ((counter % 3) * 24) - 1, y + ((counter / 3) * 21) + yOffset + 1, this.inventory.player));
             counter++;
         }
 
