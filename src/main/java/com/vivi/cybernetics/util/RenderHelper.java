@@ -18,12 +18,16 @@ import net.minecraft.world.entity.player.Player;
 
 public class RenderHelper {
 
+    public static void renderEntity(Entity entity, PoseStack poseStack, float x, float y, float scale, float rotation) {
+        renderEntity(entity, poseStack, x, y, 50.0f, scale, rotation);
+    }
+
     /**
      * A lot of this was adopted from The One Probe by McJty!!! I have no idea what I'm doing lol
      */
-    public static void renderEntity(Entity entity, PoseStack poseStack, float x, float y, float scale, float rotation) {
+    public static void renderEntity(Entity entity, PoseStack poseStack, float x, float y, float z, float scale, float rotation) {
         poseStack.pushPose();
-        poseStack.translate(x, y, 50.0f);
+        poseStack.translate(x, y, z);
         poseStack.scale(-scale, scale, scale);
         poseStack.mulPose(Vector3f.ZP.rotationDegrees(180.0f));
         poseStack.mulPose(Vector3f.YP.rotationDegrees(rotation));

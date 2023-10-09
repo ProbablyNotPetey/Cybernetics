@@ -16,17 +16,22 @@ public class CyberwareSectionType {
 //    private final int textureY;
     private final int x;
     private final int y;
-    private final int offset;
+    private final int xOffset;
+    private final int yOffset;
 
 //    private final int textureWidth;
 //    private final int textureHeight;
 
-    public CyberwareSectionType(TagKey<Item> tag, int size, int x, int y, int offset) {
+    public CyberwareSectionType(TagKey<Item> tag, int size, int x, int y, int yOffset) {
+        this(tag, size, x, y, 100, yOffset);
+    }
+    public CyberwareSectionType(TagKey<Item> tag, int size, int x, int y, int xOffset, int yOffset) {
         this.tag = tag;
         this.size = size;
         this.x = x;
         this.y = y;
-        this.offset = offset;
+        this.xOffset = xOffset;
+        this.yOffset = yOffset;
     }
 
     public TagKey<Item> getTag() {
@@ -39,6 +44,7 @@ public class CyberwareSectionType {
 
     @Override
     public boolean equals(Object obj) {
+        if(obj == null) return false;
         if(!(obj instanceof CyberwareSectionType type)) return false;
         return this.getTag().equals(type.getTag()) && this.size == type.getSize();
     }
@@ -72,7 +78,11 @@ public class CyberwareSectionType {
         return y;
     }
 
-    public int getOffset() {
-        return offset;
+    public int getXOffset() {
+        return xOffset;
+    }
+
+    public int getYOffset() {
+        return yOffset;
     }
 }

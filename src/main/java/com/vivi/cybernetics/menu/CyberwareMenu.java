@@ -25,7 +25,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
 
         this.inventory = inventory;
         this.cyberware = cyberware;
-        int x = 15, y = 30;
+        int x = 20, y = 30;
 
         int yOffset = 0, counter = 0;
 

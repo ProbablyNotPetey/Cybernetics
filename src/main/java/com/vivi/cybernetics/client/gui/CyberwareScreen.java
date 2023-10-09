@@ -34,14 +34,14 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 
     public static final ResourceLocation SLOT_TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/cyberware/slot.png");
 
-    private LocalPlayer fakePlayer;
-    private EntityWidget entityWidget;
-    private List<SectionButton> sectionButtons = new ArrayList<>();
-    private TextWidget textWidget;
-    private State state;
-    private List<MaskWidget> itemMasks = new ArrayList<>();
+    protected LocalPlayer fakePlayer;
+    protected EntityWidget entityWidget;
+    protected List<SectionButton> sectionButtons = new ArrayList<>();
+    protected TextWidget textWidget;
+    protected State state;
+    protected List<MaskWidget> itemMasks = new ArrayList<>();
 
-    private List<EntityWidgetRotate> entityWidgetsToRotate = new ArrayList<>();
+    protected List<EntityWidgetRotate> entityWidgetsToRotate = new ArrayList<>();
     public CyberwareScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         this.imageHeight = 240;
@@ -50,12 +50,13 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
     }
 
 
-    private int boxLeft;
-    private int boxTop;
-    private int boxRight;
-    private int boxBottom;
+    protected int boxLeft;
+    protected int boxTop;
+    protected int boxRight;
+    protected int boxBottom;
 
-    private Iterator<SectionButton> sectionButtonIterator;
+    protected Iterator<SectionButton> sectionButtonIterator;
+    protected Iterator<MaskWidget> maskWidgetIterator;
 
     @Override
     protected void init() {
@@ -84,23 +85,24 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             return y;
         });
         sectionButtonIterator = sectionButtons.iterator();
-        scheduleTask(25, 26 + (2 * sectionButtons.size()), this::initSectionButtons);
+        scheduleTask(15, 16 + (2 * sectionButtons.size()), this::initSectionButtons);
 
         entityWidget = new EntityWidget(leftPos + 73, topPos - 136, 60, fakePlayer);
         addRenderableWidget(entityWidget);
-        moveWidget(entityWidget, leftPos + 73, topPos + 16, 30, Easing.QUART_OUT);
+        moveWidget(entityWidget, leftPos + 73, topPos + 16, 20, Easing.QUART_OUT);
 
         textWidget = new TextWidget(leftPos + 10, topPos + 130);
         addRenderableWidget(textWidget);
         textWidget.setText(Component.translatable("tooltip.cybernetics.section"));
 
-        int slotX = 15, slotY = 30;
+        int slotX = 20, slotY = 30;
 
 
         for(int i = 0; i < menu.getCyberware().getLongestSectionSize(); i++) {
 //            addSlot(new CyberwareSlot(cyberware, i, slotX + ((counter % 3) * 24) - 1, slotY + ((counter / 3) * 21) + 1, this.inventory.player));
             itemMasks.add(new MaskWidget(leftPos + slotX + ((i % 3) * 24) - 5, topPos + slotY + ((i / 3) * 21)));
         }
+        maskWidgetIterator = itemMasks.iterator();
     }
 
     @Override
@@ -117,16 +119,34 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 
     private void initSectionButtons() {
 
-        if(time % 2 == 0) {
-            try {
-                SectionButton button = sectionButtonIterator.next();
-                button.setVisible(true);
-                moveWidget(button, button.x, button.y - 20, 30, Easing.CUBIC_OUT);
-                alphaWidget(button, 1.0f, 30);
-            }
-            catch(NoSuchElementException ignored) {
+        if(time % 2 == 0 && sectionButtonIterator.hasNext()) {
+            SectionButton button = sectionButtonIterator.next();
+//                button.setVisible(true);
+            moveWidget(button, button.x, button.y - 20, 15, Easing.CUBIC_OUT);
+            alphaWidget(button, 1.0f, 15);
+        }
+    }
 
-            }
+
+    private void showMasks() {
+        itemMasks.forEach(mask -> {
+            mask.setAlpha(1.0f);
+        });
+    }
+    private void hideMasks() {
+        itemMasks.forEach(mask -> {
+            mask.setAlpha(0.0f);
+        });
+    }
+    private void fadeInMasks() {
+        itemMasks.forEach(widget -> {
+            alphaWidget(widget, 1.0f, 5);
+        });
+    }
+    private void fadeOutMasks() {
+        if(time % 2 == 0 && maskWidgetIterator.hasNext()) {
+            MaskWidget widget = maskWidgetIterator.next();
+            alphaWidget(widget, 0.0f, 15);
         }
     }
 
@@ -134,7 +154,9 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float frameTimeDelta) {
         renderBackground(pPoseStack);
         super.render(pPoseStack, pMouseX, pMouseY, frameTimeDelta);
+        this.setBlitOffset(600);
         renderTooltip(pPoseStack, pMouseX, pMouseY);
+        this.setBlitOffset(0);
 
         itemMasks.forEach(mask -> mask.render(pPoseStack, pMouseX, pMouseY, frameTimeDelta));
 
@@ -201,9 +223,20 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
     @Override
     public void onEvent(GuiEvent event) {
         if(event instanceof StateEvent stateEvent) {
-            Cybernetics.LOGGER.info("State: " + stateEvent.getState());
+            if(stateEvent.getState() == State.TRANSITION_SUB) {
+                scheduleTask(15, this::showMasks);
+                maskWidgetIterator = itemMasks.iterator();
+                scheduleTask(20, 21 + (2 * itemMasks.size()), this::fadeOutMasks);
+            }
+            else if(stateEvent.getState() == State.TRANSITION_MAIN) {
+                fadeInMasks();
+                scheduleTask(10, this::hideMasks);
+                sectionButtonIterator = sectionButtons.iterator();
+                scheduleTask(15, 16 + (2 * sectionButtons.size()), this::initSectionButtons);
+            }
+
             if(stateEvent.getState() == State.TRANSITION_SUB || stateEvent.getState() == State.TRANSITION_MAIN) {
-                scheduleTask(60, CyberwareScreen.this::updateState);
+                scheduleTask(20, CyberwareScreen.this::updateState);
             }
         }
     }
@@ -272,7 +305,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
             super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
             enableScissor(CyberwareScreen.this.boxLeft, CyberwareScreen.this.boxTop, CyberwareScreen.this.boxRight, CyberwareScreen.this.boxBottom);
-            RenderHelper.renderEntity(entity, pPoseStack, x + scale/2, y + scale*2, scale, rotation);
+            RenderHelper.renderEntity(entity, pPoseStack, x + scale/2, y + scale*2, 20, scale, rotation);
             //7.5f * (float)Math.cos((getGameTime() - startTime + pPartialTick) / 40.0f)
             disableScissor();
         }
@@ -315,9 +348,14 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
                         x = (int) data.get(0);
                         y = (int) data.get(1);
                     }
-                    CyberwareScreen.this.rotateEntity(this, -45, 40, Easing.CUBIC_IN_OUT);
-                    CyberwareScreen.this.scaleWidget(this, 120, 40, Easing.CUBIC_IN_OUT);
-                    CyberwareScreen.this.moveWidget(this, leftPos + x, topPos + y, 40, Easing.CUBIC_IN_OUT);
+                    CyberwareScreen.this.rotateEntity(this, -45, 20, Easing.CUBIC_IN_OUT);
+                    CyberwareScreen.this.scaleWidget(this, 120, 20, Easing.CUBIC_IN_OUT);
+                    CyberwareScreen.this.moveWidget(this, leftPos + x, topPos + y, 20, Easing.CUBIC_IN_OUT);
+                }
+                else if(stateEvent.getState() == State.TRANSITION_MAIN) {
+                    CyberwareScreen.this.rotateEntity(this, 0, 20, Easing.CUBIC_IN_OUT);
+                    CyberwareScreen.this.scaleWidget(this, 60, 20, Easing.CUBIC_IN_OUT);
+                    CyberwareScreen.this.moveWidget(this, leftPos + 73, topPos + 16, 20, Easing.CUBIC_IN_OUT);
                 }
             }
         }
@@ -386,14 +424,17 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         public MaskWidget(int pX, int pY) {
             super(pX, pY, 21, 18, Component.empty());
             this.playSound = false;
-//            this.alpha = 0.0f;
-//            this.visible = false;
+            this.alpha = 0.0f;
+            this.visible = false;
         }
 
         @Override
         public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-            this.visible = alpha > 0.0f;
+            this.visible = (alpha > 0.0f);
+            this.setBlitOffset(500);
             super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+            this.setBlitOffset(0);
+
         }
 
         @Override
@@ -401,6 +442,8 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderTexture(0, CyberwareScreen.TEXTURE);
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, alpha);
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
             this.blit(pPoseStack, x, y, 9, 9, 21, 18);
         }
 
@@ -410,10 +453,17 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         }
 
         @Override
-        public float getAlpha() {
+        public float getTransparency() {
             return alpha;
         }
+
+        @Override
+        public void setTransparency(float alpha) {
+            this.alpha = alpha;
+        }
     }
+
+
 
     abstract static class CyberwareButton extends AbstractButton implements CybGuiEventListener {
 
@@ -466,6 +516,12 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         }
 
         @Override
+        public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+            this.setBlitOffset(60);
+            super.renderButton(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        }
+
+        @Override
         public void update() {
 
         }
@@ -477,7 +533,15 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 
         @Override
         public void onPress() {
-
+            if(CyberwareScreen.this.state == State.SUB) {
+                CyberwareScreen.this.updateText(Component.translatable("tooltip.cybernetics.section"));
+                CyberwareScreen.this.clearAll();
+                CyberwareScreen.this.updateState();
+                CyberwareScreen.this.scheduleTask(10, () -> {
+                    CyberwareScreen.this.menu.switchActiveSlots(null);
+                    CybPackets.sendToServer(new C2SSwitchActiveSlotPacket());
+                });
+            }
         }
 
         @Override
@@ -539,6 +603,9 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             if(event instanceof StateEvent stateEvent) {
                 if(stateEvent.getState() == State.TRANSITION_SUB) {
                     CyberwareScreen.this.alphaWidget(this, 0.0f, 10);
+                    CyberwareScreen.this.scheduleTask(15, () -> {
+                        this.y = topPos + this.section.getType().getY() + 20;
+                    });
                 }
             }
         }
@@ -553,8 +620,8 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             if(CyberwareScreen.this.state == State.MAIN) {
                 CyberwareScreen.this.updateText(Component.translatable("tooltip." + id.getNamespace() + ".section." + id.getPath()));
                 CyberwareScreen.this.clearAll();
-                CyberwareScreen.this.updateState(100, 20);
-                CyberwareScreen.this.scheduleTask(40, () -> {
+                CyberwareScreen.this.updateState(section.getType().getXOffset(), section.getType().getYOffset());
+                CyberwareScreen.this.scheduleTask(15, () -> {
                     CyberwareScreen.this.menu.switchActiveSlots(section.getType());
                     CybPackets.sendToServer(new C2SSwitchActiveSlotPacket(section.getType()));
                 });
@@ -567,8 +634,13 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         }
 
         @Override
-        public float getAlpha() {
+        public float getTransparency() {
             return alpha;
+        }
+
+        @Override
+        public void setTransparency(float alpha) {
+            this.alpha = alpha;
         }
     }
 }

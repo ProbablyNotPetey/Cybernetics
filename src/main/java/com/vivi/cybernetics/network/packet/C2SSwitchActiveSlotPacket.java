@@ -17,15 +17,27 @@ public class C2SSwitchActiveSlotPacket extends Packet {
     public C2SSwitchActiveSlotPacket(CyberwareSectionType section) {
         this.section = section;
     }
+    public C2SSwitchActiveSlotPacket() {
+        this.section = null;
+    }
 
     public C2SSwitchActiveSlotPacket(FriendlyByteBuf buf) {
-        ResourceLocation id = buf.readResourceLocation();
-        section = CybCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getValue(id);
+        boolean isNull = buf.readBoolean();
+        if(!isNull) {
+            ResourceLocation id = buf.readResourceLocation();
+            section = CybCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getValue(id);
+        }
+        else {
+            section = null;
+        }
     }
 
     @Override
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeResourceLocation(CybCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getKey(section));
+        buf.writeBoolean(section == null);
+        if(section != null) {
+            buf.writeResourceLocation(CybCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getKey(section));
+        }
     }
 
     @Override

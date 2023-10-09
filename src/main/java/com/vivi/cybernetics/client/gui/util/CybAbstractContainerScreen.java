@@ -1,6 +1,7 @@
 package com.vivi.cybernetics.client.gui.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.event.CybGuiEventListener;
 import com.vivi.cybernetics.client.gui.event.GuiEvent;
 import com.vivi.cybernetics.util.Easing;
@@ -55,10 +56,6 @@ public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu
                 i--;
             }
         }
-        tasks.forEach(task -> {
-//            Cybernetics.LOGGER.info("continuous: " + task.continuous() + ", start: " + (time >= task.startTime()) + ", end: " + (time <= task.endTime()) + ", endTime is -1: " + (task.endTime() == -1));
-
-        });
     }
 
     @Override
@@ -119,7 +116,7 @@ public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu
         tasks.add(new ScheduledTask(this.time + time, -1, task, continuous));
     }
     public void scheduleTask(int time, int endTime, Runnable task) {
-        tasks.add(new ScheduledTask(this.time + time, time + endTime, task, true));
+        tasks.add(new ScheduledTask(this.time + time, this.time + endTime, task, true));
     }
 
     public void clearAll() {

@@ -30,6 +30,7 @@ public class EntityWidgetRotate {
         float normalizedTime = (currentTime - startTime) + partialTicks;
         float percent = normalizedTime / duration;
         if(percent >= 1.0f) {
+            widget.setRotation(newRotation);
             isDone = true;
             return;
         }

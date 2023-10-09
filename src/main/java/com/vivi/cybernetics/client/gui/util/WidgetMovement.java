@@ -35,6 +35,8 @@ public class WidgetMovement {
         float normalizedTime = (currentTime - startTime) + partialTicks;
         float percent = normalizedTime / duration;
         if(percent >= 1.0f) {
+            widget.x = newX;
+            widget.y = newY;
             isDone = true;
             return;
         }

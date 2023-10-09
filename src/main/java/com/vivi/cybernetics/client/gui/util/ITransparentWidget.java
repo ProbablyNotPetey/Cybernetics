@@ -2,7 +2,7 @@ package com.vivi.cybernetics.client.gui.util;
 
 public interface ITransparentWidget {
 
-    public float getAlpha();
+    public float getTransparency();
 
-    public void setAlpha(float alpha);
+    public void setTransparency(float alpha);
 }

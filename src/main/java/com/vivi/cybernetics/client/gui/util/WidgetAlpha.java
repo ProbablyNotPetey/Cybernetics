@@ -1,5 +1,6 @@
 package com.vivi.cybernetics.client.gui.util;
 
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.util.Easing;
 import net.minecraft.util.Mth;
 
@@ -18,7 +19,7 @@ public class WidgetAlpha {
     }
     public WidgetAlpha(ITransparentWidget widget, float newAlpha, long startTime, int duration, Easing easing) {
         this.widget = widget;
-        this.oldAlpha = widget.getAlpha();
+        this.oldAlpha = widget.getTransparency();
         this.newAlpha = newAlpha;
         this.startTime = startTime;
         this.duration = duration;
@@ -30,11 +31,12 @@ public class WidgetAlpha {
         float normalizedTime = (currentTime - startTime) + partialTicks;
         float percent = normalizedTime / duration;
         if(percent >= 1.0f) {
+            widget.setTransparency(newAlpha);
             isDone = true;
             return;
         }
         float easedPercent = easing.ease(percent);
-        widget.setAlpha(Mth.lerp(easedPercent, oldAlpha, newAlpha));
+        widget.setTransparency(Mth.lerp(easedPercent, oldAlpha, newAlpha));
     }
 
     public boolean isDone() {
