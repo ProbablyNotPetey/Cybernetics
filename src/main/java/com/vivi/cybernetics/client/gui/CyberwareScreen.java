@@ -154,9 +154,14 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float frameTimeDelta) {
         renderBackground(pPoseStack);
         super.render(pPoseStack, pMouseX, pMouseY, frameTimeDelta);
-        this.setBlitOffset(600);
+
+//        RenderSystem.enableDepthTest();
+//        RenderSystem.applyModelViewMatrix();
+//        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+//        pPoseStack.pushPose();
+//        pPoseStack.translate(0, 0, 600);
         renderTooltip(pPoseStack, pMouseX, pMouseY);
-        this.setBlitOffset(0);
+//        pPoseStack.popPose();
 
         itemMasks.forEach(mask -> mask.render(pPoseStack, pMouseX, pMouseY, frameTimeDelta));
 
@@ -431,7 +436,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         @Override
         public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
             this.visible = (alpha > 0.0f);
-            this.setBlitOffset(500);
+            this.setBlitOffset(300);
             super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
             this.setBlitOffset(0);
 
@@ -443,8 +448,10 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             RenderSystem.setShaderTexture(0, CyberwareScreen.TEXTURE);
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, alpha);
             RenderSystem.enableBlend();
+            RenderSystem.enableDepthTest();
             RenderSystem.defaultBlendFunc();
             this.blit(pPoseStack, x, y, 9, 9, 21, 18);
+            RenderSystem.disableBlend();
         }
 
         @Override
@@ -518,7 +525,11 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         @Override
         public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
             this.setBlitOffset(60);
+            RenderSystem.enableDepthTest();
+            pPoseStack.pushPose();
+            pPoseStack.translate(0, 0, 100);
             super.renderButton(pPoseStack, pMouseX, pMouseY, pPartialTick);
+            pPoseStack.popPose();
         }
 
         @Override
