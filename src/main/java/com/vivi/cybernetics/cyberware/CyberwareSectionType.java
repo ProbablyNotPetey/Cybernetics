@@ -8,11 +8,10 @@ import net.minecraft.world.item.Item;
 public class CyberwareSectionType {
 
 //    public static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/section_buttons.png");
-    public static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/cyberware/section/head.png");
 
     private final TagKey<Item> tag;
     private final int size;
-    private final ResourceLocation texture;
+//    private final ResourceLocation texture;
 //    private final int textureX;
 //    private final int textureY;
     private final int x;
@@ -22,10 +21,9 @@ public class CyberwareSectionType {
 //    private final int textureWidth;
 //    private final int textureHeight;
 
-    public CyberwareSectionType(TagKey<Item> tag, int size, ResourceLocation texture, int x, int y, int offset) {
+    public CyberwareSectionType(TagKey<Item> tag, int size, int x, int y, int offset) {
         this.tag = tag;
         this.size = size;
-        this.texture = texture;
         this.x = x;
         this.y = y;
         this.offset = offset;
@@ -45,9 +43,9 @@ public class CyberwareSectionType {
         return this.getTag().equals(type.getTag()) && this.size == type.getSize();
     }
 
-    public ResourceLocation getTexture() {
-        return texture;
-    }
+//    public ResourceLocation getTexture() {
+//        return texture;
+//    }
 
 //    public int getTextureX() {
 //        return textureX;

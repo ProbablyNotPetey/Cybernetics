@@ -1,7 +1,9 @@
 package com.vivi.cybernetics.client.gui.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.util.Easing;
+import com.vivi.cybernetics.util.ScheduledTask;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -17,9 +19,34 @@ public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu
     protected final List<WidgetMovement> widgetsToMove = new ArrayList<>();
     protected final List<WidgetScale> widgetsToScale = new ArrayList<>();
     protected final List<WidgetAlpha> widgetsToAlpha = new ArrayList<>();
+    protected final List<ScheduledTask> tasks = new ArrayList<>();
+    protected long time;
+
+
 
     public CybAbstractContainerScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        time = 0L;
+    }
+
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+        time++;
+        tasks.forEach(task -> {
+//            Cybernetics.LOGGER.info("continuous: " + task.continuous() + ", start: " + (time >= task.startTime()) + ", end: " + (time <= task.endTime()) + ", endTime is -1: " + (task.endTime() == -1));
+            if(task.continuous() && time >= task.startTime() && (task.endTime() == -1 || time <= task.endTime())) {
+                task.task().run();
+            }
+            else if(time == task.startTime()) {
+                task.task().run();
+            }
+        });
     }
 
     @Override
@@ -73,6 +100,17 @@ public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu
     public void alphaWidget(ITransparentWidget widget, float scale, int duration, Easing easing) {
         widgetsToAlpha.add(new WidgetAlpha(widget, scale, getGameTime(), duration, easing));
     }
+    public void scheduleTask(int time, Runnable task) {
+        tasks.add(new ScheduledTask(this.time + time, -1, task, false));
+    }
+    public void scheduleTask(int time, Runnable task, boolean continuous) {
+        tasks.add(new ScheduledTask(this.time + time, -1, task, continuous));
+    }
+    public void scheduleTask(int time, int endTime, Runnable task) {
+        tasks.add(new ScheduledTask(this.time + time, time + endTime, task, true));
+    }
+
+
 
     public float getPartialTick() {
         return Minecraft.getInstance().getPartialTick();
