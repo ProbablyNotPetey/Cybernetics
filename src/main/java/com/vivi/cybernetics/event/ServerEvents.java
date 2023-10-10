@@ -3,12 +3,22 @@ package com.vivi.cybernetics.event;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.item.CyberwareItem;
 import com.vivi.cybernetics.registry.CybItems;
+import com.vivi.cybernetics.registry.CybTags;
 import com.vivi.cybernetics.util.CyberwareHelper;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tiers;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -30,6 +40,27 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
+    public static void onHarvestCheckEvent(PlayerEvent.HarvestCheck event) {
+        //net.minecraftforge.common.TierSortingRegistry.isCorrectTierForDrops(getTier(), pBlock)
+        if(CyberwareHelper.hasCyberwareItem(event.getEntity(), CybItems.STONE_MINING_FISTS.get())) {
+            BlockState block = event.getTargetBlock();
+            event.setCanHarvest(TierSortingRegistry.isCorrectTierForDrops(Tiers.STONE, block));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onBreakSpeedEvent(PlayerEvent.BreakSpeed event) {
+        if(CyberwareHelper.hasCyberwareItem(event.getEntity(), CybItems.STONE_MINING_FISTS.get())) {
+            BlockState block = event.getState();
+            ItemStack stack = event.getEntity().getMainHandItem();
+            if(stack.getItem().getDestroySpeed(stack, block) <= 1.0F) {
+                event.setNewSpeed(TierSortingRegistry.isCorrectTierForDrops(Tiers.STONE, block) ? event.getOriginalSpeed() * 4.0F : event.getOriginalSpeed());
+            }
+
+        }
+    }
+
+    @SubscribeEvent
     public static void onLivingDeathEvent(LivingDeathEvent event) {
         if(!(event.getEntity() instanceof Player)) return;
         if(event.getEntity().level.isClientSide) return;
@@ -44,7 +75,19 @@ public class ServerEvents {
             player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 2));
             player.getCooldowns().addCooldown(CybItems.EMERGENCY_DEFIBRILLATOR.get(), 2400);
         }
+    }
 
+    @SubscribeEvent
+    public static void onLivingAttackEvent(LivingAttackEvent event) {
+        if(event.getEntity().level.isClientSide) return;
+        if(!(event.getEntity() instanceof Player player)) return;
+
+        if(CyberwareHelper.hasCyberwareItem(player, CybItems.PROJECTILE_DEFLECTOR.get()) && event.getSource() instanceof IndirectEntityDamageSource) {
+            EntityType<?> entityType = event.getSource().getDirectEntity().getType();
+            if(!entityType.is(CybTags.PROJECTILES_ALWAYS_HIT) && player.getRandom().nextInt(10) < 4) {
+                event.setCanceled(true);
+            }
+        }
     }
 
 }

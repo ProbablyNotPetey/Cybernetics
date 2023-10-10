@@ -1,6 +1,7 @@
 {
     "replace": false,
     "values": [
-        "cybernetics:fire_resistance_skin"
+        "cybernetics:fire_resistance_skin",
+        "cybernetics:projectile_deflector"
     ]
 }

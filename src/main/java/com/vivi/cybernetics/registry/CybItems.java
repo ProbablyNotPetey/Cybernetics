@@ -19,27 +19,66 @@ public class CybItems {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Cybernetics.MOD_ID);
 
+    //Regular items
     public static final RegistryObject<Item>
+            MOTOR = ITEMS.register("motor", () -> new Item(regularProps())),
+            NEURAL_INTERFACE = ITEMS.register("neural_interface", () -> new Item(regularProps())),
+            PRINTED_CIRCUIT_BOARD = ITEMS.register("printed_circuit_board", () -> new Item(regularProps()))
+    ;
+
+
+
+    //Cyberware
+    public static final RegistryObject<Item>
+
+            //HEAD
+            //todo: make this function. Capacity should be an attribute for maximum compatibility!
+            CAPACITY_EXTENSION_HEAD = ITEMS.register("capacity_extension_head", () -> new CyberwareItem(cyberwareProps())),
+
+
+            //EYES
             MK1_OPTICS = ITEMS.register("mk1_optics", () -> new OpticsItem(cyberwareProps()).hideIncompatibilities()),
             MK2_OPTICS = ITEMS.register("mk2_optics", () -> new OpticsItem(cyberwareProps()).hideIncompatibilities()),
             MK3_OPTICS = ITEMS.register("mk3_optics", () -> new OpticsItem(cyberwareProps()).hideIncompatibilities()),
             NIGHT_VISION_EYES = ITEMS.register("night_vision_eyes", () -> new MobEffectCyberwareItem(cyberwareProps(), new ImmutableTriple<>(MobEffects.NIGHT_VISION, 319, 0))),
 
+            //UPPER ORGANS
+            EMERGENCY_DEFIBRILLATOR = ITEMS.register("emergency_defibrillator", () -> new CyberwareItem(cyberwareProps())),
+            OXYGEN_RECYCLER = ITEMS.register("oxygen_recycler", () -> new CyberwareItem(cyberwareProps())),
+            HEALTH_BOOST_ORGANS = ITEMS.register("health_boost_organs", () -> new AttributeCyberwareItem(cyberwareProps(), new ImmutablePair<>(Attributes.MAX_HEALTH, new AttributeModifier(UUID.fromString("f6585ba8-be7a-403a-92ed-620872197db2"), "Health Boost Upper Organs", 5, AttributeModifier.Operation.ADDITION)))),
+
+            //LOWER ORGANS
+            STOMACH_FILTER = ITEMS.register("stomach_filter", () -> new StomachFilterItem(cyberwareProps())),
+
+
+            //SKELETON
             REINFORCED_SKELETON = ITEMS.register("reinforced_skeleton", () -> new AttributeCyberwareItem(cyberwareProps(), new ImmutablePair<>(Attributes.ARMOR, new AttributeModifier(UUID.fromString("1a9c9f62-d28f-48fb-8c9e-b688046f7099"), "Skeleton Armor", 2.0, AttributeModifier.Operation.ADDITION))).hideIncompatibilities()),
             TITANIUM_SKELETON = ITEMS.register("titanium_skeleton", () -> new AttributeCyberwareItem(cyberwareProps(),
                     new ImmutablePair<>(Attributes.ARMOR, new AttributeModifier(UUID.fromString("d4490a2f-e05e-4ddf-beea-66ec7ca6e5f1"), "Skeleton Armor", 5.0, AttributeModifier.Operation.ADDITION)),
-                    new ImmutablePair<>(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(UUID.fromString("d4490a2f-e05e-4ddf-beea-66ec7ca6e5f1"), "Seketon Armor Toughness", 2.0, AttributeModifier.Operation.ADDITION))
-            ).hideIncompatibilities()),
+                    new ImmutablePair<>(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(UUID.fromString("d4490a2f-e05e-4ddf-beea-66ec7ca6e5f1"), "Skeleton Armor Toughness", 2.0, AttributeModifier.Operation.ADDITION))
+                    ).hideIncompatibilities()),
+            HEALTH_BOOST_SKELETON = ITEMS.register("health_boost_skeleton", () -> new AttributeCyberwareItem(cyberwareProps(), new ImmutablePair<>(Attributes.MAX_HEALTH, new AttributeModifier(UUID.fromString("b2014109-6700-4e83-9fc6-5250bd9d558c"), "Health Boost Skeleton", 5, AttributeModifier.Operation.ADDITION)))),
 
+            //SKIN
             FIRE_RESISTANCE_SKIN = ITEMS.register("fire_resistance_skin", () -> new MobEffectCyberwareItem(cyberwareProps(), new ImmutableTriple<>(MobEffects.FIRE_RESISTANCE, 319, 0))),
+            PROJECTILE_DEFLECTOR = ITEMS.register("projectile_deflector", () -> new CyberwareItem(cyberwareProps())),
 
-            EMERGENCY_DEFIBRILLATOR = ITEMS.register("emergency_defibrillator", () -> new CyberwareItem(cyberwareProps())),
-            OXYGEN_RECYCLER = ITEMS.register("oxygen_recycler", () -> new CyberwareItem(cyberwareProps())),
+            //ARMS
+
+
+
+            //HANDS
+            STRENGTH_HANDS = ITEMS.register("strength_hands", () -> new AttributeCyberwareItem(cyberwareProps(), new ImmutablePair<>(Attributes.ATTACK_DAMAGE, new AttributeModifier(UUID.fromString("8d73fa62-e37a-4bea-8b8a-3f329bc6e108"), "Hand Attack Boost", 2.5, AttributeModifier.Operation.ADDITION)))),
+            STONE_MINING_FISTS = ITEMS.register("stone_mining_fists", () -> new CyberwareItem(cyberwareProps())),
+
+
+            //LEGS
             REINFORCED_TENDONS = ITEMS.register("reinforced_tendons", () -> new ReinforcedTendonsItem(cyberwareProps())),
+            SPEED_LEGS = ITEMS.register("speed_legs", () -> new MobEffectCyberwareItem(cyberwareProps(), new ImmutableTriple<>(MobEffects.MOVEMENT_SPEED, 319, 1))),
 
+            //FEET
             BIONIC_FEET = ITEMS.register("bionic_feet", () -> new CyberwareItem(cyberwareProps())),
             SOUND_ABSORBENT_FEET = ITEMS.register("sound_absorbent_feet", () -> new CyberwareItem(cyberwareProps())),
-            SPEED_LEGS = ITEMS.register("speed_legs", () -> new MobEffectCyberwareItem(cyberwareProps(), new ImmutableTriple<>(MobEffects.MOVEMENT_SPEED, 319, 1))),
             JUMP_BOOST_FEET = ITEMS.register("jump_boost_feet", () -> new MobEffectCyberwareItem(cyberwareProps(), new ImmutableTriple<>(MobEffects.JUMP, 319, 2))),
             FULL_SPEED_FEET = ITEMS.register("full_speed_feet", () -> new CyberwareItem(cyberwareProps()))
     ;
@@ -48,7 +87,9 @@ public class CybItems {
     private static Item.Properties cyberwareProps() {
         return new Item.Properties().stacksTo(1).tab(Cybernetics.TAB);
     }
-
+    private static Item.Properties regularProps() {
+        return new Item.Properties().tab(Cybernetics.TAB);
+    }
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
