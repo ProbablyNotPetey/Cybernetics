@@ -38,7 +38,6 @@
     "tooltip.cybernetics.mk2_optics.description": "An upgraded cybernetic eye system. Along with the effects of the Mk1, it allows the user to _scan nearby mobs_, highlighting them.",
     "tooltip.cybernetics.mk3_optics.description": "A advanced cybernetic eye system.  Along with the effects of the Mk2, it allows the user to ",
     "tooltip.cybernetics.night_vision_eyes.description": "An augment to any optics, allowing for _perfect vision_ even in _total darkness_.",
-    "tooltip.cybernetics.night_vision_eyes.requirements": "Any Optics",
     "tooltip.cybernetics.fire_resistance_skin.description": "A thin layer of heat-proof plating embedded into the skin. Renders the user _immune to fire_ and other _extreme heat_.",
     "tooltip.cybernetics.reinforced_skeleton.description": "A replacement for much of the user's skeleton, significantly increasing its _durability_ and _sturdiness_. Gives the user permanent _+2 armor_.",
     "tooltip.cybernetics.titanium_skeleton.description": "A significantly stronger replacement for the user's skeleton, made of pure _titanium_. Gives the user permanent _+5 armor_ and _+2 armor toughness_.",
@@ -47,5 +46,6 @@
 
     "key.cybernetics.player_cyberware_menu": "View Cyberware",
     "key.cybernetics.category": "Cybernetics",
-    "tooltip.cybernetics.description.shift": "Hold _[Shift]_ for description"
+    "tooltip.cybernetics.description.shift": "Hold _[Shift]_ for description",
+    "tooltip.cybernetics.description.alt": "Hold _[Alt]_ for requirements"
 }

@@ -156,6 +156,8 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
                 metRequirements.put(req, false);
             }
             for(int i = 0; i < this.getSlots(); i++) {
+                if(this.getStackInSlot(i).is(item)) return false;
+
                 //usually short lists so not that bad tbh
                 for(Ingredient incompat : item.getIncompatibilities()) {
                     if(incompat.test(this.getStackInSlot(i))) return false;

@@ -1,5 +1,6 @@
 package com.vivi.cybernetics.item;
 
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.registry.CybCyberware;
 import com.vivi.cybernetics.registry.CybTags;
@@ -93,16 +94,16 @@ public class CyberwareItem extends Item {
         ResourceLocation id = ForgeRegistries.ITEMS.getKey(this);
 
         addSectionTooltip(stack, tooltip);
-        if(showRequirements && requirements.size() > 0) {
-            MutableComponent requirementsTooltip = Component.translatable("tooltip.cybernetics.requirements").append(": ").withStyle(ChatFormatting.GRAY)
-                    .append(Component.translatable("tooltip." + id.getNamespace() + "." + id.getPath() + ".requirements").withStyle(ChatFormatting.AQUA));
-            tooltip.add(requirementsTooltip);
-        }
-        if(showIncompatibilities && incompatibilities.size() > 1) {
-            MutableComponent incompatibilitiesTooltip = Component.translatable("tooltip.cybernetics.incompatibilities").append(": ").withStyle(ChatFormatting.GRAY)
-                    .append(Component.translatable("tooltip." + id.getNamespace() + "." + id.getPath() + ".incompatibilities").withStyle(ChatFormatting.RED));
-            tooltip.add(incompatibilitiesTooltip);
-        }
+//        if(showRequirements && requirements.size() > 0) {
+//            MutableComponent requirementsTooltip = Component.translatable("tooltip.cybernetics.requirements").append(": ").withStyle(ChatFormatting.GRAY)
+//                    .append(Component.translatable("tooltip." + id.getNamespace() + "." + id.getPath() + ".requirements").withStyle(ChatFormatting.AQUA));
+//            tooltip.add(requirementsTooltip);
+//        }
+//        if(showIncompatibilities && incompatibilities.size() > 1) {
+//            MutableComponent incompatibilitiesTooltip = Component.translatable("tooltip.cybernetics.incompatibilities").append(": ").withStyle(ChatFormatting.GRAY)
+//                    .append(Component.translatable("tooltip." + id.getNamespace() + "." + id.getPath() + ".incompatibilities").withStyle(ChatFormatting.RED));
+//            tooltip.add(incompatibilitiesTooltip);
+//        }
         if(showDescription) {
             if(Screen.hasShiftDown()) {
                 tooltip.addAll(TooltipHelper.processTooltip(Component.translatable("tooltip." + id.getNamespace() + "." + id.getPath() + ".description"), ChatFormatting.GRAY, ChatFormatting.RED, 40));
@@ -111,7 +112,37 @@ public class CyberwareItem extends Item {
                 tooltip.addAll(TooltipHelper.processTooltip(Component.translatable("tooltip.cybernetics.description.shift"), ChatFormatting.GRAY, ChatFormatting.RED, 40));
             }
         }
+
+        if((requirements.size() > 0 && showRequirements) || (incompatibilities.size() > 0 && showIncompatibilities)) {
+            Cybernetics.LOGGER.info("Requirements size: " + requirements.size() + ", incompatibilities size: " + incompatibilities.size());
+            if(Screen.hasAltDown()) {
+                if(showRequirements && requirements.size() > 0) {
+                    tooltip.add(Component.translatable("tooltip.cybernetics.requirements").append(": ").withStyle(ChatFormatting.GRAY));
+                    addIngredientTooltip(stack, requirements, tooltip, ChatFormatting.AQUA);
+                }
+                if(showIncompatibilities && incompatibilities.size() > 0) {
+                    tooltip.add(Component.translatable("tooltip.cybernetics.incompatibilities").append(": ").withStyle(ChatFormatting.GRAY));
+                    addIngredientTooltip(stack, incompatibilities, tooltip, ChatFormatting.RED);
+                }
+
+            }
+            else {
+                tooltip.addAll(TooltipHelper.processTooltip(Component.translatable("tooltip.cybernetics.description.alt"), ChatFormatting.GRAY, ChatFormatting.RED, 40));
+            }
+        }
     }
+
+    private void addIngredientTooltip(ItemStack stack, List<Ingredient> ingredients, List<Component> tooltip, ChatFormatting color) {
+
+        ingredients.forEach(ingredient -> {
+            ItemStack[] stacks = ingredient.getItems();
+            Component text = stacks.length == 1 ? stacks[0].getHoverName() : TooltipHelper.getDisplayNameList(stacks);
+            tooltip.add(Component.literal("    ").append(text.copy().withStyle(color)));
+        });
+    }
+
+
+
 
     private void addSectionTooltip(ItemStack stack, List<Component> pTooltipComponents) {
 

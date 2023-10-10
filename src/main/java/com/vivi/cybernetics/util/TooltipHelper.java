@@ -1,8 +1,10 @@
 package com.vivi.cybernetics.util;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
@@ -41,5 +43,12 @@ public class TooltipHelper {
         }
 
         return out;
+    }
+
+    //This should probably only be called on the client
+    public static Component getDisplayNameList(ItemStack[] stacks) {
+        long gameTimeSeconds = Minecraft.getInstance().level.getGameTime() / 20;
+        int index = (int) (gameTimeSeconds % stacks.length);
+        return stacks[index].getHoverName();
     }
 }
