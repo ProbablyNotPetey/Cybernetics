@@ -61,6 +61,13 @@ public class CybPackets {
                 .consumerMainThread(S2CSyncCyberwarePacket::handle)
                 .add();
 
+        network.messageBuilder(S2CSyncCyberwarePropertiesPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(S2CSyncCyberwarePropertiesPacket::new)
+                .encoder(S2CSyncCyberwarePropertiesPacket::toBytes)
+                .consumerMainThread(S2CSyncCyberwarePropertiesPacket::handle)
+                .add();
+
+
     }
 
     public static <MSG> void sendToServer(MSG message) {

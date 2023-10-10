@@ -1,8 +1,7 @@
 package com.vivi.cybernetics.network.packet;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
-import net.minecraft.client.Minecraft;
+import com.vivi.cybernetics.network.ClientPacketHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;

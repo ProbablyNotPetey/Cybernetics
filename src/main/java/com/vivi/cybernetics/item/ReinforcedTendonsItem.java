@@ -12,7 +12,6 @@ public class ReinforcedTendonsItem extends CyberwareItem {
     }
 
     public static void doubleJump(Player player) {
-        Cybernetics.LOGGER.info("Double jumping...");
         player.fallDistance = 0;
 
         double jumpMotion = (0.475) + player.getJumpBoostPower();

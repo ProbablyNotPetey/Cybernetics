@@ -29,7 +29,6 @@ public class C2SDoubleJumpInputPacket extends Packet {
     public boolean handle(Supplier<NetworkEvent.Context> sup) {
         NetworkEvent.Context ctx = sup.get();
         ctx.enqueueWork(() -> {
-            Cybernetics.LOGGER.info("Received Double Jump packet");
             ServerPlayer player = ctx.getSender();
             if(CyberwareHelper.hasCyberwareItem(player, CybItems.REINFORCED_TENDONS.get())) {
                 CybPackets.sendToClient(new S2CDoubleJumpPacket(), player);

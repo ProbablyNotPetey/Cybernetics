@@ -3,6 +3,7 @@ package com.vivi.cybernetics.item;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.registry.CybCyberware;
+import com.vivi.cybernetics.registry.CybItems;
 import com.vivi.cybernetics.registry.CybTags;
 import com.vivi.cybernetics.util.CyberwareHelper;
 import com.vivi.cybernetics.util.TooltipHelper;
@@ -11,6 +12,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -114,7 +116,6 @@ public class CyberwareItem extends Item {
         }
 
         if((requirements.size() > 0 && showRequirements) || (incompatibilities.size() > 0 && showIncompatibilities)) {
-            Cybernetics.LOGGER.info("Requirements size: " + requirements.size() + ", incompatibilities size: " + incompatibilities.size());
             if(Screen.hasAltDown()) {
                 if(showRequirements && requirements.size() > 0) {
                     tooltip.add(Component.translatable("tooltip.cybernetics.requirements").append(": ").withStyle(ChatFormatting.GRAY));

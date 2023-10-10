@@ -78,7 +78,6 @@ public class CapabilityEvents {
         if(player.level.isClientSide) return;
         CyberwareInventory cyberware = CyberwareHelper.getCyberware(player).orElse(null);
         if(cyberware == null) return;
-        Cybernetics.LOGGER.info("Cyberware on login: " + cyberware.serializeNBT());
         CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware), (ServerPlayer) player);
     }
 

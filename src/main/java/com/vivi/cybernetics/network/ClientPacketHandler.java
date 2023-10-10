@@ -1,7 +1,12 @@
-package com.vivi.cybernetics.network.packet;
+package com.vivi.cybernetics.network;
 
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
+import com.vivi.cybernetics.data.CyberwareProperties;
+import com.vivi.cybernetics.data.CyberwarePropertiesReloadListener;
 import com.vivi.cybernetics.item.ReinforcedTendonsItem;
+import com.vivi.cybernetics.network.packet.S2CSyncCyberwarePacket;
+import com.vivi.cybernetics.network.packet.S2CSyncCyberwarePropertiesPacket;
 import com.vivi.cybernetics.util.CyberwareHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
@@ -27,5 +32,11 @@ public class ClientPacketHandler {
         });
 
 
+    }
+
+    public static void handleSyncCyberwarePropertiesPacket(NetworkEvent.Context ctx, S2CSyncCyberwarePropertiesPacket packet) {
+        CyberwarePropertiesReloadListener.INSTANCE.fromPacket(packet.getProperties());
+        //apparently I DON'T have to call this on the client??? what.
+//        CyberwareHelper.setupCyberwareProperties();
     }
 }

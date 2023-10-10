@@ -1,5 +1,6 @@
 package com.vivi.cybernetics.network.packet;
 
+import com.vivi.cybernetics.network.ClientPacketHandler;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
