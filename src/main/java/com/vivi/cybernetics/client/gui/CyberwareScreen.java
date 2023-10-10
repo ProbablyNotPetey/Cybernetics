@@ -600,7 +600,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 //            int u = this.isHoveredOrFocused() ? width : 0;
 
             enableScissor(CyberwareScreen.this.boxLeft, CyberwareScreen.this.boxTop, CyberwareScreen.this.boxRight, CyberwareScreen.this.boxBottom);
-            blit(pPoseStack, this.x, this.y, 0, 0, this.width, this.height, this.width * 2, this.height * 2);
+            blit(pPoseStack, this.x, this.y, 0, 0, this.width, this.height, this.width, this.height);
             disableScissor();
         }
 
