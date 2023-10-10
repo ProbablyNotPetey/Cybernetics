@@ -62,14 +62,6 @@ public class Cybernetics {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         CybPackets.register();
-
-//        ForgeRegistries.ITEMS.getValues().forEach(item -> {
-//            if(item instanceof CyberwareItem cyberItem) {
-//                cyberItem.addIncompatibilities(Ingredient.of(cyberItem));
-//            }
-//        });
-
-        CybItems.cyberwareIncompatReq();
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {

@@ -1,0 +1,8 @@
+{
+  "requirements": [
+    "cybernetics:bionic_feet"
+  ],
+  "incompatibilities": [
+    "cybernetics:sound_absorbent_feet"
+  ]
+}

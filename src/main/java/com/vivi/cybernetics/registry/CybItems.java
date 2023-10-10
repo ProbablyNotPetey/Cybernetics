@@ -53,23 +53,5 @@ public class CybItems {
         ITEMS.register(eventBus);
     }
 
-    public static void cyberwareIncompatReq() {
-//        CyberwareHelper.addIncompatibilities(MK_1_OPTICS.get(), Ingredient.of(CybTags.OPTICS));
-//        CyberwareHelper.addIncompatibilities(MK_2_OPTICS.get(), Ingredient.of(CybTags.OPTICS));
-//        CyberwareHelper.addIncompatibilities(MK_3_OPTICS.get(), Ingredient.of(CybTags.OPTICS));
-//
-//        CyberwareHelper.addIncompatibilities(REINFORCED_SKELETON.get(), Ingredient.of(CybTags.SKELETONS));
-//        CyberwareHelper.addIncompatibilities(TITANIUM_SKELETON.get(), Ingredient.of(CybTags.SKELETONS));
-//
-//        CyberwareHelper.addIncompatibilities(FULL_SPEED_FEET.get(), Ingredient.of(CybItems.SOUND_ABSORBENT_FEET.get()));
-//        CyberwareHelper.addIncompatibilities(SOUND_ABSORBENT_FEET.get(), Ingredient.of(CybItems.FULL_SPEED_FEET.get()));
-//
-//
-//
-//        CyberwareHelper.addRequirements(NIGHT_VISION_EYES.get(), Ingredient.of(CybTags.OPTICS));
-//        CyberwareHelper.addRequirements(SOUND_ABSORBENT_FEET.get(), Ingredient.of(CybItems.BIONIC_FEET.get()));
-//        CyberwareHelper.addRequirements(FULL_SPEED_FEET.get(), Ingredient.of(CybItems.BIONIC_FEET.get()));
-//        CyberwareHelper.addRequirements(JUMP_BOOST_FEET.get(), Ingredient.of(CybItems.BIONIC_FEET.get()));
-    }
 
 }
