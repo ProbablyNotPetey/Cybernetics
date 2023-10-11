@@ -31,7 +31,6 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if(event.phase != TickEvent.Phase.END) return;
-        if(event.side.isClient()) return;
         Player player = event.player;
         CyberwareHelper.getCyberware(player).ifPresent(cyberware -> {
             for(int i = 0; i < cyberware.getSlots(); i++) {
@@ -41,6 +40,11 @@ public class ServerEvents {
             }
         });
         AbilityHelper.getAbilities(player).ifPresent(PlayerAbilities::tickAbilities);
+//        AbilityHelper.getAbilities(player).ifPresent(abilities -> {
+//            if(event.side.isClient()) {
+//                Cybernetics.LOGGER.info("Client abilities: " + abilities.serializeNBT());
+//            }
+//        });
     }
 
     @SubscribeEvent

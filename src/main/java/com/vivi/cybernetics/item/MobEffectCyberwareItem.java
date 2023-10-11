@@ -22,6 +22,7 @@ public class MobEffectCyberwareItem extends CyberwareItem {
     @Override
     public void cyberwareTick(ItemStack stack, Level level, Player player) {
         super.cyberwareTick(stack, level, player);
+        if(level.isClientSide) return;
         for(int i = 0; i < effects.length; i++) {
             Triple<MobEffect, Integer, Integer> effect = effects[i];
             player.addEffect(new MobEffectInstance(effect.getLeft(), effect.getMiddle(), effect.getRight(), false, false, true));
@@ -31,6 +32,7 @@ public class MobEffectCyberwareItem extends CyberwareItem {
     @Override
     public void onUnequip(ItemStack stack, Level level, Player player) {
         super.onUnequip(stack, level, player);
+        if(level.isClientSide) return;
         //if player has higher level effect do not remove
         for(int i = 0; i < effects.length; i++) {
             Triple<MobEffect, Integer, Integer> effect = effects[i];

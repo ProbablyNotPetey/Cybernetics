@@ -43,7 +43,7 @@ public class CapabilityEvents {
         if(event.isWasDeath()) {
             event.getOriginal().getCapability(Cybernetics.CYBERWARE).ifPresent(oldStore -> {
                 event.getEntity().getCapability(Cybernetics.CYBERWARE).ifPresent(newStore -> {
-                    newStore.copyFrom(oldStore, true);
+                    newStore.copyFrom(oldStore, false);
                 });
             });
             event.getOriginal().getCapability(Cybernetics.PLAYER_ENERGY).ifPresent(oldStore -> {
@@ -79,7 +79,7 @@ public class CapabilityEvents {
         if(target instanceof Player player) {
             CyberwareInventory cyberware = CyberwareHelper.getCyberware(player).orElse(null);
             if(cyberware == null) return;
-            CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware), (ServerPlayer) event.getEntity());
+            CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware, false), (ServerPlayer) event.getEntity());
 
             AbilityHelper.getAbilities((Player)target).ifPresent(abilities -> {
                 abilities.syncToClient((ServerPlayer) event.getEntity());
@@ -93,7 +93,7 @@ public class CapabilityEvents {
         if(player.level.isClientSide) return;
         CyberwareInventory cyberware = CyberwareHelper.getCyberware(player).orElse(null);
         if(cyberware == null) return;
-        CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware), (ServerPlayer) player);
+        CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware, false), (ServerPlayer) player);
 
         AbilityHelper.getAbilities(player).ifPresent(abilities -> {
             abilities.syncToClient((ServerPlayer) player);
@@ -106,7 +106,7 @@ public class CapabilityEvents {
         if(player.level.isClientSide) return;
         CyberwareInventory cyberware = CyberwareHelper.getCyberware(player).orElse(null);
         if(cyberware == null) return;
-        CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware), (ServerPlayer) player);
+        CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware, false), (ServerPlayer) player);
 
         AbilityHelper.getAbilities(player).ifPresent(abilities -> {
             abilities.syncToClient((ServerPlayer) player);

@@ -26,12 +26,11 @@ public class ClientPacketHandler {
     }
 
     public static void handleSyncCyberwarePacket(NetworkEvent.Context ctx, S2CSyncCyberwarePacket packet) {
-
         Player player = (Player)Minecraft.getInstance().level.getEntity(packet.getOwnerId());
         CyberwareInventory inventory = CyberwareInventory.create(player);
         inventory.deserializeNBT(packet.getCyberwareData());
         CyberwareHelper.getCyberware(player).ifPresent(cyberware -> {
-            cyberware.copyFrom(inventory, false);
+            cyberware.copyFrom(inventory, player, packet.shouldUpdate());
         });
     }
 

@@ -66,7 +66,7 @@ public class SurgicalChamberCyberwareMenu extends CyberwareMenu  {
         if(player instanceof ServerPlayer) {
             CyberwareInventory playerCyberware = CyberwareHelper.getCyberware(player).orElse(null);
             if(!playerCyberware.equals(cyberware)) {
-                playerCyberware.copyFrom(cyberware, player, false);
+                playerCyberware.copyFrom(cyberware, player, true);
             }
             cyberware.clear();
             if(blockEntity != null) {

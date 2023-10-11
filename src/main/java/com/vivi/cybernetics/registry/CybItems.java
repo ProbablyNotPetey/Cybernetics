@@ -40,7 +40,7 @@ public class CybItems {
             MK1_OPTICS = ITEMS.register("mk1_optics", () -> new OpticsItem(cyberwareProps()).hideIncompatibilities()),
             MK2_OPTICS = ITEMS.register("mk2_optics", () -> new OpticsItem(cyberwareProps()).hideIncompatibilities()),
             MK3_OPTICS = ITEMS.register("mk3_optics", () -> new OpticsItem(cyberwareProps()).hideIncompatibilities()),
-            NIGHT_VISION_EYES = ITEMS.register("night_vision_eyes", () -> new MobEffectCyberwareItem(cyberwareProps(), new ImmutableTriple<>(MobEffects.NIGHT_VISION, 319, 0))),
+            NIGHT_VISION_EYES = ITEMS.register("night_vision_eyes", () -> new NightVisionEyesItem(cyberwareProps())),
 
             //UPPER ORGANS
             EMERGENCY_DEFIBRILLATOR = ITEMS.register("emergency_defibrillator", () -> new CyberwareItem(cyberwareProps())),

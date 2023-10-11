@@ -30,7 +30,6 @@ public class ClientEvents {
         if(CybKeybinds.PLAYER_CYBERWARE_MENU.isDown()) {
             CybPackets.sendToServer(new C2SOpenCyberwarePacket());
         }
-
         handleDoubleJump();
     }
 

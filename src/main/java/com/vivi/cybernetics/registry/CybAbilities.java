@@ -2,11 +2,14 @@ package com.vivi.cybernetics.registry;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.ability.AbilityType;
+import com.vivi.cybernetics.ability.NightVisionAbilityType;
 import com.vivi.cybernetics.cyberware.CyberwareSectionType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
@@ -16,5 +19,13 @@ public class CybAbilities {
     public static final Supplier<IForgeRegistry<AbilityType>> ABILITY_TYPE_REGISTRY = ABILITY_TYPES.makeRegistry(RegistryBuilder::new);
 
 
+    public static final RegistryObject<AbilityType>
+            NIGHT_VISION = ABILITY_TYPES.register("night_vision", NightVisionAbilityType::new)
+    ;
+
+
+    public static void register(IEventBus eventBus) {
+        ABILITY_TYPES.register(eventBus);
+    }
 
 }

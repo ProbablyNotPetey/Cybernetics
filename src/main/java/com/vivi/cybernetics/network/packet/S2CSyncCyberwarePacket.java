@@ -16,21 +16,25 @@ public class S2CSyncCyberwarePacket extends Packet {
 //    private CyberwareInventory cyberwareInventory;
     private CompoundTag cyberwareInventory;
     private int ownerId;
-    public S2CSyncCyberwarePacket(Player owner, CyberwareInventory cyberwareInventory) {
+    private boolean update;
+    public S2CSyncCyberwarePacket(Player owner, CyberwareInventory cyberwareInventory, boolean update) {
         this.cyberwareInventory = cyberwareInventory.serializeNBT();
         this.ownerId = owner.getId();
+        this.update = update;
     }
 
     public S2CSyncCyberwarePacket(FriendlyByteBuf buf) {
         ownerId = buf.readVarInt();
 //        cyberwareInventory = CyberwareInventory.create(player);
         cyberwareInventory = buf.readNbt();
+        update = buf.readBoolean();
     }
 
     @Override
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeVarInt(ownerId);
         buf.writeNbt(cyberwareInventory);
+        buf.writeBoolean(update);
     }
 
     @Override
@@ -48,5 +52,9 @@ public class S2CSyncCyberwarePacket extends Packet {
 
     public int getOwnerId() {
         return ownerId;
+    }
+
+    public boolean shouldUpdate() {
+        return update;
     }
 }

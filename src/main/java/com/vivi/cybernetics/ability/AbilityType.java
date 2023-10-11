@@ -5,8 +5,13 @@ import net.minecraft.world.entity.player.Player;
 //This should be a registry
 public class AbilityType {
 
-    public AbilityType() {
+    private final int maxCooldown;
+    public AbilityType(int maxCooldown) {
+        this.maxCooldown = maxCooldown;
+    }
 
+    public AbilityType() {
+        this.maxCooldown = -1;
     }
 
 

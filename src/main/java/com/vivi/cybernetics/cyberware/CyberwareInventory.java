@@ -1,5 +1,6 @@
 package com.vivi.cybernetics.cyberware;
 
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.item.CyberwareItem;
 import com.vivi.cybernetics.network.CybPackets;
 import com.vivi.cybernetics.network.packet.S2CSyncCyberwarePacket;
@@ -77,7 +78,7 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
 
     protected void onContentsChanged(int slot) {
         if(owner != null && !owner.level.isClientSide) {
-            CybPackets.sendToClient(new S2CSyncCyberwarePacket(owner, this), (ServerPlayer) owner);
+            CybPackets.sendToClient(new S2CSyncCyberwarePacket(owner, this, true), (ServerPlayer) owner);
         }
     }
 
@@ -89,9 +90,13 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
         for(int i = 0; i < this.getSlots(); i++) {
             ItemStack oldStack = this.getStackInSlot(i);
             ItemStack newStack = other.getStackInSlot(i);
-            if(player != null && !shouldUpdate && !oldStack.equals(newStack, false)) {
-                if(oldStack.getItem() instanceof CyberwareItem) ((CyberwareItem) oldStack.getItem()).onUnequip(oldStack, player.level, player);
-                if(newStack.getItem() instanceof CyberwareItem) ((CyberwareItem) newStack.getItem()).onEquip(newStack, player.level, player);
+            if(player != null && shouldUpdate && !oldStack.equals(newStack, false)) {
+                if(oldStack.getItem() instanceof CyberwareItem) {
+                    ((CyberwareItem) oldStack.getItem()).onUnequip(oldStack, player.level, player);
+                }
+                if(newStack.getItem() instanceof CyberwareItem) {
+                    ((CyberwareItem) newStack.getItem()).onEquip(newStack, player.level, player);
+                }
             }
             this.setStackInSlot(i, newStack.copy());
         }

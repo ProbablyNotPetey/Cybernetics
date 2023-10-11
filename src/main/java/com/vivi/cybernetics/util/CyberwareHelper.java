@@ -44,11 +44,9 @@ public class CyberwareHelper {
                 CyberwareProperties properties = CyberwarePropertiesReloadListener.INSTANCE.getProperties().get(id);
                 if(properties != null) {
                     List<Ingredient> requirements = properties.getRequirements();
-                    Cybernetics.LOGGER.info("Item requirements size: " + ((CyberwareItem) item).getRequirements().size());
                     if(requirements.size() > 0) addRequirements(item, requirements.toArray(new Ingredient[0]));
 
                     List<Ingredient> incompatibilities = properties.getIncompatibilities();
-                    Cybernetics.LOGGER.info("Item incompatibilities size: " + ((CyberwareItem) item).getIncompatibilities().size());
                     if(incompatibilities.size() > 0) addIncompatibilities(item, incompatibilities.toArray(new Ingredient[0]));
                 }
             }

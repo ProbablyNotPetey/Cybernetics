@@ -34,16 +34,19 @@ public class PlayerAbilities implements INBTSerializable<CompoundTag> {
         return abilities;
     }
 
-    public void addAbility(Ability ability) {
+    public void addAbility(Ability ability, boolean syncToClient) {
         abilities.add(ability);
-        if(!player.level.isClientSide) {
+        if(!player.level.isClientSide && syncToClient) {
             syncToClient((ServerPlayer) player);
         }
     }
 
-    public void removeAbility(Ability ability) {
+    public void removeAbility(Ability ability, boolean syncToClient) {
+        if(ability.isEnabled()) {
+            ability.disable(player);
+        }
         abilities.remove(ability);
-        if(!player.level.isClientSide) {
+        if(!player.level.isClientSide && syncToClient) {
             syncToClient((ServerPlayer) player);
         }
     }
@@ -67,18 +70,18 @@ public class PlayerAbilities implements INBTSerializable<CompoundTag> {
         });
     }
 
-    public void enableAbility(AbilityType type) {
+    public void enableAbility(AbilityType type, boolean syncToClient) {
         Ability ability = getAbility(type);
         if(ability != null) ability.enable(player);
-        if(!player.level.isClientSide) {
+        if(!player.level.isClientSide && syncToClient) {
             syncToClient((ServerPlayer) player);
         }
     }
 
-    public void disableAbility(AbilityType type) {
+    public void disableAbility(AbilityType type, boolean syncToClient) {
         Ability ability = getAbility(type);
         if(ability != null) ability.disable(player);
-        if(!player.level.isClientSide) {
+        if(!player.level.isClientSide && syncToClient) {
             syncToClient((ServerPlayer) player);
         }
     }

@@ -28,6 +28,7 @@ public class Ability implements INBTSerializable<CompoundTag> {
     }
 
     public void tick(Player player) {
+        if(cooldown > -1) cooldown--;
         this.getType().tick(this, player);
     }
 

@@ -30,13 +30,6 @@ import java.util.List;
 public class CyberwareItem extends Item {
 
 
-    /** Ingredients instead of individual Items to support tags/or
-     * <ul>
-     *     Examples:
-     *     <li>{ Ingredient.of(foo), Ingredient.of(bar) } matches both foo and bar</li>
-     *     <li>{ Ingredient.of(foo), Ingredient.of(bar, baz) } matches foo and either bar or baz</li>
-     * </ul>
-     */
     private final List<Ingredient> requirements = new ArrayList<>();
     private final List<Ingredient> incompatibilities = new ArrayList<>();
 

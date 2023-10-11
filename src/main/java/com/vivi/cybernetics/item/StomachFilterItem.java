@@ -15,6 +15,7 @@ public class StomachFilterItem extends CyberwareItem {
     @Override
     public void cyberwareTick(ItemStack stack, Level level, Player player) {
         super.cyberwareTick(stack, level, player);
+        if(level.isClientSide) return;
         if(player.hasEffect(MobEffects.HUNGER)) {
             player.removeEffect(MobEffects.HUNGER);
         }

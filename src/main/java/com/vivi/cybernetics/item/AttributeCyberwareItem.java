@@ -21,6 +21,7 @@ public class AttributeCyberwareItem extends CyberwareItem {
     @Override
     public void cyberwareTick(ItemStack stack, Level level, Player player) {
         super.cyberwareTick(stack, level, player);
+        if(level.isClientSide) return;
         for(int i = 0; i < attributes.length; i++) {
             Pair<Attribute, AttributeModifier> attribute = attributes[i];
             AttributeInstance playerAttribute = player.getAttribute(attribute.getLeft());
