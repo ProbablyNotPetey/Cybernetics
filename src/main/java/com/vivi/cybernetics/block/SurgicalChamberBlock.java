@@ -1,7 +1,7 @@
 package com.vivi.cybernetics.block;
 
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.block.entity.SurgicalChamberBlockEntity;
-import com.vivi.cybernetics.registry.CybCyberware;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -80,9 +80,9 @@ public class SurgicalChamberBlock extends BaseEntityBlock {
             BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof SurgicalChamberBlockEntity be && !be.getMainBlockEntity().isInUse()) {
 
-                player.getCapability(CybCyberware.CYBERWARE).ifPresent(playerCyberware -> {
+                player.getCapability(Cybernetics.CYBERWARE).ifPresent(playerCyberware -> {
                     SurgicalChamberBlockEntity main = be.getMainBlockEntity();
-                    main.getCapability(CybCyberware.CYBERWARE).ifPresent(beCyberware -> {
+                    main.getCapability(Cybernetics.CYBERWARE).ifPresent(beCyberware -> {
                         beCyberware.copyFrom(playerCyberware);
 //                        Cybernetics.LOGGER.info(beCyberware.serializeNBT().getAsString());
                     });

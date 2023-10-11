@@ -1,13 +1,12 @@
 package com.vivi.cybernetics.event;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.capability.PlayerCyberwareProvider;
-import com.vivi.cybernetics.capability.PlayerEnergyProvider;
-import com.vivi.cybernetics.capability.PlayerEnergyStorage;
+import com.vivi.cybernetics.capability.*;
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.network.CybPackets;
+import com.vivi.cybernetics.network.packet.S2CSyncAbilitiesPacket;
 import com.vivi.cybernetics.network.packet.S2CSyncCyberwarePacket;
-import com.vivi.cybernetics.registry.CybCyberware;
+import com.vivi.cybernetics.util.AbilityHelper;
 import com.vivi.cybernetics.util.CyberwareHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,11 +25,14 @@ public class CapabilityEvents {
     @SubscribeEvent
     public static <T> void onAttachCapabilitiesEvent(AttachCapabilitiesEvent<Entity> event) {
         if(event.getObject() instanceof Player player) {
-            if(!player.getCapability(CybCyberware.CYBERWARE).isPresent()) {
+            if(!player.getCapability(Cybernetics.CYBERWARE).isPresent()) {
                 event.addCapability(new ResourceLocation(Cybernetics.MOD_ID, "cyberware"), new PlayerCyberwareProvider(player));
             }
-            if(!player.getCapability(CybCyberware.PLAYER_ENERGY).isPresent()) {
+            if(!player.getCapability(Cybernetics.PLAYER_ENERGY).isPresent()) {
                 event.addCapability(new ResourceLocation(Cybernetics.MOD_ID, "energy"), new PlayerEnergyProvider());
+            }
+            if(!player.getCapability(Cybernetics.PLAYER_ABILITIES).isPresent()) {
+                event.addCapability(new ResourceLocation(Cybernetics.MOD_ID, "abilities"), new PlayerAbilityProvider(player));
             }
         }
     }
@@ -39,13 +41,18 @@ public class CapabilityEvents {
     public static void onPlayerClonedEvent(PlayerEvent.Clone event) {
         event.getOriginal().reviveCaps();
         if(event.isWasDeath()) {
-            event.getOriginal().getCapability(CybCyberware.CYBERWARE).ifPresent(oldStore -> {
-                event.getEntity().getCapability(CybCyberware.CYBERWARE).ifPresent(newStore -> {
+            event.getOriginal().getCapability(Cybernetics.CYBERWARE).ifPresent(oldStore -> {
+                event.getEntity().getCapability(Cybernetics.CYBERWARE).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore, true);
                 });
             });
-            event.getOriginal().getCapability(CybCyberware.PLAYER_ENERGY).ifPresent(oldStore -> {
-                event.getEntity().getCapability(CybCyberware.PLAYER_ENERGY).ifPresent(newStore -> {
+            event.getOriginal().getCapability(Cybernetics.PLAYER_ENERGY).ifPresent(oldStore -> {
+                event.getEntity().getCapability(Cybernetics.PLAYER_ENERGY).ifPresent(newStore -> {
+                    newStore.copyFrom(oldStore);
+                });
+            });
+            event.getOriginal().getCapability(Cybernetics.PLAYER_ABILITIES).ifPresent(oldStore -> {
+                event.getEntity().getCapability(Cybernetics.PLAYER_ABILITIES).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore);
                 });
             });
@@ -58,7 +65,11 @@ public class CapabilityEvents {
     public static void onRegisterCapabilitiesEvent(RegisterCapabilitiesEvent event) {
         event.register(CyberwareInventory.class);
         event.register(PlayerEnergyStorage.class);
+        event.register(PlayerAbilities.class);
     }
+
+
+    //SYNC EVENTS
 
 
     @SubscribeEvent
@@ -68,7 +79,11 @@ public class CapabilityEvents {
         if(target instanceof Player player) {
             CyberwareInventory cyberware = CyberwareHelper.getCyberware(player).orElse(null);
             if(cyberware == null) return;
-            CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware), (ServerPlayer) target);
+            CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware), (ServerPlayer) event.getEntity());
+
+            AbilityHelper.getAbilities((Player)target).ifPresent(abilities -> {
+                abilities.syncToClient((ServerPlayer) event.getEntity());
+            });
         }
     }
 
@@ -79,6 +94,10 @@ public class CapabilityEvents {
         CyberwareInventory cyberware = CyberwareHelper.getCyberware(player).orElse(null);
         if(cyberware == null) return;
         CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware), (ServerPlayer) player);
+
+        AbilityHelper.getAbilities(player).ifPresent(abilities -> {
+            abilities.syncToClient((ServerPlayer) player);
+        });
     }
 
     @SubscribeEvent
@@ -88,5 +107,9 @@ public class CapabilityEvents {
         CyberwareInventory cyberware = CyberwareHelper.getCyberware(player).orElse(null);
         if(cyberware == null) return;
         CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware), (ServerPlayer) player);
+
+        AbilityHelper.getAbilities(player).ifPresent(abilities -> {
+            abilities.syncToClient((ServerPlayer) player);
+        });
     }
 }

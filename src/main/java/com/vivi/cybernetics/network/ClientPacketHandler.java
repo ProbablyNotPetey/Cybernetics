@@ -1,12 +1,15 @@
 package com.vivi.cybernetics.network;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.capability.PlayerAbilities;
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.data.CyberwareProperties;
 import com.vivi.cybernetics.data.CyberwarePropertiesReloadListener;
 import com.vivi.cybernetics.item.ReinforcedTendonsItem;
+import com.vivi.cybernetics.network.packet.S2CSyncAbilitiesPacket;
 import com.vivi.cybernetics.network.packet.S2CSyncCyberwarePacket;
 import com.vivi.cybernetics.network.packet.S2CSyncCyberwarePropertiesPacket;
+import com.vivi.cybernetics.util.AbilityHelper;
 import com.vivi.cybernetics.util.CyberwareHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
@@ -30,8 +33,15 @@ public class ClientPacketHandler {
         CyberwareHelper.getCyberware(player).ifPresent(cyberware -> {
             cyberware.copyFrom(inventory, false);
         });
+    }
 
-
+    public static void handleSyncAbiilitiesPacket(NetworkEvent.Context ctx, S2CSyncAbilitiesPacket packet) {
+        Player player = (Player)Minecraft.getInstance().level.getEntity(packet.getOwnerId());
+        PlayerAbilities abilities = new PlayerAbilities(player);
+        abilities.deserializeNBT(packet.getAbilitiesData());
+        AbilityHelper.getAbilities(player).ifPresent(playerAbilities -> {
+            playerAbilities.copyFrom(abilities);
+        });
     }
 
     public static void handleSyncCyberwarePropertiesPacket(NetworkEvent.Context ctx, S2CSyncCyberwarePropertiesPacket packet) {

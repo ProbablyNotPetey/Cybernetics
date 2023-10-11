@@ -1,10 +1,10 @@
 package com.vivi.cybernetics.block.entity;
 
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.block.SurgicalChamberBlock;
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.menu.SurgicalChamberCyberwareMenu;
 import com.vivi.cybernetics.registry.CybBlocks;
-import com.vivi.cybernetics.registry.CybCyberware;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -53,7 +53,7 @@ public class SurgicalChamberBlockEntity extends BlockEntity implements MenuProvi
             return getMainBlockEntity().getCapability(cap, side);
         }
 
-        if(cap == CybCyberware.CYBERWARE) {
+        if(cap == Cybernetics.CYBERWARE) {
             return lazyCyberware.cast();
         }
 

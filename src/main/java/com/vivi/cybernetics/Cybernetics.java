@@ -1,10 +1,13 @@
 package com.vivi.cybernetics;
 
 import com.mojang.logging.LogUtils;
+import com.vivi.cybernetics.capability.PlayerAbilities;
+import com.vivi.cybernetics.capability.PlayerEnergyStorage;
 import com.vivi.cybernetics.client.gui.CyberwareScreen;
 import com.vivi.cybernetics.client.gui.CyberwareStationScreen;
 import com.vivi.cybernetics.client.gui.PlayerCyberwareScreenOld;
 import com.vivi.cybernetics.client.gui.SurgicalChamberCyberwareScreenOld;
+import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.item.CyberwareItem;
 import com.vivi.cybernetics.menu.PlayerCyberwareMenu;
 import com.vivi.cybernetics.menu.SurgicalChamberCyberwareMenu;
@@ -16,6 +19,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -29,6 +35,12 @@ public class Cybernetics {
     public static final String MOD_ID = "cybernetics";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
+
+    public static Capability<CyberwareInventory> CYBERWARE = CapabilityManager.get(new CapabilityToken<>() { });
+    public static final Capability<PlayerAbilities> PLAYER_ABILITIES = CapabilityManager.get(new CapabilityToken<>() { });
+    public static Capability<PlayerEnergyStorage> PLAYER_ENERGY = CapabilityManager.get(new CapabilityToken<>() { });
+
+
 
     public static final CreativeModeTab TAB = new CreativeModeTab(Cybernetics.MOD_ID) {
         @Override

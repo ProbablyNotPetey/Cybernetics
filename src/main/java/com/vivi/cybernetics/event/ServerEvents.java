@@ -1,9 +1,12 @@
 package com.vivi.cybernetics.event;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.ability.Ability;
+import com.vivi.cybernetics.capability.PlayerAbilities;
 import com.vivi.cybernetics.item.CyberwareItem;
 import com.vivi.cybernetics.registry.CybItems;
 import com.vivi.cybernetics.registry.CybTags;
+import com.vivi.cybernetics.util.AbilityHelper;
 import com.vivi.cybernetics.util.CyberwareHelper;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -37,6 +40,7 @@ public class ServerEvents {
                 }
             }
         });
+        AbilityHelper.getAbilities(player).ifPresent(PlayerAbilities::tickAbilities);
     }
 
     @SubscribeEvent

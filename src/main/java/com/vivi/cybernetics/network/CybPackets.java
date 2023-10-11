@@ -61,6 +61,12 @@ public class CybPackets {
                 .consumerMainThread(S2CSyncCyberwarePacket::handle)
                 .add();
 
+        network.messageBuilder(S2CSyncAbilitiesPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(S2CSyncAbilitiesPacket::new)
+                .encoder(S2CSyncAbilitiesPacket::toBytes)
+                .consumerMainThread(S2CSyncAbilitiesPacket::handle)
+                .add();
+
         network.messageBuilder(S2CSyncCyberwarePropertiesPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(S2CSyncCyberwarePropertiesPacket::new)
                 .encoder(S2CSyncCyberwarePropertiesPacket::toBytes)

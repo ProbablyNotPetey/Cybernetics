@@ -1,9 +1,9 @@
 package com.vivi.cybernetics.menu;
 
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.block.entity.SurgicalChamberBlockEntity;
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.item.CyberwareItem;
-import com.vivi.cybernetics.registry.CybCyberware;
 import com.vivi.cybernetics.registry.CybMenuTypes;
 import com.vivi.cybernetics.util.CyberwareHelper;
 import net.minecraft.network.FriendlyByteBuf;
@@ -23,7 +23,7 @@ public class SurgicalChamberCyberwareMenu extends CyberwareMenu  {
         this(id, inv, (SurgicalChamberBlockEntity) inv.player.level.getBlockEntity(buf.readBlockPos()));
     }
     public SurgicalChamberCyberwareMenu(int id, Inventory inv, SurgicalChamberBlockEntity be) {
-        this(id, inv, be.getCapability(CybCyberware.CYBERWARE).orElse(null), be);
+        this(id, inv, be.getCapability(Cybernetics.CYBERWARE).orElse(null), be);
     }
     public SurgicalChamberCyberwareMenu(int pContainerId, Inventory inventory, CyberwareInventory cyberware, SurgicalChamberBlockEntity be) {
         super(CybMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), pContainerId, inventory, cyberware);

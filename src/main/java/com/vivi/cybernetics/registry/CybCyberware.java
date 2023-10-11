@@ -1,13 +1,8 @@
 package com.vivi.cybernetics.registry;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.capability.PlayerEnergyStorage;
-import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.cyberware.CyberwareSectionType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -17,9 +12,6 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.function.Supplier;
 
 public class CybCyberware {
-
-    public static Capability<CyberwareInventory> CYBERWARE = CapabilityManager.get(new CapabilityToken<>() { });
-    public static Capability<PlayerEnergyStorage> PLAYER_ENERGY = CapabilityManager.get(new CapabilityToken<>() { });
 
     public static final DeferredRegister<CyberwareSectionType> CYBERWARE_SECTION_TYPES = DeferredRegister.create(new ResourceLocation(Cybernetics.MOD_ID, "cybeware_section_types"), Cybernetics.MOD_ID);
     public static final Supplier<IForgeRegistry<CyberwareSectionType>> CYBERWARE_SECTION_TYPE_REGISTRY = CYBERWARE_SECTION_TYPES.makeRegistry(RegistryBuilder::new);
