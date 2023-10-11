@@ -198,7 +198,6 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             blit(pPoseStack, leftPos + menu.getSlot(i).x - 3, topPos + menu.getSlot(i).y - 1, u, 0, 20, 18, 48, 48);
         }
 
-        RenderHelper.drawLine(new Vector3f(100, 100, 0), new Vector3f(200, 200, 0), new Vector4f(1.0f, 1.0f, 0.0f, 0.0f), 2, 0);
     }
 
     @Override

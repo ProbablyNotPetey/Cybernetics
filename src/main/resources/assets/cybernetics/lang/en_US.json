@@ -47,5 +47,6 @@
     "key.cybernetics.player_cyberware_menu": "View Cyberware",
     "key.cybernetics.category": "Cybernetics",
     "tooltip.cybernetics.description.shift": "Hold _[Shift]_ for description",
-    "tooltip.cybernetics.description.alt": "Hold _[Alt]_ for requirements"
+    "tooltip.cybernetics.description.alt": "Hold _[Alt]_ for requirements",
+    "key.cybernetics.player_abilities_menu": "Abilities"
 }

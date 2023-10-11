@@ -1,6 +1,7 @@
 package com.vivi.cybernetics.event;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.client.gui.AbilityScreen;
 import com.vivi.cybernetics.network.CybPackets;
 import com.vivi.cybernetics.network.packet.C2SDoubleJumpInputPacket;
 import com.vivi.cybernetics.network.packet.C2SOpenCyberwarePacket;
@@ -21,6 +22,7 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onRegisterKeybindignsEvent(RegisterKeyMappingsEvent event) {
         event.register(CybKeybinds.PLAYER_CYBERWARE_MENU);
+        event.register(CybKeybinds.PLAYER_ABILITIES_MENU);
     }
 
     @SubscribeEvent
@@ -29,6 +31,9 @@ public class ClientEvents {
 
         if(CybKeybinds.PLAYER_CYBERWARE_MENU.isDown()) {
             CybPackets.sendToServer(new C2SOpenCyberwarePacket());
+        }
+        if (CybKeybinds.PLAYER_ABILITIES_MENU.isDown()) {
+            Minecraft.getInstance().setScreen(new AbilityScreen());
         }
         handleDoubleJump();
     }
