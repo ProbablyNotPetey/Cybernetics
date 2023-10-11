@@ -9,6 +9,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
 public class AbilityScreen extends Screen {
+
+    public static final int SLICES = 128;
     public AbilityScreen() {
         super(Component.literal("Abilities"));
     }
@@ -21,7 +23,14 @@ public class AbilityScreen extends Screen {
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableTexture();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        drawTorus(poseStack, 40, 80, 0, 180);
+
+        float length = 60;
+        for(int i = 0; i < 6; i++) {
+            RenderSystem.setShaderColor((i + 1) / 6.0f, 0.0f, 0.0f, 1.0f);
+            drawTorus(poseStack, 40, 80, length * i, length * (i+1));
+        }
+
+        drawTorus(poseStack, 40, 80, 60, 120);
 
 
         RenderSystem.enableTexture();
@@ -35,8 +44,11 @@ public class AbilityScreen extends Screen {
         float centerX = minecraft.getWindow().getGuiScaledWidth() / 2.0f;
         float centerY = minecraft.getWindow().getGuiScaledHeight() / 2.0f;
 
-        int slices = 128;
 
+        float totalAngle = stopAngle - startAngle;
+
+        //percent of total slices to use
+        float slices = SLICES * (totalAngle / 360.0F);
 
         poseStack.pushPose();
         poseStack.translate(centerX, centerY, 0.0f);
@@ -47,13 +59,19 @@ public class AbilityScreen extends Screen {
         vertexBuffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION);
         Matrix4f matrix4f = poseStack.last().pose();
 
-        float angle = Mth.DEG_TO_RAD * (360.0f / slices);
+        float angle = Mth.DEG_TO_RAD * (totalAngle / slices);
+        float startRad = Mth.DEG_TO_RAD * startAngle;
         for(int i = 0; i <= slices; i++) {
 
-            float cos = Mth.cos(-angle * i);
-            float sin = Mth.sin(-angle * i);
-            vertexBuffer.vertex(matrix4f, outerRadius * cos, outerRadius * sin, 0).endVertex();
+            float offset = i;
+            if(i + 1 > slices) {
+                offset = slices;
+            }
+
+            float cos = Mth.cos(-(startRad + angle * offset));
+            float sin = Mth.sin(-(startRad + angle * offset));
             vertexBuffer.vertex(matrix4f, innerRadius * cos, innerRadius * sin, 0).endVertex();
+            vertexBuffer.vertex(matrix4f, outerRadius * cos, outerRadius * sin, 0).endVertex();
         }
 
 
