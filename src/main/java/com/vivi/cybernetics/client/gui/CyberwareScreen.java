@@ -63,13 +63,12 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         super.init();
         entityWidgetsToRotate.clear();
         itemMasks.clear();
-        addRenderableWidget(new BackButton(leftPos + 176, topPos + 11));
         LocalPlayer player = Minecraft.getInstance().player;
         fakePlayer = new LocalPlayer(Minecraft.getInstance(), Minecraft.getInstance().level, player.connection, player.getStats(), player.getRecipeBook(), false, false);
-        boxLeft = leftPos + 8;
-        boxTop = topPos + 8;
-        boxRight = leftPos + 200;
-        boxBottom = topPos + 142;
+        boxLeft = leftPos + 1;
+        boxTop = topPos + 1;
+        boxRight = leftPos + 207;
+        boxBottom = topPos + 153;
         state = State.MAIN;
 
         menu.getCyberware().getSections().forEach(section -> {
@@ -87,20 +86,22 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         sectionButtonIterator = sectionButtons.iterator();
         scheduleTask(15, 16 + (2 * sectionButtons.size()), this::initSectionButtons);
 
+        addRenderableWidget(new BackButton(leftPos + 184, topPos + 4));
+
         entityWidget = new EntityWidget(leftPos + 73, topPos - 136, 60, fakePlayer);
         addRenderableWidget(entityWidget);
         moveWidget(entityWidget, leftPos + 73, topPos + 16, 20, Easing.QUART_OUT);
 
-        textWidget = new TextWidget(leftPos + 10, topPos + 130);
+        textWidget = new TextWidget(leftPos + 8, topPos + 4);
         addRenderableWidget(textWidget);
         textWidget.setText(Component.translatable("tooltip.cybernetics.section"));
 
-        int slotX = 20, slotY = 30;
-
+        int slotX = 10, slotY = 30;
+        int rows = 4;
 
         for(int i = 0; i < menu.getCyberware().getLongestSectionSize(); i++) {
 //            addSlot(new CyberwareSlot(cyberware, i, slotX + ((counter % 3) * 24) - 1, slotY + ((counter / 3) * 21) + 1, this.inventory.player));
-            itemMasks.add(new MaskWidget(leftPos + slotX + ((i % 3) * 24) - 5, topPos + slotY + ((i / 3) * 21)));
+            itemMasks.add(new MaskWidget(leftPos + slotX + ((i % rows) * 25) - 5, topPos + slotY + ((i / rows) * 23)));
         }
         maskWidgetIterator = itemMasks.iterator();
     }
@@ -193,8 +194,8 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             if(i == menu.slots.size() - 36) break; //inventory slots should be the last 36 slots in the menu
             if(!menu.getSlot(i).isActive()) continue;
             boolean hasItem = menu.getSlot(i).hasItem();
-            int u = hasItem ? 21 : 0;
-            blit(pPoseStack, leftPos + menu.getSlot(i).x - 4, topPos + menu.getSlot(i).y - 1, u, 0, 21, 18, 48, 48);
+            int u = hasItem ? 20 : 0;
+            blit(pPoseStack, leftPos + menu.getSlot(i).x - 3, topPos + menu.getSlot(i).y - 1, u, 0, 20, 18, 48, 48);
         }
 
         RenderHelper.drawLine(new Vector3f(100, 100, 0), new Vector3f(200, 200, 0), new Vector4f(1.0f, 1.0f, 0.0f, 0.0f), 2, 0);
@@ -202,7 +203,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 
     @Override
     protected void renderLabels(PoseStack poseStack, int pMouseX, int pMouseY) {
-        this.font.draw(poseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY, 4210752);
+
     }
 
     public void updateText(Component text) {
@@ -235,7 +236,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             }
             else if(stateEvent.getState() == State.TRANSITION_MAIN) {
                 fadeInMasks();
-                scheduleTask(10, this::hideMasks);
+                scheduleTask(6, this::hideMasks);
                 sectionButtonIterator = sectionButtons.iterator();
                 scheduleTask(15, 16 + (2 * sectionButtons.size()), this::initSectionButtons);
             }
@@ -410,7 +411,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         @Override
         public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
             MutableComponent drawText = drawUnderscore ? mutableText.copy().append("_") : mutableText.copy();
-            CyberwareScreen.this.font.draw(pPoseStack, drawText, x, y, 0xFFB20000);
+            CyberwareScreen.this.font.draw(pPoseStack, drawText, x, y, 0xff00fff7);
         }
 
         @Override
@@ -516,10 +517,10 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 
         public static final ResourceLocation TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/cyberware/back.png");
         public BackButton(int pX, int pY) {
-            super(pX, pY, 21, 18);
+            super(pX, pY, 20, 18);
             texture = TEXTURE;
-            textureWidth = 21;
-            textureHeight = 21;
+            textureWidth = 24;
+            textureHeight = 24;
         }
 
         @Override
@@ -548,7 +549,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
                 CyberwareScreen.this.updateText(Component.translatable("tooltip.cybernetics.section"));
                 CyberwareScreen.this.clearAll();
                 CyberwareScreen.this.updateState();
-                CyberwareScreen.this.scheduleTask(10, () -> {
+                CyberwareScreen.this.scheduleTask(6, () -> {
                     CyberwareScreen.this.menu.switchActiveSlots(null);
                     CybPackets.sendToServer(new C2SSwitchActiveSlotPacket());
                 });

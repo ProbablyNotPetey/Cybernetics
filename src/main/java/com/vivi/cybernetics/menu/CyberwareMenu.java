@@ -18,23 +18,23 @@ public class CyberwareMenu extends AbstractContainerMenu {
     protected Inventory inventory;
     protected CyberwareInventory cyberware;
     protected final int invX = 24;
-    protected final int invY = 158;
+    protected final int invY = 157;
 
     protected CyberwareMenu(@Nullable MenuType<?> pMenuType, int pContainerId, Inventory inventory, CyberwareInventory cyberware) {
         super(pMenuType, pContainerId);
 
         this.inventory = inventory;
         this.cyberware = cyberware;
-        int x = 20, y = 30;
+        int x = 10, y = 30;
 
-        int yOffset = 0, counter = 0;
+        int counter = 0, rows = 4;
 
         for(int i = 0; i < cyberware.getSlots(); i++) {
             CyberwareSectionType last = i > 0 ? cyberware.getSectionFromSlot(i - 1).getType() : null;
             if(last != null && !last.equals(cyberware.getSectionFromSlot(i).getType())) {
                 counter = 0;
             }
-            addSlot(new CyberwareSlot(cyberware, i, x + ((counter % 3) * 24) - 1, y + ((counter / 3) * 21) + yOffset + 1, this.inventory.player));
+            addSlot(new CyberwareSlot(cyberware, i, x + ((counter % rows) * 25) - 1, y + ((counter / rows) * 23) + 1, this.inventory.player));
             counter++;
         }
 
