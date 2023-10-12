@@ -3,9 +3,12 @@ package com.vivi.cybernetics.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.util.CybAbstractWidget;
-import com.vivi.cybernetics.util.MathHelper;
+import com.vivi.cybernetics.util.Maaath;
+import com.vivi.cybernetics.util.client.Easing;
 import com.vivi.cybernetics.util.client.RenderHelper;
+import com.vivi.cybernetics.util.client.ScreenHelper;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -26,6 +29,21 @@ public class AbilityScreen extends Screen {
         super.init();
         centerX = minecraft.getWindow().getGuiScaledWidth() / 2.0f;
         centerY = minecraft.getWindow().getGuiScaledHeight() / 2.0f;
+
+        int sections = 7;
+        float length = 360.0f / sections;
+        for(int i = 0; i < sections; i++) {
+            addRenderableWidget(new AbilitySlice(60, 95, length * i, length));
+        }
+    }
+
+    @Override
+    public void tick() {
+        this.renderables.forEach(widget -> {
+            if(widget instanceof AbilitySlice slice) {
+                slice.setSelected(slice.isHoveredOrFocused());
+            }
+        });
     }
 
     @Override
@@ -37,13 +55,16 @@ public class AbilityScreen extends Screen {
         RenderSystem.disableTexture();
         RenderHelper.resetShaderColor();
 
-        float length = 60;
-        for(int i = 0; i < 6; i++) {
-            RenderSystem.setShaderColor((i + 1) / 6.0f, 0.0f, 0.0f, 1.0f);
-            drawAnnulus(poseStack, 40 + (4 * i), 80 + (4 * i), length * i, length * (i+1));
-        }
+//        float length = 60;
+//        for(int i = 0; i < 6; i++) {
+//            RenderSystem.setShaderColor((i + 1) / 6.0f, 0.0f, 0.0f, 1.0f);
+//            drawAnnulus(poseStack, 40 + (4 * i), 80 + (4 * i), length * i, length * (i+1));
+//        }
 
 //        drawTorus(poseStack, 40, 80, 60, 120);
+
+        RenderSystem.setShaderColor(0.45f, 0.05f, 0.05f, 0.75f);
+        drawAnnulus(poseStack, 48, 53);
 
 
         RenderSystem.enableTexture();
@@ -109,6 +130,7 @@ public class AbilityScreen extends Screen {
 
     public class AbilitySlice extends CybAbstractWidget {
 
+        private boolean selected;
         private float inner;
         private float outer;
         private float startAngle;
@@ -120,27 +142,73 @@ public class AbilityScreen extends Screen {
             this.outer = outer;
             this.startAngle = startAngle;
             this.totalAngle = totalAngle;
+            this.alpha = 0.75f;
         }
 
         @Override
         public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
 
         }
-
         @Override
         public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
             if(!this.visible) return;
             //converts mouse points to polar
-            float mouseR = MathHelper.toRadius(pMouseX, pMouseY);
-            float mouseT = MathHelper.toAngle(pMouseX, pMouseY);
-            this.isHovered = (mouseR >= inner - 5) && (mouseT >= startAngle) && (mouseT < (startAngle + totalAngle));
+            float mouseR = Maaath.toRadius(pMouseX - centerX, -(pMouseY - centerY));
+            float mouseT = Mth.RAD_TO_DEG * Maaath.toAngle(pMouseX - centerX, -(pMouseY - centerY));
+
+            this.isHovered = (mouseR >= 30) && (mouseT >= startAngle) && (mouseT < (startAngle + totalAngle));
             renderButton(pPoseStack, pMouseX, pMouseY, pPartialTick);
         }
 
         @Override
-        public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+        public void renderButton(PoseStack poseStack, int pMouseX, int pMouseY, float pPartialTick) {
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.disableTexture();
+            RenderHelper.resetShaderColor();
 
-            RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 0.5f);
+            RenderSystem.setShaderColor(0.45f, 0.05f, 0.05f, alpha);
+            drawAnnulus(poseStack, inner, outer, startAngle, startAngle + totalAngle);
+
+            RenderSystem.enableTexture();
+            RenderSystem.disableBlend();
         }
+
+        public void setSelected(boolean selected) {
+            if(this.selected != selected) {
+                if(selected) {
+                    ScreenHelper.addAnimation(AbilityScreen.this, this::getInner, this::setInner, 70, 7, Easing.EXPO_OUT);
+                    ScreenHelper.addAnimation(AbilityScreen.this, this::getOuter, this::setOuter, 105, 7, Easing.EXPO_OUT);
+                    ScreenHelper.addAnimation(AbilityScreen.this, this::getAlpha, this::setAlpha, 0.9f, 7, Easing.EXPO_OUT);
+                }
+                else {
+                    ScreenHelper.addAnimation(AbilityScreen.this, this::getInner, this::setInner, 60, 10, Easing.QUAD_OUT);
+                    ScreenHelper.addAnimation(AbilityScreen.this, this::getOuter, this::setOuter, 95, 10, Easing.QUAD_OUT);
+                    ScreenHelper.addAnimation(AbilityScreen.this, this::getAlpha, this::setAlpha, 0.75f, 7, Easing.EXPO_OUT);
+
+                }
+            }
+            this.selected = selected;
+        }
+
+        public float getInner() {
+            return inner;
+        }
+
+        public float getOuter() {
+            return outer;
+        }
+        public float getAlpha() {
+            return alpha;
+        }
+
+        public void setInner(float inner) {
+            this.inner = inner;
+        }
+
+        public void setOuter(float outer) {
+            this.outer = outer;
+        }
+
     }
 }

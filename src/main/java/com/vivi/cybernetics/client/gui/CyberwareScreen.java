@@ -13,6 +13,7 @@ import com.vivi.cybernetics.network.CybPackets;
 import com.vivi.cybernetics.network.packet.C2SSwitchActiveSlotPacket;
 import com.vivi.cybernetics.util.client.Easing;
 import com.vivi.cybernetics.util.client.RenderHelper;
+import com.vivi.cybernetics.util.client.ScreenHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -164,21 +165,23 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 
         itemMasks.forEach(mask -> mask.render(pPoseStack, pMouseX, pMouseY, frameTimeDelta));
 
-        for(int i = 0; i < entityWidgetsToRotate.size(); i++) {
-            EntityWidgetRotate rotate = entityWidgetsToRotate.get(i);
-            rotate.update(getGameTime(), getPartialTick());
-            if(rotate.isDone()) {
-                entityWidgetsToRotate.remove(i);
-                i--;
-            }
-        }
+//        for(int i = 0; i < entityWidgetsToRotate.size(); i++) {
+//            EntityWidgetRotate rotate = entityWidgetsToRotate.get(i);
+//            rotate.update(getGameTime(), getPartialTick());
+//            if(rotate.isDone()) {
+//                entityWidgetsToRotate.remove(i);
+//                i--;
+//            }
+//        }
     }
 
     public void rotateEntity(EntityWidget widget, float rotation, int duration) {
-        entityWidgetsToRotate.add(new EntityWidgetRotate(widget, rotation, getGameTime(), duration));
+        ScreenHelper.addAnimation(this, widget::getRotation, widget::setRotation, rotation, duration);
+//        entityWidgetsToRotate.add(new EntityWidgetRotate(widget, rotation, getGameTime(), duration));
     }
     public void rotateEntity(EntityWidget widget, float rotation, int duration, Easing easing) {
-        entityWidgetsToRotate.add(new EntityWidgetRotate(widget, rotation, getGameTime(), duration, easing));
+        ScreenHelper.addAnimation(this, widget::getRotation, widget::setRotation, rotation, duration, easing);
+//        entityWidgetsToRotate.add(new EntityWidgetRotate(widget, rotation, getGameTime(), duration, easing));
     }
 
     @Override

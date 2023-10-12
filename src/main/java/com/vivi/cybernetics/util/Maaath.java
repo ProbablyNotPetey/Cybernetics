@@ -3,7 +3,10 @@ package com.vivi.cybernetics.util;
 import com.mojang.math.Vector3f;
 import net.minecraft.util.Mth;
 
-public class MathHelper {
+/**
+ * Class containing shitty math functions that I still have to use for some reason
+ */
+public class Maaath {
 
 
     /**
@@ -13,10 +16,20 @@ public class MathHelper {
         return new Vector3f((float)(center.x()+(radius*Math.cos(angle))),(float) (center.y()+(radius*Math.sin(angle))),0);
     }
 
+    /**
+     * Returns a polar radius for the cartesian point (x,y).
+     */
     public static float toRadius(float x, float y) {
         return Mth.sqrt(x*x + y*y);
     }
+
+    /**
+     * Returns an angle, in radians, for the cartesian point (x,y). Value is between 0 and 2π.
+     */
     public static float toAngle(float x, float y) {
-        return (float) Mth.atan2(y, x);
+//        return wrapAngle((float) Mth.atan2(y, x));
+        float f = (float) Mth.atan2(y, x);
+        if(f < 0) f += (2 * Mth.PI);
+        return f;
     }
 }

@@ -7,7 +7,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.util.MathHelper;
+import com.vivi.cybernetics.util.Maaath;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 public class RenderHelper {
 
@@ -112,10 +111,10 @@ public class RenderHelper {
      */
     public static void drawLine(Vector3f start, Vector3f end, Vector4f color, float width, float offset) {
         double angle = Math.toDegrees(Math.atan2(start.y() - end.y(), start.x() - end.x()));
-        Vector3f start1 = MathHelper.getVertex(start,width/2d,Math.toRadians(angle+90d));
-        Vector3f start2 = MathHelper.getVertex(start,width/2d,Math.toRadians(angle-90d));
-        Vector3f end1 = MathHelper.getVertex(end,width/2d,Math.toRadians(angle-90d));
-        Vector3f end2 = MathHelper.getVertex(end,width/2d,Math.toRadians(angle+90d));
+        Vector3f start1 = Maaath.getVertex(start,width/2d,Math.toRadians(angle+90d));
+        Vector3f start2 = Maaath.getVertex(start,width/2d,Math.toRadians(angle-90d));
+        Vector3f end1 = Maaath.getVertex(end,width/2d,Math.toRadians(angle-90d));
+        Vector3f end2 = Maaath.getVertex(end,width/2d,Math.toRadians(angle+90d));
         BufferBuilder builder = Tesselator.getInstance().getBuilder();
 
         RenderSystem.enableBlend();
