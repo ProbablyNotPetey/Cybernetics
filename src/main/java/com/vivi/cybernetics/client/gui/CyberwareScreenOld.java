@@ -8,7 +8,7 @@ import com.vivi.cybernetics.menu.CyberwareMenu;
 import com.vivi.cybernetics.network.CybPackets;
 import com.vivi.cybernetics.network.packet.C2SSwitchActiveSlotPacket;
 import com.vivi.cybernetics.registry.CybCyberware;
-import com.vivi.cybernetics.util.MouseHelper;
+import com.vivi.cybernetics.util.client.MouseHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;

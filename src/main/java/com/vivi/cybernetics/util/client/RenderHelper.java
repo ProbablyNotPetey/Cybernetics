@@ -1,4 +1,4 @@
-package com.vivi.cybernetics.util;
+package com.vivi.cybernetics.util.client;
 
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -7,6 +7,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.util.MathHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
@@ -132,5 +133,9 @@ public class RenderHelper {
 
         RenderSystem.enableTexture();
         RenderSystem.disableBlend();
+    }
+
+    public static void resetShaderColor() {
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 }

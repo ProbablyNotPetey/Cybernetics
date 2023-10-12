@@ -1,4 +1,4 @@
-package com.vivi.cybernetics.util;
+package com.vivi.cybernetics.util.client;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;

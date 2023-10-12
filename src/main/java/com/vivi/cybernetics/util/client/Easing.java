@@ -1,4 +1,4 @@
-package com.vivi.cybernetics.util;
+package com.vivi.cybernetics.util.client;
 
 /**
  * Common easing functions to be used with {@link net.minecraft.util.Mth#lerp(float, float, float)}.

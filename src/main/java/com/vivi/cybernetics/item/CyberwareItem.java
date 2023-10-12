@@ -1,18 +1,15 @@
 package com.vivi.cybernetics.item;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.registry.CybCyberware;
-import com.vivi.cybernetics.registry.CybItems;
 import com.vivi.cybernetics.registry.CybTags;
 import com.vivi.cybernetics.util.CyberwareHelper;
-import com.vivi.cybernetics.util.TooltipHelper;
+import com.vivi.cybernetics.util.client.TooltipHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;

@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.util.EnergyGuiComponent;
 import com.vivi.cybernetics.menu.CyberwareStationMenu;
-import com.vivi.cybernetics.util.MouseHelper;
+import com.vivi.cybernetics.util.client.MouseHelper;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
