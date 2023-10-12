@@ -6,6 +6,7 @@ import com.vivi.cybernetics.network.CybPackets;
 import com.vivi.cybernetics.network.packet.C2SDoubleJumpInputPacket;
 import com.vivi.cybernetics.network.packet.C2SOpenCyberwarePacket;
 import com.vivi.cybernetics.registry.CybKeybinds;
+import com.vivi.cybernetics.util.client.InputHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -27,12 +28,12 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void onClientTickEvent(TickEvent.ClientTickEvent event) {
-        if(event.phase != TickEvent.Phase.START) return;
+        if(event.phase != TickEvent.Phase.END) return;
 
         if(CybKeybinds.PLAYER_CYBERWARE_MENU.isDown()) {
             CybPackets.sendToServer(new C2SOpenCyberwarePacket());
         }
-        if (CybKeybinds.PLAYER_ABILITIES_MENU.isDown()) {
+        if (InputHelper.isAbilityKeyHeld() && Minecraft.getInstance().screen == null) {
             Minecraft.getInstance().setScreen(new AbilityScreen());
         }
         handleDoubleJump();

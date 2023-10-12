@@ -1,12 +1,15 @@
 package com.vivi.cybernetics.client.gui;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.util.CybAbstractWidget;
+import com.vivi.cybernetics.registry.CybKeybinds;
 import com.vivi.cybernetics.util.Maaath;
 import com.vivi.cybernetics.util.client.Easing;
+import com.vivi.cybernetics.util.client.InputHelper;
 import com.vivi.cybernetics.util.client.RenderHelper;
 import com.vivi.cybernetics.util.client.ScreenHelper;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -44,6 +47,16 @@ public class AbilityScreen extends Screen {
                 slice.setSelected(slice.isHoveredOrFocused());
             }
         });
+
+        Cybernetics.LOGGER.info("Key held: " + InputHelper.isAbilityKeyHeld());
+//        Cybernetics.LOGGER.info("Key down: " + CybKeybinds.PLAYER_CYBERWARE_MENU.isDown());
+        if(!InputHelper.isAbilityKeyHeld()) {
+            Cybernetics.LOGGER.info("Removing screen... why?");
+            minecraft.setScreen(null);
+        }
+//        if(!CybKeybinds.PLAYER_CYBERWARE_MENU.isDown()) {
+//            minecraft.setScreen(null);
+//        }
     }
 
     @Override
@@ -64,7 +77,7 @@ public class AbilityScreen extends Screen {
 //        drawTorus(poseStack, 40, 80, 60, 120);
 
         RenderSystem.setShaderColor(0.45f, 0.05f, 0.05f, 0.75f);
-        drawAnnulus(poseStack, 48, 53);
+        drawAnnulus(poseStack, 53, 55);
 
 
         RenderSystem.enableTexture();
@@ -122,6 +135,10 @@ public class AbilityScreen extends Screen {
         poseStack.popPose();
     }
 
+    @Override
+    public void removed() {
+        Cybernetics.LOGGER.info("Removed!");
+    }
 
     @Override
     public boolean isPauseScreen() {
@@ -156,7 +173,7 @@ public class AbilityScreen extends Screen {
             float mouseR = Maaath.toRadius(pMouseX - centerX, -(pMouseY - centerY));
             float mouseT = Mth.RAD_TO_DEG * Maaath.toAngle(pMouseX - centerX, -(pMouseY - centerY));
 
-            this.isHovered = (mouseR >= 30) && (mouseT >= startAngle) && (mouseT < (startAngle + totalAngle));
+            this.isHovered = (mouseR >= 55) && (mouseT >= startAngle) && (mouseT < (startAngle + totalAngle));
             renderButton(pPoseStack, pMouseX, pMouseY, pPartialTick);
         }
 
@@ -167,7 +184,8 @@ public class AbilityScreen extends Screen {
             RenderSystem.disableTexture();
             RenderHelper.resetShaderColor();
 
-            RenderSystem.setShaderColor(0.45f, 0.05f, 0.05f, alpha);
+//            RenderSystem.setShaderColor(0.45f, 0.05f, 0.05f, alpha);
+            RenderSystem.setShaderColor(0.0f, 1.0f, 0.968f, alpha);
             drawAnnulus(poseStack, inner, outer, startAngle, startAngle + totalAngle);
 
             RenderSystem.enableTexture();
@@ -177,14 +195,14 @@ public class AbilityScreen extends Screen {
         public void setSelected(boolean selected) {
             if(this.selected != selected) {
                 if(selected) {
-                    ScreenHelper.addAnimation(AbilityScreen.this, this::getInner, this::setInner, 70, 7, Easing.EXPO_OUT);
-                    ScreenHelper.addAnimation(AbilityScreen.this, this::getOuter, this::setOuter, 105, 7, Easing.EXPO_OUT);
-                    ScreenHelper.addAnimation(AbilityScreen.this, this::getAlpha, this::setAlpha, 0.9f, 7, Easing.EXPO_OUT);
+                    ScreenHelper.addAnimation(AbilityScreen.this, this::getInner, this::setInner, 70, 7, Easing.CIRC_OUT);
+                    ScreenHelper.addAnimation(AbilityScreen.this, this::getOuter, this::setOuter, 105, 7, Easing.CIRC_OUT);
+                    ScreenHelper.addAnimation(AbilityScreen.this, this::getAlpha, this::setAlpha, 0.9f, 7, Easing.CIRC_OUT);
                 }
                 else {
                     ScreenHelper.addAnimation(AbilityScreen.this, this::getInner, this::setInner, 60, 10, Easing.QUAD_OUT);
                     ScreenHelper.addAnimation(AbilityScreen.this, this::getOuter, this::setOuter, 95, 10, Easing.QUAD_OUT);
-                    ScreenHelper.addAnimation(AbilityScreen.this, this::getAlpha, this::setAlpha, 0.75f, 7, Easing.EXPO_OUT);
+                    ScreenHelper.addAnimation(AbilityScreen.this, this::getAlpha, this::setAlpha, 0.75f, 7, Easing.CIRC_OUT);
 
                 }
             }
