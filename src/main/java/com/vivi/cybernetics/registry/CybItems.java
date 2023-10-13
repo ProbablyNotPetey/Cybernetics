@@ -58,6 +58,7 @@ public class CybItems {
                     new ImmutablePair<>(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(UUID.fromString("d4490a2f-e05e-4ddf-beea-66ec7ca6e5f1"), "Skeleton Armor Toughness", 2.0, AttributeModifier.Operation.ADDITION))
                     ).hideIncompatibilities()),
             HEALTH_BOOST_SKELETON = ITEMS.register("health_boost_skeleton", () -> new AttributeCyberwareItem(cyberwareProps(), new ImmutablePair<>(Attributes.MAX_HEALTH, new AttributeModifier(UUID.fromString("b2014109-6700-4e83-9fc6-5250bd9d558c"), "Health Boost Skeleton", 5, AttributeModifier.Operation.ADDITION)))),
+            KINETIC_DISCHARGER = ITEMS.register("kinetic_discharger", () -> new KineticDischargerItem(cyberwareProps())),
 
             //SKIN
             FIRE_RESISTANCE_SKIN = ITEMS.register("fire_resistance_skin", () -> new MobEffectCyberwareItem(cyberwareProps(), new ImmutableTriple<>(MobEffects.FIRE_RESISTANCE, 319, 0))),

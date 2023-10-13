@@ -1,22 +1,20 @@
 package com.vivi.cybernetics.network.packet;
 
-import com.vivi.cybernetics.network.ClientPacketHandler;
+import com.vivi.cybernetics.item.KineticDischargerItem;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
-/*
-public class S2CDoubleJumpPacket extends Packet {
 
-    public S2CDoubleJumpPacket() {
-
-    }
-    public S2CDoubleJumpPacket(FriendlyByteBuf buf) {
+public class C2SSpikeShockwavePacket extends Packet {
+    public C2SSpikeShockwavePacket() {
 
     }
 
+    public C2SSpikeShockwavePacket(FriendlyByteBuf buf) {
+
+    }
     @Override
     public void toBytes(FriendlyByteBuf buf) {
 
@@ -26,9 +24,9 @@ public class S2CDoubleJumpPacket extends Packet {
     public boolean handle(Supplier<NetworkEvent.Context> sup) {
         NetworkEvent.Context ctx = sup.get();
         ctx.enqueueWork(() -> {
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientPacketHandler.handleDoubleJumpPacket(ctx));
+            ServerPlayer player = ctx.getSender();
+            KineticDischargerItem.shockwave(player, player.level);
         });
         return true;
     }
 }
- */

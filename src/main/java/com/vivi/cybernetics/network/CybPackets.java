@@ -41,19 +41,25 @@ public class CybPackets {
                 .consumerMainThread(C2SOpenCyberwarePacket::handle)
                 .add();
 
-        network.messageBuilder(C2SDoubleJumpInputPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(C2SDoubleJumpInputPacket::new)
-                .encoder(C2SDoubleJumpInputPacket::toBytes)
-                .consumerMainThread(C2SDoubleJumpInputPacket::handle)
+        network.messageBuilder(C2SDoubleJumpPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(C2SDoubleJumpPacket::new)
+                .encoder(C2SDoubleJumpPacket::toBytes)
+                .consumerMainThread(C2SDoubleJumpPacket::handle)
+                .add();
+
+        network.messageBuilder(C2SSpikePacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(C2SSpikePacket::new)
+                .encoder(C2SSpikePacket::toBytes)
+                .consumerMainThread(C2SSpikePacket::handle)
+                .add();
+
+        network.messageBuilder(C2SSpikeShockwavePacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(C2SSpikeShockwavePacket::new)
+                .encoder(C2SSpikeShockwavePacket::toBytes)
+                .consumerMainThread(C2SSpikeShockwavePacket::handle)
                 .add();
 
         //S2C
-
-        network.messageBuilder(S2CDoubleJumpPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(S2CDoubleJumpPacket::new)
-                .encoder(S2CDoubleJumpPacket::toBytes)
-                .consumerMainThread(S2CDoubleJumpPacket::handle)
-                .add();
 
         network.messageBuilder(S2CSyncCyberwarePacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(S2CSyncCyberwarePacket::new)

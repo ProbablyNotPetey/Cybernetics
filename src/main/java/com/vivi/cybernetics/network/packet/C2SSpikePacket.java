@@ -1,6 +1,7 @@
 package com.vivi.cybernetics.network.packet;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.item.KineticDischargerItem;
 import com.vivi.cybernetics.item.ReinforcedTendonsItem;
 import com.vivi.cybernetics.network.CybPackets;
 import com.vivi.cybernetics.registry.CybItems;
@@ -11,13 +12,13 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class C2SDoubleJumpInputPacket extends Packet {
+public class C2SSpikePacket extends Packet {
 
-    public C2SDoubleJumpInputPacket() {
+    public C2SSpikePacket() {
 
     }
 
-    public C2SDoubleJumpInputPacket(FriendlyByteBuf buf) {
+    public C2SSpikePacket(FriendlyByteBuf buf) {
 
     }
     @Override
@@ -30,11 +31,9 @@ public class C2SDoubleJumpInputPacket extends Packet {
         NetworkEvent.Context ctx = sup.get();
         ctx.enqueueWork(() -> {
             ServerPlayer player = ctx.getSender();
-            if(CyberwareHelper.hasCyberwareItem(player, CybItems.REINFORCED_TENDONS.get())) {
-                CybPackets.sendToClient(new S2CDoubleJumpPacket(), player);
-                ReinforcedTendonsItem.doubleJump(player);
-            }
+            KineticDischargerItem.spike(player);
         });
         return true;
     }
 }
+
