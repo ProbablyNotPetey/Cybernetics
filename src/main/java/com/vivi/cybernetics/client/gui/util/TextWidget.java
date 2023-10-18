@@ -67,6 +67,16 @@ public class TextWidget extends CybAbstractWidget {
     public void setText(Component text) {
         this.text = text;
         animationMode = 1;
+        character = 0;
+    }
+    public void setText(Component text, boolean instant) {
+        if(instant) {
+            this.text = text;
+            this.mutableText = text.copy();
+        }
+        else {
+            setText(text);
+        }
     }
 
     public int getTextWidth() {

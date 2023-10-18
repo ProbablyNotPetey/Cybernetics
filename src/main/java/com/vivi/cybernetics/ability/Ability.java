@@ -33,6 +33,7 @@ public class Ability implements INBTSerializable<CompoundTag> {
     }
 
     public void enable(Player player) {
+        if(cooldown > -1) return;
         this.enabled = true;
         onEnable(player);
     }
@@ -52,6 +53,10 @@ public class Ability implements INBTSerializable<CompoundTag> {
 
     public int getCooldown() {
         return cooldown;
+    }
+
+    public void setCooldown(int cooldown) {
+        this.cooldown = cooldown;
     }
 
     @Override

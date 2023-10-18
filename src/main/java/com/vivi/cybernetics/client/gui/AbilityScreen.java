@@ -69,7 +69,7 @@ public class AbilityScreen extends Screen {
         textWidget.x =  (int) centerX - (textWidget.getTextWidth() / 2);
         this.renderables.forEach(widget -> {
             if(widget instanceof AbilitySlice slice) {
-                slice.setSelected(slice.isHoveredOrFocused());
+                slice.setSelected(slice.isHoveredOrFocused() && slice.getAbility().getCooldown() == -1);
             }
         });
 
@@ -108,7 +108,8 @@ public class AbilityScreen extends Screen {
     }
 
     public void updateText(Component text) {
-        textWidget.setText(text);
+        textWidget.setText(text, true);
+        textWidget.x = (int) centerX - (textWidget.getTextWidth() / 2);
     }
 
     private void drawAnnulus(PoseStack poseStack, float innerRadius, float outerRadius) {
@@ -233,6 +234,11 @@ public class AbilityScreen extends Screen {
                 RenderSystem.setShaderColor(0.45f, 0.05f, 0.05f, alpha);
             }
             drawAnnulus(poseStack, inner, outer, startAngle, startAngle + totalAngle);
+
+            if(ability.getCooldown() > 0) {
+                RenderSystem.setShaderColor(0.25f, 0.25f, 0.25f, alpha);
+                drawAnnulus(poseStack, inner, outer, startAngle + ((totalAngle / 2) * (1 - ((float) ability.getCooldown() / ability.getType().getMaxCooldown()))), startAngle + totalAngle - ((totalAngle / 2) * (1 - ((float) ability.getCooldown() / ability.getType().getMaxCooldown()))));
+            }
 
             RenderSystem.enableTexture();
             RenderSystem.disableBlend();

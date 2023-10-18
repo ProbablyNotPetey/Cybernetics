@@ -5,7 +5,7 @@ import net.minecraft.world.entity.player.Player;
 //This should be a registry
 public class AbilityType {
 
-    private final int maxCooldown;
+    protected final int maxCooldown;
     public AbilityType(int maxCooldown) {
         this.maxCooldown = maxCooldown;
     }
@@ -23,5 +23,9 @@ public class AbilityType {
     }
     public void onDisable(Ability ability, Player player) {
 
+    }
+
+    public int getMaxCooldown() {
+        return maxCooldown;
     }
 }
