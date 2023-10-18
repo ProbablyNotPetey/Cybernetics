@@ -1,6 +1,7 @@
 {
     "replace": false,
     "values": [
-
+        "cybernetics:stomach_filter",
+        "cybernetics:synaptic_disabler"
     ]
 }

@@ -11,6 +11,7 @@ import com.vivi.cybernetics.network.packet.C2SSpikePacket;
 import com.vivi.cybernetics.network.packet.C2SSpikeShockwavePacket;
 import com.vivi.cybernetics.registry.CybItems;
 import com.vivi.cybernetics.registry.CybKeybinds;
+import com.vivi.cybernetics.util.AbilityHelper;
 import com.vivi.cybernetics.util.CyberwareHelper;
 import com.vivi.cybernetics.util.client.InputHelper;
 import net.minecraft.client.Minecraft;
@@ -41,7 +42,7 @@ public class ClientEvents {
         if(CybKeybinds.PLAYER_CYBERWARE_MENU.isDown()) {
             CybPackets.sendToServer(new C2SOpenCyberwarePacket());
         }
-        if (InputHelper.isAbilityKeyHeld() && Minecraft.getInstance().screen == null) {
+        if (InputHelper.isAbilityKeyHeld() && Minecraft.getInstance().screen == null && AbilityHelper.getAbilities(Minecraft.getInstance().player).isPresent()) {
             Minecraft.getInstance().setScreen(new AbilityScreen());
         }
         handleDoubleJump();

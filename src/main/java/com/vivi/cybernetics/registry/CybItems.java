@@ -49,6 +49,7 @@ public class CybItems {
 
             //LOWER ORGANS
             STOMACH_FILTER = ITEMS.register("stomach_filter", () -> new StomachFilterItem(cyberwareProps())),
+            SYNAPTIC_DISABLER = ITEMS.register("synaptic_disabler", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.SYNAPTIC_DISABLER)),
 
 
             //SKELETON

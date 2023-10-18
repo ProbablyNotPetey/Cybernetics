@@ -3,6 +3,7 @@ package com.vivi.cybernetics.registry;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.ability.AbilityType;
 import com.vivi.cybernetics.ability.NightVisionAbilityType;
+import com.vivi.cybernetics.ability.SynapticDisablerAbilityType;
 import com.vivi.cybernetics.cyberware.CyberwareSectionType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -20,7 +21,8 @@ public class CybAbilities {
 
 
     public static final RegistryObject<AbilityType>
-            NIGHT_VISION = ABILITY_TYPES.register("night_vision", NightVisionAbilityType::new)
+            NIGHT_VISION = ABILITY_TYPES.register("night_vision", NightVisionAbilityType::new),
+            SYNAPTIC_DISABLER = ABILITY_TYPES.register("synaptic_disabler", SynapticDisablerAbilityType::new)
     ;
 
 

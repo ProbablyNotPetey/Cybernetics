@@ -35,6 +35,7 @@ public class AbilityHelper {
     }
 
     public static LazyOptional<PlayerAbilities> getAbilities(Player player) {
+        if(player == null) return LazyOptional.empty();
         return player.getCapability(Cybernetics.PLAYER_ABILITIES);
     }
 

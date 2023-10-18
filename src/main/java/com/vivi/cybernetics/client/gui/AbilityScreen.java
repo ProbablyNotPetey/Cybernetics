@@ -5,24 +5,38 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.ability.Ability;
+import com.vivi.cybernetics.capability.PlayerAbilities;
 import com.vivi.cybernetics.client.gui.util.CybAbstractWidget;
+import com.vivi.cybernetics.client.gui.util.TextWidget;
+import com.vivi.cybernetics.network.CybPackets;
+import com.vivi.cybernetics.network.packet.C2SModifyAbilitiesPacket;
+import com.vivi.cybernetics.registry.CybAbilities;
 import com.vivi.cybernetics.registry.CybKeybinds;
+import com.vivi.cybernetics.util.AbilityHelper;
 import com.vivi.cybernetics.util.Maaath;
 import com.vivi.cybernetics.util.client.Easing;
 import com.vivi.cybernetics.util.client.InputHelper;
 import com.vivi.cybernetics.util.client.RenderHelper;
 import com.vivi.cybernetics.util.client.ScreenHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
 
 public class AbilityScreen extends Screen {
 
+    public static final int SLICES = 128;
     private float centerX;
     private float centerY;
-    public static final int SLICES = 128;
+    private long time;
+
+    private Player player;
+    private TextWidget textWidget;
     public AbilityScreen() {
         super(Component.literal("Abilities"));
     }
@@ -30,28 +44,37 @@ public class AbilityScreen extends Screen {
     @Override
     protected void init() {
         super.init();
+        time = 0L;
+        player = Minecraft.getInstance().player;
         centerX = minecraft.getWindow().getGuiScaledWidth() / 2.0f;
         centerY = minecraft.getWindow().getGuiScaledHeight() / 2.0f;
 
-        int sections = 7;
+        PlayerAbilities abilities = AbilityHelper.getAbilities(player).orElse(null);
+        if(abilities == null) return;
+        int sections = abilities.getAbilities().size();
         float length = 360.0f / sections;
         for(int i = 0; i < sections; i++) {
-            addRenderableWidget(new AbilitySlice(60, 95, length * i, length));
+            addRenderableWidget(new AbilitySlice(abilities.getAbilities().get(i), 60, 95, length * i, length));
         }
+        textWidget = new TextWidget(this, (int) centerX, (int) centerY);
+        textWidget.y -= textWidget.getTextHeight() / 2;
+        addRenderableWidget(textWidget);
+        textWidget.setText(Component.literal("Abilities"));
     }
 
     @Override
     public void tick() {
+        time++;
+        textWidget.tick(time);
+        textWidget.x =  (int) centerX - (textWidget.getTextWidth() / 2);
         this.renderables.forEach(widget -> {
             if(widget instanceof AbilitySlice slice) {
                 slice.setSelected(slice.isHoveredOrFocused());
             }
         });
 
-        Cybernetics.LOGGER.info("Key held: " + InputHelper.isAbilityKeyHeld());
 //        Cybernetics.LOGGER.info("Key down: " + CybKeybinds.PLAYER_CYBERWARE_MENU.isDown());
         if(!InputHelper.isAbilityKeyHeld()) {
-            Cybernetics.LOGGER.info("Removing screen... why?");
             minecraft.setScreen(null);
         }
 //        if(!CybKeybinds.PLAYER_CYBERWARE_MENU.isDown()) {
@@ -82,6 +105,10 @@ public class AbilityScreen extends Screen {
 
         RenderSystem.enableTexture();
         RenderSystem.disableBlend();
+    }
+
+    public void updateText(Component text) {
+        textWidget.setText(text);
     }
 
     private void drawAnnulus(PoseStack poseStack, float innerRadius, float outerRadius) {
@@ -137,7 +164,20 @@ public class AbilityScreen extends Screen {
 
     @Override
     public void removed() {
-        Cybernetics.LOGGER.info("Removed!");
+        this.renderables.forEach(widget -> {
+            if(widget instanceof AbilitySlice slice && slice.isSelected()) {
+                C2SModifyAbilitiesPacket.OpCode opCode;
+                if(slice.getAbility().isEnabled()) {
+                    opCode = C2SModifyAbilitiesPacket.OpCode.DISABLE;
+                    AbilityHelper.disableAbility(player, slice.getAbility().getType());
+                }
+                else {
+                    opCode = C2SModifyAbilitiesPacket.OpCode.ENABLE;
+                    AbilityHelper.enableAbility(player, slice.getAbility().getType());
+                }
+                CybPackets.sendToServer(new C2SModifyAbilitiesPacket(slice.getAbility().getType(), opCode));
+            }
+        });
     }
 
     @Override
@@ -152,7 +192,8 @@ public class AbilityScreen extends Screen {
         private float outer;
         private float startAngle;
         private float totalAngle;
-        public AbilitySlice(float inner, float outer, float startAngle, float totalAngle) {
+        private final Ability ability;
+        public AbilitySlice(Ability ability, float inner, float outer, float startAngle, float totalAngle) {
             super((int) centerX, (int) centerY, 1, 1, Component.empty());
             this.playSound = false;
             this.inner = inner;
@@ -160,6 +201,7 @@ public class AbilityScreen extends Screen {
             this.startAngle = startAngle;
             this.totalAngle = totalAngle;
             this.alpha = 0.75f;
+            this.ability = ability;
         }
 
         @Override
@@ -184,8 +226,12 @@ public class AbilityScreen extends Screen {
             RenderSystem.disableTexture();
             RenderHelper.resetShaderColor();
 
-//            RenderSystem.setShaderColor(0.45f, 0.05f, 0.05f, alpha);
-            RenderSystem.setShaderColor(0.0f, 1.0f, 0.968f, alpha);
+            if(ability.isEnabled()) {
+                RenderSystem.setShaderColor(0.0f, 1.0f, 0.968f, alpha);
+            }
+            else {
+                RenderSystem.setShaderColor(0.45f, 0.05f, 0.05f, alpha);
+            }
             drawAnnulus(poseStack, inner, outer, startAngle, startAngle + totalAngle);
 
             RenderSystem.enableTexture();
@@ -198,15 +244,20 @@ public class AbilityScreen extends Screen {
                     ScreenHelper.addAnimation(AbilityScreen.this, this::getInner, this::setInner, 70, 7, Easing.CIRC_OUT);
                     ScreenHelper.addAnimation(AbilityScreen.this, this::getOuter, this::setOuter, 105, 7, Easing.CIRC_OUT);
                     ScreenHelper.addAnimation(AbilityScreen.this, this::getAlpha, this::setAlpha, 0.9f, 7, Easing.CIRC_OUT);
+                    ResourceLocation abilityRLoc = CybAbilities.ABILITY_TYPE_REGISTRY.get().getKey(ability.getType());
+                    AbilityScreen.this.updateText(Component.translatable("tooltip." + abilityRLoc.getNamespace() + ".ability." + abilityRLoc.getPath()));
                 }
                 else {
                     ScreenHelper.addAnimation(AbilityScreen.this, this::getInner, this::setInner, 60, 10, Easing.QUAD_OUT);
                     ScreenHelper.addAnimation(AbilityScreen.this, this::getOuter, this::setOuter, 95, 10, Easing.QUAD_OUT);
                     ScreenHelper.addAnimation(AbilityScreen.this, this::getAlpha, this::setAlpha, 0.75f, 7, Easing.CIRC_OUT);
-
                 }
             }
             this.selected = selected;
+        }
+
+        public boolean isSelected() {
+            return selected;
         }
 
         public float getInner() {
@@ -228,5 +279,8 @@ public class AbilityScreen extends Screen {
             this.outer = outer;
         }
 
+        public Ability getAbility() {
+            return ability;
+        }
     }
 }

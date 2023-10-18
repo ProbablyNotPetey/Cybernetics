@@ -34,6 +34,8 @@
     "tooltip.cybernetics.section.legs": "Legs",
     "tooltip.cybernetics.section.feet": "Feet",
 
+    "tooltip.cybernetics.ability.night_vision": "Toggle Night Vision",
+
     "tooltip.cybernetics.mk1_optics.description": "A basic cybernetic eye system. Displays information about the user's _stored energy_ and _rejection_, as well as _nearby mob health_.",
     "tooltip.cybernetics.mk2_optics.description": "An upgraded cybernetic eye system. Along with the effects of the Mk1, it allows the user to _scan nearby mobs_, highlighting them.",
     "tooltip.cybernetics.mk3_optics.description": "A advanced cybernetic eye system.  Along with the effects of the Mk2, it allows the user to ",

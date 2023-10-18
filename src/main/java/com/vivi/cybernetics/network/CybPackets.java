@@ -59,6 +59,12 @@ public class CybPackets {
                 .consumerMainThread(C2SSpikeShockwavePacket::handle)
                 .add();
 
+        network.messageBuilder(C2SModifyAbilitiesPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(C2SModifyAbilitiesPacket::new)
+                .encoder(C2SModifyAbilitiesPacket::toBytes)
+                .consumerMainThread(C2SModifyAbilitiesPacket::handle)
+                .add();
+
         //S2C
 
         network.messageBuilder(S2CSyncCyberwarePacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)

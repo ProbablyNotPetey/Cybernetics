@@ -21,7 +21,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
@@ -91,7 +90,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         addRenderableWidget(entityWidget);
         moveWidget(entityWidget, leftPos + 73, topPos + 16, 20, Easing.QUART_OUT);
 
-        textWidget = new TextWidget(leftPos + 8, topPos + 4);
+        textWidget = new TextWidget(this, leftPos + 8, topPos + 4);
         addRenderableWidget(textWidget);
         textWidget.setText(Component.translatable("tooltip.cybernetics.section"));
 
@@ -110,6 +109,8 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         super.containerTick();
         fakePlayer.tickCount++;
         textWidget.tick(time);
+
+
         this.renderables.forEach(widget -> {
             if(widget instanceof CyberwareButton button) {
                 button.update();
@@ -364,64 +365,6 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
                     CyberwareScreen.this.moveWidget(this, leftPos + 73, topPos + 16, 20, Easing.CUBIC_IN_OUT);
                 }
             }
-        }
-    }
-
-    public class TextWidget extends CybAbstractWidget {
-
-        private Component text;
-        private MutableComponent mutableText;
-        private boolean drawUnderscore = false;
-        private int animationMode = 0; //0: no animate, 1: delete, 2: write
-        private int character = 0;
-        public TextWidget(int pX, int pY) {
-            super(pX, pY, 1, 1, Component.empty());
-            this.playSound = false;
-            text = Component.empty();
-            mutableText = text.copy();
-        }
-
-
-        public void tick(long time) {
-            if(time % 10 == 0) {
-                drawUnderscore = !drawUnderscore;
-            }
-
-            if(mutableText.getString().equals("") && animationMode == 1) {
-                animationMode = 2;
-            }
-
-            if(mutableText.getString().equals(text.getString()) && animationMode == 2) {
-                animationMode = 0;
-                character = 0;
-            }
-
-
-            if(animationMode == 1) {
-                mutableText = Component.literal(mutableText.getString().substring(0, mutableText.getString().length() - 1));
-            }
-            if(animationMode == 2) {
-                mutableText = Component.literal(text.getString(character++));
-            }
-
-
-
-        }
-
-        @Override
-        public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-            MutableComponent drawText = drawUnderscore ? mutableText.copy().append("_") : mutableText.copy();
-            CyberwareScreen.this.font.draw(pPoseStack, drawText, x, y, 0xff00fff7);
-        }
-
-        @Override
-        public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
-
-        }
-
-        public void setText(Component text) {
-            this.text = text;
-            animationMode = 1;
         }
     }
 

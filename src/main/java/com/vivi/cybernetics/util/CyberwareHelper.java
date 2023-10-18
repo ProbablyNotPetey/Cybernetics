@@ -83,6 +83,7 @@ public class CyberwareHelper {
      * Gets a player's cyberware as a lazy optional.
      */
     public static LazyOptional<CyberwareInventory> getCyberware(Player player) {
+        if(player == null) return LazyOptional.empty();
         return player.getCapability(Cybernetics.CYBERWARE);
     }
 }
