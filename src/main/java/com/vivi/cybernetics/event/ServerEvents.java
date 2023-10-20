@@ -5,6 +5,7 @@ import com.vivi.cybernetics.ability.Ability;
 import com.vivi.cybernetics.capability.PlayerAbilities;
 import com.vivi.cybernetics.item.CyberwareItem;
 import com.vivi.cybernetics.registry.CybItems;
+import com.vivi.cybernetics.registry.CybMobEffects;
 import com.vivi.cybernetics.registry.CybTags;
 import com.vivi.cybernetics.util.AbilityHelper;
 import com.vivi.cybernetics.util.CyberwareHelper;
@@ -13,6 +14,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
@@ -21,6 +23,7 @@ import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -40,6 +43,15 @@ public class ServerEvents {
             }
         });
         AbilityHelper.getAbilities(player).ifPresent(PlayerAbilities::tickAbilities);
+    }
+
+    @SubscribeEvent
+    public static void onLivingTick(LivingEvent.LivingTickEvent event) {
+        if(event.getEntity().level.isClientSide) return;
+        LivingEntity entity = event.getEntity();
+        if(entity.hasEffect(CybMobEffects.PARALYZED.get())) {
+            entity.setJumping(false);
+        }
     }
 
     @SubscribeEvent

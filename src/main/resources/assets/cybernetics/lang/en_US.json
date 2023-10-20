@@ -35,6 +35,10 @@
     "tooltip.cybernetics.section.feet": "Feet",
 
     "tooltip.cybernetics.ability.night_vision": "Toggle Night Vision",
+    "tooltip.cybernetics.ability.synaptic_disabler": "Synaptic Disabler",
+
+    "tooltip.cybernetics.description.shift": "Hold _[Shift]_ for description",
+    "tooltip.cybernetics.description.alt": "Hold _[Alt]_ for requirements",
 
     "tooltip.cybernetics.mk1_optics.description": "A basic cybernetic eye system. Displays information about the user's _stored energy_ and _rejection_, as well as _nearby mob health_.",
     "tooltip.cybernetics.mk2_optics.description": "An upgraded cybernetic eye system. Along with the effects of the Mk1, it allows the user to _scan nearby mobs_, highlighting them.",
@@ -48,7 +52,6 @@
 
     "key.cybernetics.player_cyberware_menu": "View Cyberware",
     "key.cybernetics.category": "Cybernetics",
-    "tooltip.cybernetics.description.shift": "Hold _[Shift]_ for description",
-    "tooltip.cybernetics.description.alt": "Hold _[Alt]_ for requirements",
-    "key.cybernetics.player_abilities_menu": "Abilities"
+    "key.cybernetics.player_abilities_menu": "Abilities",
+    "effect.cybernetics.paralyzed": "Paralyzed"
 }

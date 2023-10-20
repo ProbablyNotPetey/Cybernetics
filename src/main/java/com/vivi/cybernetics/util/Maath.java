@@ -6,7 +6,7 @@ import net.minecraft.util.Mth;
 /**
  * Class containing shitty math functions that I still have to use for some reason
  */
-public class Maaath {
+public class Maath {
 
 
     /**
@@ -31,5 +31,15 @@ public class Maaath {
         float f = (float) Mth.atan2(y, x);
         if(f < 0) f += (2 * Mth.PI);
         return f;
+    }
+
+    /**
+     * Returns cartesian values from the polar point (r, t)
+     */
+    public static float toX(float r, float t) {
+        return r * Mth.cos(t);
+    }
+    public static float toY(float r, float t) {
+        return r * Mth.sin(t);
     }
 }

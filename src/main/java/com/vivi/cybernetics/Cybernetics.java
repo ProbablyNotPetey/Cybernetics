@@ -61,6 +61,7 @@ public class Cybernetics {
         CybRecipeTypes.register(modEventBus);
         CybCyberware.register(modEventBus);
         CybAbilities.register(modEventBus);
+        CybMobEffects.register(modEventBus);
 
         //Setup
 

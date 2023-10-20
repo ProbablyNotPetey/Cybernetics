@@ -1,6 +1,5 @@
 package com.vivi.cybernetics.client.gui;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
@@ -12,9 +11,8 @@ import com.vivi.cybernetics.client.gui.util.TextWidget;
 import com.vivi.cybernetics.network.CybPackets;
 import com.vivi.cybernetics.network.packet.C2SModifyAbilitiesPacket;
 import com.vivi.cybernetics.registry.CybAbilities;
-import com.vivi.cybernetics.registry.CybKeybinds;
 import com.vivi.cybernetics.util.AbilityHelper;
-import com.vivi.cybernetics.util.Maaath;
+import com.vivi.cybernetics.util.Maath;
 import com.vivi.cybernetics.util.client.Easing;
 import com.vivi.cybernetics.util.client.InputHelper;
 import com.vivi.cybernetics.util.client.RenderHelper;
@@ -27,6 +25,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class AbilityScreen extends Screen {
 
@@ -54,7 +55,7 @@ public class AbilityScreen extends Screen {
         int sections = abilities.getAbilities().size();
         float length = 360.0f / sections;
         for(int i = 0; i < sections; i++) {
-            addRenderableWidget(new AbilitySlice(abilities.getAbilities().get(i), 60, 95, length * i, length));
+            addRenderableWidget(new AbilitySlice(abilities.getAbilities().get(i), 60, 100, length * i, length));
         }
         textWidget = new TextWidget(this, (int) centerX, (int) centerY);
         textWidget.y -= textWidget.getTextHeight() / 2;
@@ -213,8 +214,8 @@ public class AbilityScreen extends Screen {
         public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
             if(!this.visible) return;
             //converts mouse points to polar
-            float mouseR = Maaath.toRadius(pMouseX - centerX, -(pMouseY - centerY));
-            float mouseT = Mth.RAD_TO_DEG * Maaath.toAngle(pMouseX - centerX, -(pMouseY - centerY));
+            float mouseR = Maath.toRadius(pMouseX - centerX, -(pMouseY - centerY));
+            float mouseT = Mth.RAD_TO_DEG * Maath.toAngle(pMouseX - centerX, -(pMouseY - centerY));
 
             this.isHovered = (mouseR >= 55) && (mouseT >= startAngle) && (mouseT < (startAngle + totalAngle));
             renderButton(pPoseStack, pMouseX, pMouseY, pPartialTick);
@@ -242,20 +243,38 @@ public class AbilityScreen extends Screen {
 
             RenderSystem.enableTexture();
             RenderSystem.disableBlend();
+
+            //render item
+            Item item = ability.getType().getItemToRender();
+            if(item != null) {
+
+                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+                float centerAngle = Mth.DEG_TO_RAD * (startAngle + (totalAngle / 2));
+                float centerRadius = inner + (outer - inner) / 2;
+                float scale = 2.0f;
+                RenderSystem.getModelViewStack().pushPose();
+                RenderSystem.getModelViewStack().scale(scale, scale, 1.0f);
+                RenderSystem.getModelViewStack().translate((Maath.toX(centerRadius, centerAngle) + centerX) / scale, (-Maath.toY(centerRadius, centerAngle) + centerY) / scale, 0.0);
+                itemRenderer.blitOffset = 200;
+                itemRenderer.renderAndDecorateItem(new ItemStack(item), -8,-8);
+                itemRenderer.blitOffset = 0;
+                RenderSystem.getModelViewStack().popPose();
+                RenderSystem.applyModelViewMatrix();
+            }
         }
 
         public void setSelected(boolean selected) {
             if(this.selected != selected) {
                 if(selected) {
                     ScreenHelper.addAnimation(AbilityScreen.this, this::getInner, this::setInner, 70, 7, Easing.CIRC_OUT);
-                    ScreenHelper.addAnimation(AbilityScreen.this, this::getOuter, this::setOuter, 105, 7, Easing.CIRC_OUT);
+                    ScreenHelper.addAnimation(AbilityScreen.this, this::getOuter, this::setOuter, 110, 7, Easing.CIRC_OUT);
                     ScreenHelper.addAnimation(AbilityScreen.this, this::getAlpha, this::setAlpha, 0.9f, 7, Easing.CIRC_OUT);
                     ResourceLocation abilityRLoc = CybAbilities.ABILITY_TYPE_REGISTRY.get().getKey(ability.getType());
                     AbilityScreen.this.updateText(Component.translatable("tooltip." + abilityRLoc.getNamespace() + ".ability." + abilityRLoc.getPath()));
                 }
                 else {
                     ScreenHelper.addAnimation(AbilityScreen.this, this::getInner, this::setInner, 60, 10, Easing.QUAD_OUT);
-                    ScreenHelper.addAnimation(AbilityScreen.this, this::getOuter, this::setOuter, 95, 10, Easing.QUAD_OUT);
+                    ScreenHelper.addAnimation(AbilityScreen.this, this::getOuter, this::setOuter, 100, 10, Easing.QUAD_OUT);
                     ScreenHelper.addAnimation(AbilityScreen.this, this::getAlpha, this::setAlpha, 0.75f, 7, Easing.CIRC_OUT);
                 }
             }

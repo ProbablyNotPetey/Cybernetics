@@ -11,11 +11,15 @@ import com.vivi.cybernetics.network.packet.C2SSpikePacket;
 import com.vivi.cybernetics.network.packet.C2SSpikeShockwavePacket;
 import com.vivi.cybernetics.registry.CybItems;
 import com.vivi.cybernetics.registry.CybKeybinds;
+import com.vivi.cybernetics.registry.CybMobEffects;
 import com.vivi.cybernetics.util.AbilityHelper;
 import com.vivi.cybernetics.util.CyberwareHelper;
 import com.vivi.cybernetics.util.client.InputHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -47,6 +51,13 @@ public class ClientEvents {
         }
         handleDoubleJump();
         handleSpike();
+    }
+
+    @SubscribeEvent
+    public static void onMovementInputUpdate(MovementInputUpdateEvent event) {
+        if(event.getEntity().hasEffect(CybMobEffects.PARALYZED.get())) {
+            event.getInput().jumping = false;
+        }
     }
 
     private static void handleSpike() {

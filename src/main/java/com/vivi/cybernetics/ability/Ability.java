@@ -20,16 +20,16 @@ public class Ability implements INBTSerializable<CompoundTag> {
     }
 
     private void onEnable(Player player) {
-        this.getType().onEnable(this, player);
+        this.getType().onEnable(this, player.level, player);
     }
 
     private void onDisable(Player player) {
-        this.getType().onDisable(this, player);
+        this.getType().onDisable(this, player.level, player);
     }
 
     public void tick(Player player) {
         if(cooldown > -1) cooldown--;
-        this.getType().tick(this, player);
+        this.getType().tick(this, player.level, player);
     }
 
     public void enable(Player player) {

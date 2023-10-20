@@ -1,31 +1,47 @@
 package com.vivi.cybernetics.ability;
 
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
+
+import java.util.function.Supplier;
 
 //This should be a registry
 public class AbilityType {
 
     protected final int maxCooldown;
-    public AbilityType(int maxCooldown) {
-        this.maxCooldown = maxCooldown;
-    }
-
+    protected final Item itemToRender;
     public AbilityType() {
-        this.maxCooldown = -1;
+        this(-1, null);
+    }
+    public AbilityType(int maxCooldown) {
+        this(maxCooldown, null);
+    }
+    public AbilityType(Item itemToRender) {
+        this(-1, itemToRender);
+    }
+    public AbilityType(int maxCooldown, Item itemToRender) {
+        this.maxCooldown = maxCooldown;
+        this.itemToRender = itemToRender;
     }
 
 
-    public void onEnable(Ability ability, Player player) {
+    public void onEnable(Ability ability, Level level, Player player) {
 
     }
-    public void tick(Ability ability, Player player) {
+    public void tick(Ability ability, Level level, Player player) {
 
     }
-    public void onDisable(Ability ability, Player player) {
+    public void onDisable(Ability ability, Level level, Player player) {
 
     }
 
     public int getMaxCooldown() {
         return maxCooldown;
+    }
+
+    public Item getItemToRender() {
+//        if(itemToRender == null) return null;
+        return itemToRender;
     }
 }
