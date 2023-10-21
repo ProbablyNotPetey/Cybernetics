@@ -16,18 +16,23 @@ public class CyberwareProperties {
 
     private final List<Ingredient> requirements;
     private final List<Ingredient> incompatibilities;
+    private final boolean showRequirements;
+    private final boolean showIncompatibilities;
+    private final boolean showDescription;
+    private final int capacity;
 
-    private static final int REQUIREMENTS_LIST = 1;
-    private static final int INCOMPATIBILITIES_LIST = 2;
 
-
-    public CyberwareProperties(List<Ingredient> requirements, List<Ingredient> incompatibilities) {
+    public CyberwareProperties(List<Ingredient> requirements, List<Ingredient> incompatibilities, boolean showRequirements, boolean showIncompatibilities, boolean showDescription, int capacity) {
         this.requirements = requirements;
         this.incompatibilities = incompatibilities;
+        this.showRequirements = showRequirements;
+        this.showIncompatibilities = showIncompatibilities;
+        this.showDescription = showDescription;
+        this.capacity = capacity;
     }
 
-    public static CyberwareProperties fromStringList(List<String> requirements, List<String> incompatibilities) {
-        return new CyberwareProperties(toIngredientList(requirements), toIngredientList(incompatibilities));
+    public static CyberwareProperties fromStringList(List<String> requirements, List<String> incompatibilities, boolean showRequirements, boolean showIncompatibilities, boolean showDescription, int capacity) {
+        return new CyberwareProperties(toIngredientList(requirements), toIngredientList(incompatibilities), showRequirements, showIncompatibilities, showDescription, capacity);
     }
     public static List<Ingredient> toIngredientList(List<String> stringList) {
         List<Ingredient> output = new ArrayList<>();
@@ -59,12 +64,20 @@ public class CyberwareProperties {
         buf.writeCollection(incompatibilities, (buf1, ingredient) -> {
             ingredient.toNetwork(buf1);
         });
+        buf.writeBoolean(showRequirements);
+        buf.writeBoolean(showIncompatibilities);
+        buf.writeBoolean(showDescription);
+        buf.writeVarInt(capacity);
     }
 
     public static CyberwareProperties fromNetwork(FriendlyByteBuf buf) {
         List<Ingredient> req = buf.readList(Ingredient::fromNetwork);
         List<Ingredient> inc = buf.readList(Ingredient::fromNetwork);
-        return new CyberwareProperties(req, inc);
+        boolean showReq = buf.readBoolean();
+        boolean showInc = buf.readBoolean();
+        boolean showDesc = buf.readBoolean();
+        int cap = buf.readVarInt();
+        return new CyberwareProperties(req, inc, showReq, showInc, showDesc, cap);
     }
 
     @Override
@@ -86,5 +99,21 @@ public class CyberwareProperties {
 
     public List<Ingredient> getIncompatibilities() {
         return incompatibilities;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public boolean showRequirements() {
+        return showRequirements;
+    }
+
+    public boolean showIncompatibilities() {
+        return showIncompatibilities;
+    }
+
+    public boolean showDescription() {
+        return showDescription;
     }
 }

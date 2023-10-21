@@ -1,5 +1,6 @@
 {
   "requirements": [
     "#cybernetics:optics"
-  ]
+  ],
+  "capacity": 4
 }

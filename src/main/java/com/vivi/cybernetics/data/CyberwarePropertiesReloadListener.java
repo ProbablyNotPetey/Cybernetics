@@ -46,7 +46,23 @@ public class CyberwarePropertiesReloadListener extends SimpleJsonResourceReloadL
                     strIncompatibilites.add(str.getAsString());
                 });
             }
-            properties.put(location, CyberwareProperties.fromStringList(strRequirements, strIncompatibilites));
+            boolean showRequirements = true;
+            if(object.has("show_requirements")) {
+                showRequirements = object.get("show_requirements").getAsBoolean();
+            }
+            boolean showIncompatibilities = true;
+            if(object.has("show_incompatibilities")) {
+                showIncompatibilities = object.get("show_incompatibilities").getAsBoolean();
+            }
+            boolean showDescription = true;
+            if(object.has("show_description")) {
+                showDescription = object.get("show_description").getAsBoolean();
+            }
+            int capacity = 0;
+            if(object.has("capacity")) {
+                capacity = object.get("capacity").getAsInt();
+            }
+            properties.put(location, CyberwareProperties.fromStringList(strRequirements, strIncompatibilites, showRequirements, showIncompatibilities, showDescription, capacity));
         });
     }
 

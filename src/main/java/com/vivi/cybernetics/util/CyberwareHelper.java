@@ -36,6 +36,40 @@ public class CyberwareHelper {
         ((CyberwareItem) item).addRequirements(requirements);
     }
 
+    public static void hideRequirements(Item item) {
+        if(!(item instanceof CyberwareItem)) {
+            Cybernetics.LOGGER.warn("Item " + item + " does not extend CyberwareItem, skipping...");
+            return;
+        }
+        ((CyberwareItem) item).hideRequirements();
+    }
+
+    public static void hideIncompatibilities(Item item) {
+        if(!(item instanceof CyberwareItem)) {
+            Cybernetics.LOGGER.warn("Item " + item + " does not extend CyberwareItem, skipping...");
+            return;
+        }
+        ((CyberwareItem) item).hideIncompatibilities();
+    }
+
+    public static void hideDescription(Item item) {
+        if(!(item instanceof CyberwareItem)) {
+            Cybernetics.LOGGER.warn("Item " + item + " does not extend CyberwareItem, skipping...");
+            return;
+        }
+        ((CyberwareItem) item).hideDescription();
+    }
+
+    public static void setCapacity(Item item, int capacity) {
+        if(!(item instanceof CyberwareItem)) {
+            Cybernetics.LOGGER.warn("Item " + item + " does not extend CyberwareItem, skipping...");
+            return;
+        }
+        ((CyberwareItem) item).setCapacity(capacity);
+    }
+
+
+
     public static void setupCyberwareProperties() {
         ForgeRegistries.ITEMS.getEntries().forEach(entry -> {
             ResourceLocation id = entry.getKey().location();
@@ -48,6 +82,10 @@ public class CyberwareHelper {
 
                     List<Ingredient> incompatibilities = properties.getIncompatibilities();
                     if(incompatibilities.size() > 0) addIncompatibilities(item, incompatibilities.toArray(new Ingredient[0]));
+                    if(!properties.showRequirements()) hideRequirements(item);
+                    if(!properties.showIncompatibilities()) hideIncompatibilities(item);
+                    if(!properties.showDescription()) hideDescription(item);
+                    setCapacity(item, properties.getCapacity());
                 }
             }
         });

@@ -33,12 +33,12 @@ public class CyberwareItem extends Item {
     private boolean showRequirements = true;
     private boolean showIncompatibilities = true;
     private boolean showDescription = true;
+    private int capacity;
 
     public CyberwareItem(Properties pProperties) {
         super(pProperties);
     }
 
-    //These must be added AFTER registration!!! Common Setup is preferable, theoretically could be done on server reload
     public CyberwareItem addRequirements(Ingredient... requirements) {
         this.requirements.addAll(Arrays.asList(requirements));
         return this;
@@ -69,6 +69,11 @@ public class CyberwareItem extends Item {
         return this;
     }
 
+    public CyberwareItem setCapacity(int capacity) {
+        this.capacity = capacity;
+        return this;
+    }
+
     public void cyberwareTick(ItemStack stack, Level level, Player player) {
 
     }
@@ -86,6 +91,8 @@ public class CyberwareItem extends Item {
         ResourceLocation id = ForgeRegistries.ITEMS.getKey(this);
 
         addSectionTooltip(stack, tooltip);
+        MutableComponent capacityTooltip = Component.translatable("tooltip.cybernetics.capacity").append(": ").append(Component.literal(String.valueOf(capacity))).withStyle(ChatFormatting.GOLD);
+        tooltip.add(capacityTooltip);
 //        if(showRequirements && requirements.size() > 0) {
 //            MutableComponent requirementsTooltip = Component.translatable("tooltip.cybernetics.requirements").append(": ").withStyle(ChatFormatting.GRAY)
 //                    .append(Component.translatable("tooltip." + id.getNamespace() + "." + id.getPath() + ".requirements").withStyle(ChatFormatting.AQUA));

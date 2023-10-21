@@ -37,9 +37,9 @@ public class CybItems {
 
 
             //EYES
-            MK1_OPTICS = ITEMS.register("mk1_optics", () -> new OpticsItem(cyberwareProps()).hideIncompatibilities()),
-            MK2_OPTICS = ITEMS.register("mk2_optics", () -> new OpticsItem(cyberwareProps()).hideIncompatibilities()),
-            MK3_OPTICS = ITEMS.register("mk3_optics", () -> new OpticsItem(cyberwareProps()).hideIncompatibilities()),
+            MK1_OPTICS = ITEMS.register("mk1_optics", () -> new OpticsItem(cyberwareProps())),
+            MK2_OPTICS = ITEMS.register("mk2_optics", () -> new OpticsItem(cyberwareProps())),
+            MK3_OPTICS = ITEMS.register("mk3_optics", () -> new OpticsItem(cyberwareProps())),
             NIGHT_VISION_EYES = ITEMS.register("night_vision_eyes", () -> new NightVisionEyesItem(cyberwareProps())),
 
             //UPPER ORGANS
