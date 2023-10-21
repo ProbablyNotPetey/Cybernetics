@@ -32,8 +32,7 @@ public class CybItems {
     public static final RegistryObject<Item>
 
             //HEAD
-            //todo: make this function. Capacity should be an attribute for maximum compatibility!
-            CAPACITY_EXTENSION_HEAD = ITEMS.register("capacity_extension_head", () -> new CyberwareItem(cyberwareProps())),
+            CAPACITY_EXTENSION_HEAD = ITEMS.register("capacity_extension_head", () -> new AttributeCyberwareItem(cyberwareProps(), new ImmutablePair<>(CybAttributes.MAX_CAPACITY.get(), new AttributeModifier(UUID.fromString("2c54b860-db1f-4c59-bfd2-6cc7dfac1afe"), "Capacity Boost Head", 0.3, AttributeModifier.Operation.MULTIPLY_TOTAL)))),
 
 
             //EYES

@@ -27,13 +27,14 @@ import java.util.List;
 public class CyberwareItem extends Item {
 
 
+    public static final int DEFAULT_CAPACITY = 2;
     private final List<Ingredient> requirements = new ArrayList<>();
     private final List<Ingredient> incompatibilities = new ArrayList<>();
 
     private boolean showRequirements = true;
     private boolean showIncompatibilities = true;
     private boolean showDescription = true;
-    private int capacity;
+    private int capacity = DEFAULT_CAPACITY;
 
     public CyberwareItem(Properties pProperties) {
         super(pProperties);
@@ -72,6 +73,10 @@ public class CyberwareItem extends Item {
     public CyberwareItem setCapacity(int capacity) {
         this.capacity = capacity;
         return this;
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 
     public void cyberwareTick(ItemStack stack, Level level, Player player) {

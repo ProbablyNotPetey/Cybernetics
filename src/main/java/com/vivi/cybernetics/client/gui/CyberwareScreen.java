@@ -12,6 +12,7 @@ import com.vivi.cybernetics.menu.CyberwareMenu;
 import com.vivi.cybernetics.network.CybPackets;
 import com.vivi.cybernetics.network.packet.C2SSwitchActiveSlotPacket;
 import com.vivi.cybernetics.util.client.Easing;
+import com.vivi.cybernetics.util.client.MouseHelper;
 import com.vivi.cybernetics.util.client.RenderHelper;
 import com.vivi.cybernetics.util.client.ScreenHelper;
 import net.minecraft.client.Minecraft;
@@ -38,6 +39,8 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
     protected TextWidget textWidget;
     protected State state;
     protected List<MaskWidget> itemMasks = new ArrayList<>();
+    protected CapacityGuiComponent leftCapacity;
+    protected CapacityGuiComponent rightCapacity;
 
     protected List<EntityWidgetRotate> entityWidgetsToRotate = new ArrayList<>();
     public CyberwareScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
@@ -102,6 +105,12 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             itemMasks.add(new MaskWidget(leftPos + slotX + ((i % rows) * 25) - 5, topPos + slotY + ((i / rows) * 23)));
         }
         maskWidgetIterator = itemMasks.iterator();
+
+        leftCapacity = new CapacityGuiComponent(leftPos + 2, topPos + 153, true);
+        rightCapacity = new CapacityGuiComponent(leftPos + 190, topPos + 153, false);
+
+        Cybernetics.LOGGER.info("Capacity: " + menu.getStoredCapacity());
+        Cybernetics.LOGGER.info("Max Capacity: " + menu.getMaxCapacity());
     }
 
     @Override
@@ -200,11 +209,19 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             blit(pPoseStack, leftPos + menu.getSlot(i).x - 3, topPos + menu.getSlot(i).y - 1, u, 0, 20, 18, 48, 48);
         }
 
+        leftCapacity.draw(pPoseStack, menu.getStoredCapacity(), menu.getMaxCapacity());
+        rightCapacity.draw(pPoseStack, menu.getStoredCapacity(), menu.getMaxCapacity());
+
     }
 
     @Override
-    protected void renderLabels(PoseStack poseStack, int pMouseX, int pMouseY) {
-
+    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+        if(MouseHelper.isHovering(leftCapacity.x, leftCapacity.y, leftCapacity.width, leftCapacity.height, mouseX, mouseY)) {
+            renderTooltip(poseStack, leftCapacity.getTooltip(menu.getStoredCapacity(), menu.getMaxCapacity()), Optional.empty(), mouseX - leftPos, mouseY - topPos);
+        }
+        if(MouseHelper.isHovering(rightCapacity.x, rightCapacity.y, rightCapacity.width, rightCapacity.height, mouseX, mouseY)) {
+            renderTooltip(poseStack, rightCapacity.getTooltip(menu.getStoredCapacity(), menu.getMaxCapacity()), Optional.empty(), mouseX - leftPos, mouseY - topPos);
+        }
     }
 
     public void updateText(Component text) {

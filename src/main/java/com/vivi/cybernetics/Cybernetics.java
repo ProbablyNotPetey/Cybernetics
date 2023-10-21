@@ -56,12 +56,12 @@ public class Cybernetics {
         CybBlocks.register(modEventBus);
         CybItems.register(modEventBus);
         modEventBus.addListener(CybBlocks::registerBlockItems);
-
         CybMenuTypes.register(modEventBus);
         CybRecipeTypes.register(modEventBus);
         CybCyberware.register(modEventBus);
         CybAbilities.register(modEventBus);
         CybMobEffects.register(modEventBus);
+        CybAttributes.register(modEventBus);
 
         //Setup
 

@@ -8,6 +8,7 @@ import com.vivi.cybernetics.registry.CybCyberware;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -20,6 +21,7 @@ import java.util.*;
 public class CyberwareInventory extends CombinedInvWrapper implements INBTSerializable<CompoundTag> {
 
     private final Player owner;
+    private int capacity;
     public CyberwareInventory(Player owner, IItemHandlerModifiable... itemHandler) {
         super(itemHandler);
         this.owner = owner;
@@ -54,8 +56,10 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
 
     @Override
     public void setStackInSlot(int slot, @NotNull ItemStack stack) {
+        Cybernetics.LOGGER.info("capacity new: " + capacity);
         super.setStackInSlot(slot, stack);
         onContentsChanged(slot);
+        initCapacity();
     }
 
     @Override
@@ -63,6 +67,9 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
         ItemStack out = super.extractItem(slot, amount, simulate);
         if(!simulate) {
             onContentsChanged(slot);
+            if(getStackInSlot(slot).getItem() instanceof CyberwareItem) {
+                capacity -= ((CyberwareItem) getStackInSlot(slot).getItem()).getCapacity();
+            }
         }
         return out;
     }
@@ -72,6 +79,9 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
         ItemStack out =  super.insertItem(slot, stack, simulate);
         if(!simulate) {
             onContentsChanged(slot);
+            if(getStackInSlot(slot).getItem() instanceof CyberwareItem) {
+                capacity += ((CyberwareItem) getStackInSlot(slot).getItem()).getCapacity();
+            }
         }
         return out;
     }
@@ -80,6 +90,7 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
         if(owner != null && !owner.level.isClientSide) {
             CybPackets.sendToClient(new S2CSyncCyberwarePacket(owner, this, true), (ServerPlayer) owner);
         }
+//        initCapacity();
     }
 
     public void copyFrom(CyberwareInventory other, boolean shouldUpdate) {
@@ -100,6 +111,7 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
             }
             this.setStackInSlot(i, newStack.copy());
         }
+        initCapacity();
     }
 
     public void clear() {
@@ -150,6 +162,7 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
             CyberwareSection section = (CyberwareSection) handler;
             section.deserializeNBT(tag.getCompound(section.getId().toString()));
         }
+        initCapacity();
     }
 
     @Override
@@ -188,5 +201,19 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
             }
         }
         return output;
+    }
+
+    public void initCapacity() {
+        capacity = 0;
+        for(int i = 0; i < getSlots(); i++) {
+            Item item = getStackInSlot(i).getItem();
+            if(item instanceof CyberwareItem) {
+                capacity += ((CyberwareItem) item).getCapacity();
+            }
+        }
+    }
+
+    public int getStoredCapacity() {
+        return capacity;
     }
 }

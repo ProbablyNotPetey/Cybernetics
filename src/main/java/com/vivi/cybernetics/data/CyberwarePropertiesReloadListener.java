@@ -2,6 +2,7 @@ package com.vivi.cybernetics.data;
 
 import com.google.gson.*;
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.item.CyberwareItem;
 import com.vivi.cybernetics.network.CybPackets;
 import com.vivi.cybernetics.network.packet.S2CSyncCyberwarePropertiesPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -58,7 +59,7 @@ public class CyberwarePropertiesReloadListener extends SimpleJsonResourceReloadL
             if(object.has("show_description")) {
                 showDescription = object.get("show_description").getAsBoolean();
             }
-            int capacity = 0;
+            int capacity = CyberwareItem.DEFAULT_CAPACITY;
             if(object.has("capacity")) {
                 capacity = object.get("capacity").getAsInt();
             }

@@ -3,11 +3,13 @@ package com.vivi.cybernetics.menu;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.cyberware.CyberwareSectionType;
+import com.vivi.cybernetics.registry.CybAttributes;
 import com.vivi.cybernetics.util.ToggleableSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -19,6 +21,8 @@ public class CyberwareMenu extends AbstractContainerMenu {
     protected CyberwareInventory cyberware;
     protected final int invX = 24;
     protected final int invY = 157;
+    protected final DataSlot capacityData;
+    protected final DataSlot maxCapacityData;
 
     protected CyberwareMenu(@Nullable MenuType<?> pMenuType, int pContainerId, Inventory inventory, CyberwareInventory cyberware) {
         super(pMenuType, pContainerId);
@@ -40,7 +44,30 @@ public class CyberwareMenu extends AbstractContainerMenu {
 
         addPlayerInventory(this.inventory);
         addPlayerHotbar(this.inventory);
+        capacityData = new DataSlot() {
+            @Override
+            public int get() {
+                return cyberware.getStoredCapacity();
+            }
 
+            @Override
+            public void set(int pValue) {
+
+            }
+        };
+        addDataSlot(capacityData);
+        maxCapacityData = new DataSlot() {
+            @Override
+            public int get() {
+                return (int) inventory.player.getAttribute(CybAttributes.MAX_CAPACITY.get()).getValue();
+            }
+
+            @Override
+            public void set(int pValue) {
+
+            }
+        };
+        addDataSlot(maxCapacityData);
     }
 
     private void addPlayerInventory(Inventory inv) {
@@ -57,6 +84,17 @@ public class CyberwareMenu extends AbstractContainerMenu {
         }
 
     }
+
+    public int getStoredCapacity() {
+        return capacityData.get();
+    }
+
+    public int getMaxCapacity() {
+        return maxCapacityData.get();
+    }
+
+
+
 
 
     /**
