@@ -58,6 +58,7 @@ public class CapacityGuiComponent extends GuiComponent {
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int u = left ? 0 : 16;
+        if(capacity > maxCapacity) u += 32;
         blit(poseStack, x, y + (height - scaledHeight), u, height - scaledHeight, width, scaledHeight, 96, 96);
     }
 }
