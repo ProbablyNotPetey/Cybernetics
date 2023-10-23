@@ -1,6 +1,6 @@
 package com.vivi.cybernetics.client.gui.util;
 
-import com.vivi.cybernetics.util.client.Easing;
+import com.vivi.cybernetics.client.util.Easing;
 import net.minecraft.util.Mth;
 
 public class WidgetScale {

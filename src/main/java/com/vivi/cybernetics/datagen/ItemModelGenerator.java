@@ -1,7 +1,7 @@
 package com.vivi.cybernetics.datagen;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.registry.CybItems;
+import com.vivi.cybernetics.common.registry.CybItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;

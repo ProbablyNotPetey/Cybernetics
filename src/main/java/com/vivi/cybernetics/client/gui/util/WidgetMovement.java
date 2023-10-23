@@ -1,6 +1,6 @@
 package com.vivi.cybernetics.client.gui.util;
 
-import com.vivi.cybernetics.util.client.Easing;
+import com.vivi.cybernetics.client.util.Easing;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.util.Mth;
 

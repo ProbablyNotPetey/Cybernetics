@@ -1,23 +1,19 @@
 package com.vivi.cybernetics;
 
 import com.mojang.logging.LogUtils;
-import com.vivi.cybernetics.capability.PlayerAbilities;
-import com.vivi.cybernetics.capability.PlayerEnergyStorage;
+import com.vivi.cybernetics.common.capability.PlayerAbilities;
+import com.vivi.cybernetics.common.capability.PlayerEnergyStorage;
 import com.vivi.cybernetics.client.gui.CyberwareScreen;
 import com.vivi.cybernetics.client.gui.CyberwareStationScreen;
-import com.vivi.cybernetics.client.gui.PlayerCyberwareScreenOld;
-import com.vivi.cybernetics.client.gui.SurgicalChamberCyberwareScreenOld;
-import com.vivi.cybernetics.cyberware.CyberwareInventory;
-import com.vivi.cybernetics.item.CyberwareItem;
-import com.vivi.cybernetics.menu.PlayerCyberwareMenu;
-import com.vivi.cybernetics.menu.SurgicalChamberCyberwareMenu;
-import com.vivi.cybernetics.network.CybPackets;
-import com.vivi.cybernetics.registry.*;
+import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
+import com.vivi.cybernetics.common.menu.PlayerCyberwareMenu;
+import com.vivi.cybernetics.common.menu.SurgicalChamberCyberwareMenu;
+import com.vivi.cybernetics.common.registry.*;
+import com.vivi.cybernetics.server.network.CybPackets;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -27,7 +23,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 
 @Mod(Cybernetics.MOD_ID)

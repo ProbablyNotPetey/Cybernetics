@@ -2,8 +2,8 @@ package com.vivi.cybernetics.compat.jei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.recipe.CyberwareStationRecipe;
-import com.vivi.cybernetics.registry.CybBlocks;
+import com.vivi.cybernetics.common.recipe.CyberwareStationRecipe;
+import com.vivi.cybernetics.common.registry.CybBlocks;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;

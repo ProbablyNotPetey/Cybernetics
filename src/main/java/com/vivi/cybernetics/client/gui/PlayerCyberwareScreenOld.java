@@ -1,6 +1,6 @@
 package com.vivi.cybernetics.client.gui;
 
-import com.vivi.cybernetics.menu.PlayerCyberwareMenu;
+import com.vivi.cybernetics.common.menu.PlayerCyberwareMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 

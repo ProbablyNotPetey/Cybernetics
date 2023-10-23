@@ -2,10 +2,10 @@ package com.vivi.cybernetics.compat.jei;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.CyberwareStationScreen;
-import com.vivi.cybernetics.menu.CyberwareStationMenu;
-import com.vivi.cybernetics.recipe.CyberwareStationRecipe;
-import com.vivi.cybernetics.registry.CybBlocks;
-import com.vivi.cybernetics.registry.CybMenuTypes;
+import com.vivi.cybernetics.common.menu.CyberwareStationMenu;
+import com.vivi.cybernetics.common.recipe.CyberwareStationRecipe;
+import com.vivi.cybernetics.common.registry.CybBlocks;
+import com.vivi.cybernetics.common.registry.CybMenuTypes;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.recipe.RecipeType;
