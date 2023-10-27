@@ -3,6 +3,7 @@ package com.vivi.cybernetics.common.cyberware;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.item.CyberwareItem;
 import com.vivi.cybernetics.server.network.CybPackets;
+import com.vivi.cybernetics.server.network.packet.S2CSyncAbilitiesPacket;
 import com.vivi.cybernetics.server.network.packet.S2CSyncCyberwarePacket;
 import com.vivi.cybernetics.common.registry.CybCyberware;
 import net.minecraft.nbt.CompoundTag;
@@ -214,5 +215,9 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
 
     public int getStoredCapacity() {
         return capacity;
+    }
+
+    public void syncToClient(ServerPlayer client) {
+        CybPackets.sendToClient(new S2CSyncCyberwarePacket(owner, this, false), client);
     }
 }

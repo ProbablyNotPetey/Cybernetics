@@ -13,6 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -77,10 +78,12 @@ public class CapabilityEvents {
         if(event.getEntity().level.isClientSide) return;
         Entity target = event.getTarget();
         if(target instanceof Player player) {
-            CyberwareInventory cyberware = CyberwareHelper.getCyberware(player).orElse(null);
-            if(cyberware == null) return;
-            CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware, false), (ServerPlayer) event.getEntity());
-
+//            CyberwareInventory cyberware = CyberwareHelper.getCyberware(player).orElse(null);
+//            if(cyberware == null) return;
+//            CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware, false), (ServerPlayer) event.getEntity());
+            CyberwareHelper.getCyberware(player).ifPresent(cyberware -> {
+                cyberware.syncToClient((ServerPlayer) event.getEntity());
+            });
             AbilityHelper.getAbilities((Player)target).ifPresent(abilities -> {
                 abilities.syncToClient((ServerPlayer) event.getEntity());
             });
@@ -91,10 +94,22 @@ public class CapabilityEvents {
     public static void onLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
         Player player = event.getEntity();
         if(player.level.isClientSide) return;
-        CyberwareInventory cyberware = CyberwareHelper.getCyberware(player).orElse(null);
-        if(cyberware == null) return;
-        CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware, false), (ServerPlayer) player);
+        CyberwareHelper.getCyberware(player).ifPresent(cyberware -> {
+            cyberware.syncToClient((ServerPlayer) player);
+        });
 
+        AbilityHelper.getAbilities(player).ifPresent(abilities -> {
+            abilities.syncToClient((ServerPlayer) player);
+        });
+    }
+
+    @SubscribeEvent
+    public static void onEntityJoinLevelEvent(EntityJoinLevelEvent event) {
+        if(!(event.getEntity() instanceof Player player) || event.getLevel().isClientSide) return;
+
+        CyberwareHelper.getCyberware(player).ifPresent(cyberware -> {
+            cyberware.syncToClient((ServerPlayer) player);
+        });
         AbilityHelper.getAbilities(player).ifPresent(abilities -> {
             abilities.syncToClient((ServerPlayer) player);
         });
@@ -104,9 +119,9 @@ public class CapabilityEvents {
     public static void onChangeDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event) {
         Player player = event.getEntity();
         if(player.level.isClientSide) return;
-        CyberwareInventory cyberware = CyberwareHelper.getCyberware(player).orElse(null);
-        if(cyberware == null) return;
-        CybPackets.sendToClient(new S2CSyncCyberwarePacket(player, cyberware, false), (ServerPlayer) player);
+        CyberwareHelper.getCyberware(player).ifPresent(cyberware -> {
+            cyberware.syncToClient((ServerPlayer) player);
+        });
 
         AbilityHelper.getAbilities(player).ifPresent(abilities -> {
             abilities.syncToClient((ServerPlayer) player);

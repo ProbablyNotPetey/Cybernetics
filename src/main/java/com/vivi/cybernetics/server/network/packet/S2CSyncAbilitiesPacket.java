@@ -15,19 +15,19 @@ import java.util.function.Supplier;
 public class S2CSyncAbilitiesPacket extends Packet {
 
     private CompoundTag abilities;
-    private UUID ownerId;
+    private int ownerId;
     public S2CSyncAbilitiesPacket(Player owner, PlayerAbilities abilities) {
-        this.ownerId = owner.getUUID();
+        this.ownerId = owner.getId();
         this.abilities = abilities.serializeNBT();
     }
 
     public S2CSyncAbilitiesPacket(FriendlyByteBuf buf) {
-        this.ownerId = buf.readUUID();
+        this.ownerId = buf.readVarInt();
         this.abilities = buf.readNbt();
     }
     @Override
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeUUID(ownerId);
+        buf.writeVarInt(ownerId);
         buf.writeNbt(abilities);
     }
 
@@ -44,7 +44,7 @@ public class S2CSyncAbilitiesPacket extends Packet {
         return abilities;
     }
 
-    public UUID getOwnerId() {
+    public int getOwnerId() {
         return ownerId;
     }
 }

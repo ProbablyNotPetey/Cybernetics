@@ -27,9 +27,9 @@ public class PlayerAbilities implements INBTSerializable<CompoundTag> {
         abilities.clear();
         abilities.addAll(oldStore.getAbilities());
 //        player = oldStore.player;
-        if(!player.level.isClientSide) {
-            syncToClient((ServerPlayer) player);
-        }
+//        if(!player.level.isClientSide) {
+//            syncToClient((ServerPlayer) player);
+//        }
     }
 
     public List<Ability> getAbilities() {
@@ -90,8 +90,8 @@ public class PlayerAbilities implements INBTSerializable<CompoundTag> {
 
 
     public void syncToClient(ServerPlayer client) {
-        Cybernetics.LOGGER.info("Syncing abilities to client");
-        Cybernetics.LOGGER.info("passed in client id: " + client.getId() + ", stored player id: " + player.getId());
+//        Cybernetics.LOGGER.info("Syncing abilities to client");
+//        Cybernetics.LOGGER.info("passed in client id: " + client.getId() + ", stored player id: " + player.getId());
         CybPackets.sendToClient(new S2CSyncAbilitiesPacket(player, this), client);
     }
 
