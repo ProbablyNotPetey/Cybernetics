@@ -9,24 +9,25 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
+import java.util.UUID;
 import java.util.function.Supplier;
 
 public class S2CSyncAbilitiesPacket extends Packet {
 
     private CompoundTag abilities;
-    private int ownerId;
+    private UUID ownerId;
     public S2CSyncAbilitiesPacket(Player owner, PlayerAbilities abilities) {
-        this.ownerId = owner.getId();
+        this.ownerId = owner.getUUID();
         this.abilities = abilities.serializeNBT();
     }
 
     public S2CSyncAbilitiesPacket(FriendlyByteBuf buf) {
-        this.ownerId = buf.readVarInt();
+        this.ownerId = buf.readUUID();
         this.abilities = buf.readNbt();
     }
     @Override
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeVarInt(ownerId);
+        buf.writeUUID(ownerId);
         buf.writeNbt(abilities);
     }
 
@@ -43,7 +44,7 @@ public class S2CSyncAbilitiesPacket extends Packet {
         return abilities;
     }
 
-    public int getOwnerId() {
+    public UUID getOwnerId() {
         return ownerId;
     }
 }

@@ -109,8 +109,8 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         leftCapacity = new CapacityGuiComponent(leftPos + 2, topPos + 153, true);
         rightCapacity = new CapacityGuiComponent(leftPos + 190, topPos + 153, false);
 
-        Cybernetics.LOGGER.info("Capacity: " + menu.getStoredCapacity());
-        Cybernetics.LOGGER.info("Max Capacity: " + menu.getMaxCapacity());
+//        Cybernetics.LOGGER.info("Capacity: " + menu.getStoredCapacity());
+//        Cybernetics.LOGGER.info("Max Capacity: " + menu.getMaxCapacity());
     }
 
     @Override

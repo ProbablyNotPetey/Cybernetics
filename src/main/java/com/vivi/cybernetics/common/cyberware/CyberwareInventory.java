@@ -56,7 +56,6 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
 
     @Override
     public void setStackInSlot(int slot, @NotNull ItemStack stack) {
-        Cybernetics.LOGGER.info("capacity new: " + capacity);
         super.setStackInSlot(slot, stack);
         onContentsChanged(slot);
         initCapacity();

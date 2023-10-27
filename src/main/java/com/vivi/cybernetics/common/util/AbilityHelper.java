@@ -34,6 +34,13 @@ public class AbilityHelper {
         });
     }
 
+    public static boolean isEnabled(Player player, AbilityType type) {
+        PlayerAbilities abilities = getAbilities(player).orElse(null);
+        if(abilities == null) return false;
+        Ability ability = abilities.getAbility(type);
+        return ability != null && ability.isEnabled();
+    }
+
     public static LazyOptional<PlayerAbilities> getAbilities(Player player) {
         if(player == null) return LazyOptional.empty();
         return player.getCapability(Cybernetics.PLAYER_ABILITIES);

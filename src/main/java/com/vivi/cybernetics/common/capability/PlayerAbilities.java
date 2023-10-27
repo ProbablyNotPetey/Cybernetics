@@ -1,5 +1,6 @@
 package com.vivi.cybernetics.common.capability;
 
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.ability.Ability;
 import com.vivi.cybernetics.common.ability.AbilityType;
 import com.vivi.cybernetics.server.network.CybPackets;
@@ -25,6 +26,7 @@ public class PlayerAbilities implements INBTSerializable<CompoundTag> {
     public void copyFrom(PlayerAbilities oldStore) {
         abilities.clear();
         abilities.addAll(oldStore.getAbilities());
+//        player = oldStore.player;
         if(!player.level.isClientSide) {
             syncToClient((ServerPlayer) player);
         }
@@ -88,6 +90,8 @@ public class PlayerAbilities implements INBTSerializable<CompoundTag> {
 
 
     public void syncToClient(ServerPlayer client) {
+        Cybernetics.LOGGER.info("Syncing abilities to client");
+        Cybernetics.LOGGER.info("passed in client id: " + client.getId() + ", stored player id: " + player.getId());
         CybPackets.sendToClient(new S2CSyncAbilitiesPacket(player, this), client);
     }
 

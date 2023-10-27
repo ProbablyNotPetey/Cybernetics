@@ -41,6 +41,9 @@ public class ServerEvents {
             }
         });
         AbilityHelper.getAbilities(player).ifPresent(PlayerAbilities::tickAbilities);
+        AbilityHelper.getAbilities(player).ifPresent(abilities -> {
+//            Cybernetics.LOGGER.info(event.side.isClient() + ", " + abilities.serializeNBT());
+        });
     }
 
     @SubscribeEvent
