@@ -13,7 +13,12 @@ import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ScannerRenderer {
@@ -23,6 +28,7 @@ public class ScannerRenderer {
     private static boolean shouldRender;
     private static int startTime;
     private static int duration;
+    private static final List<Entity> entitiesToGlow = new ArrayList<>();
 
 
     public static void setup(Entity entity, int duration) {
@@ -30,6 +36,8 @@ public class ScannerRenderer {
         shouldRender = true;
         startTime = -1;
         ScannerRenderer.duration = duration;
+        entitiesToGlow.clear();
+        entitiesToGlow.addAll(entity.level.getEntities(entity, entity.getBoundingBox().inflate(30)));
     }
 
     public static void stop() {
@@ -104,5 +112,10 @@ public class ScannerRenderer {
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();
+    }
+
+    public static boolean shouldRenderGlowingEntiy(Entity entity) {
+        if(!(entity instanceof LivingEntity)) return false;
+        return shouldRender && entitiesToGlow.contains(entity);
     }
 }
