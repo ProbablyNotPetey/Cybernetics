@@ -1,6 +1,7 @@
 package com.vivi.cybernetics.common.event;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.common.ability.Ability;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.item.CyberwareItem;
 import com.vivi.cybernetics.common.registry.CybItems;
@@ -82,15 +83,23 @@ public class ServerEvents {
         if(event.getEntity().level.isClientSide) return;
         Player player = (Player) event.getEntity();
 
-        if(player.isCreative() || player.isSpectator()) return;
-
-        if(CyberwareHelper.hasCyberwareItem(player, CybItems.EMERGENCY_DEFIBRILLATOR.get()) && !player.getCooldowns().isOnCooldown(CybItems.EMERGENCY_DEFIBRILLATOR.get())) {
-            event.setCanceled(true);
-            player.setHealth(player.getMaxHealth() / 4.0f);
-            //play some sound
-            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 2));
-            player.getCooldowns().addCooldown(CybItems.EMERGENCY_DEFIBRILLATOR.get(), 2400);
+        if(!(player.isCreative() || player.isSpectator())) {
+            if(CyberwareHelper.hasCyberwareItem(player, CybItems.EMERGENCY_DEFIBRILLATOR.get()) && !player.getCooldowns().isOnCooldown(CybItems.EMERGENCY_DEFIBRILLATOR.get())) {
+                event.setCanceled(true);
+                player.setHealth(player.getMaxHealth() / 4.0f);
+                //play some sound
+                player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 2));
+                player.getCooldowns().addCooldown(CybItems.EMERGENCY_DEFIBRILLATOR.get(), 2400);
+                return;
+            }
         }
+
+        //disables all abilities on death
+        AbilityHelper.getAbilities(player).ifPresent(abilities -> {
+            abilities.getAbilities().forEach(ability -> {
+                ability.disable(player);
+            });
+        });
     }
 
     @SubscribeEvent

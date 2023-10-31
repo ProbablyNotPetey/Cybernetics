@@ -11,6 +11,7 @@ public class Ability implements INBTSerializable<CompoundTag> {
     private AbilityType type;
     private boolean enabled;
     private int cooldown;
+    private int elapsedTime = -1;
 
     public Ability(AbilityType type) {
         this.type = type;
@@ -20,15 +21,18 @@ public class Ability implements INBTSerializable<CompoundTag> {
     }
 
     private void onEnable(Player player) {
+        elapsedTime = 0;
         this.getType().onEnable(this, player.level, player);
     }
 
     private void onDisable(Player player) {
+        elapsedTime = -1;
         this.getType().onDisable(this, player.level, player);
     }
 
     public void tick(Player player) {
         if(cooldown > -1) cooldown--;
+        if(elapsedTime != -1 && enabled) elapsedTime++;
         this.getType().tick(this, player.level, player);
     }
 
@@ -45,6 +49,10 @@ public class Ability implements INBTSerializable<CompoundTag> {
 
     public AbilityType getType() {
         return type;
+    }
+
+    public int getElapsedTime() {
+        return elapsedTime;
     }
 
     public boolean isEnabled() {

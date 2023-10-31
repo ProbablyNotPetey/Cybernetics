@@ -13,7 +13,7 @@ public class ReinforcedTendonsItem extends CyberwareItem {
     public static void doubleJump(Player player) {
         player.fallDistance = 0;
 
-        double jumpMotion = (0.475) + player.getJumpBoostPower();
+        double jumpMotion = (0.5) + player.getJumpBoostPower();
 //        double jumpMotion = 3.5;
         Vec3 movement = player.getDeltaMovement();
         player.setDeltaMovement(movement.x, jumpMotion, movement.z);

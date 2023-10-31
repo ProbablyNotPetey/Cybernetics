@@ -17,7 +17,6 @@ public class SynapticDisablerAbilityType extends AbilityType {
     public void onEnable(Ability ability, Level level, Player player) {
         super.onEnable(ability, level, player);
         ability.disable(player);
-        ability.setCooldown(maxCooldown);
         if(level.isClientSide) return;
         //do stuff;
         //todo: implement

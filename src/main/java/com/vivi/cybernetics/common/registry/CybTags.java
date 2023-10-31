@@ -15,6 +15,7 @@ public class CybTags {
 
     public static final TagKey<Item>
             OPTICS = itemTag("optics"),
+            BERSERKS = itemTag("berserks"),
             SKELETONS = itemTag("skeletons"),
 
 

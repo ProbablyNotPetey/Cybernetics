@@ -1,12 +1,12 @@
 package com.vivi.cybernetics.common.item;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.apache.commons.lang3.tuple.Pair;
 
 public class AttributeCyberwareItem extends CyberwareItem {
 
@@ -24,10 +24,10 @@ public class AttributeCyberwareItem extends CyberwareItem {
         if(level.isClientSide) return;
         for(int i = 0; i < attributes.length; i++) {
             Pair<Attribute, AttributeModifier> attribute = attributes[i];
-            AttributeInstance playerAttribute = player.getAttribute(attribute.getLeft());
+            AttributeInstance playerAttribute = player.getAttribute(attribute.getFirst());
             //add if player dead as well
-            if(playerAttribute != null && !playerAttribute.hasModifier(attribute.getRight())) {
-                playerAttribute.addPermanentModifier(attribute.getRight());
+            if(playerAttribute != null && !playerAttribute.hasModifier(attribute.getSecond())) {
+                playerAttribute.addPermanentModifier(attribute.getSecond());
             }
         }
     }
@@ -38,9 +38,9 @@ public class AttributeCyberwareItem extends CyberwareItem {
 
         for(int i = 0; i < attributes.length; i++) {
             Pair<Attribute, AttributeModifier> attribute = attributes[i];
-            AttributeInstance playerAttribute = player.getAttribute(attribute.getLeft());
-            if(playerAttribute != null && playerAttribute.hasModifier(attribute.getRight())) {
-                playerAttribute.removeModifier(attribute.getRight());
+            AttributeInstance playerAttribute = player.getAttribute(attribute.getFirst());
+            if(playerAttribute != null && playerAttribute.hasModifier(attribute.getSecond())) {
+                playerAttribute.removeModifier(attribute.getSecond());
             }
         }
     }

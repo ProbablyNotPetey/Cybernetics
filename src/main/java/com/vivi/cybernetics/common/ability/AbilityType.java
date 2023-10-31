@@ -31,7 +31,9 @@ public class AbilityType {
 
     }
     public void onDisable(Ability ability, Level level, Player player) {
-
+        if(maxCooldown > -1) {
+            ability.setCooldown(maxCooldown);
+        }
     }
 
     public int getMaxCooldown() {
