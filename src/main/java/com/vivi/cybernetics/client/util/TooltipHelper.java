@@ -13,7 +13,13 @@ import java.util.List;
 public class TooltipHelper {
 
     public static List<Component> processTooltip(MutableComponent in, ChatFormatting primaryColor, ChatFormatting secondaryColor, int length) {
-        String[] text = WordUtils.wrap(in.getString(), length).split("\n"); //need to write custom wrapper probably to prevent _Highlighted text_ being broken up
+        String[] splits = in.getString().split("\n");
+        List<String> text = new ArrayList<>();
+        for (String split : splits) {
+            text.addAll(List.of(WordUtils.wrap(split, length).split("\n"))); //need to write custom wrapper probably to prevent _Highlighted text_ being broken up
+        }
+
+
         List<Component> out = new ArrayList<>();
 
 

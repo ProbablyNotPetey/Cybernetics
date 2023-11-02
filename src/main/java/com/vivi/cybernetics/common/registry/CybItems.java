@@ -34,8 +34,8 @@ public class CybItems {
             //HEAD
             CAPACITY_EXTENSION_HEAD = ITEMS.register("capacity_extension_head", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(CybAttributes.MAX_CAPACITY.get(), new AttributeModifier(UUID.fromString("2c54b860-db1f-4c59-bfd2-6cc7dfac1afe"), "Capacity Boost Head", 0.3, AttributeModifier.Operation.MULTIPLY_TOTAL)))),
             MK1_BERSERK = ITEMS.register("mk1_berserk", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.MK1_BERSERK)),
-            MK2_BERSERK = ITEMS.register("mk2_berserk", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.MK1_BERSERK)),
-            MK3_BERSERK = ITEMS.register("mk3_berserk", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.MK1_BERSERK)),
+            MK2_BERSERK = ITEMS.register("mk2_berserk", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.MK2_BERSERK)),
+            MK3_BERSERK = ITEMS.register("mk3_berserk", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.MK3_BERSERK)),
 
             //EYES
             MK1_OPTICS = ITEMS.register("mk1_optics", () -> new OpticsItem(cyberwareProps(), false)),
@@ -71,7 +71,7 @@ public class CybItems {
 
 
             //HANDS
-            STRENGTH_HANDS = ITEMS.register("strength_hands", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(Attributes.ATTACK_DAMAGE, new AttributeModifier(UUID.fromString("8d73fa62-e37a-4bea-8b8a-3f329bc6e108"), "Hand Attack Boost", 2.5, AttributeModifier.Operation.ADDITION)))),
+            STRENGTH_HANDS = ITEMS.register("strength_hands", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(Attributes.ATTACK_DAMAGE, new AttributeModifier(UUID.fromString("8d73fa62-e37a-4bea-8b8a-3f329bc6e108"), "Hand Attack Boost", 3.0, AttributeModifier.Operation.ADDITION)))),
             STONE_MINING_FISTS = ITEMS.register("stone_mining_fists", () -> new CyberwareItem(cyberwareProps())),
 
 
