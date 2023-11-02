@@ -1,7 +1,8 @@
 package com.vivi.cybernetics;
 
 import com.mojang.logging.LogUtils;
-import com.vivi.cybernetics.client.shader.CybShaders;
+import com.vivi.cybernetics.client.shader.CybCoreShaders;
+import com.vivi.cybernetics.client.shader.CybPostShaders;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.capability.PlayerEnergyStorage;
 import com.vivi.cybernetics.client.gui.CyberwareScreen;
@@ -82,7 +83,8 @@ public class Cybernetics {
         MenuScreens.register(CybMenuTypes.PLAYER_CYBERWARE_MENU.get(), CyberwareScreen<PlayerCyberwareMenu>::new);
         MenuScreens.register(CybMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), CyberwareScreen<SurgicalChamberCyberwareMenu>::new);
 
-        CybShaders.getInstance().init();
+        CybCoreShaders.getInstance().init();
+        CybPostShaders.getInstance().init();
     }
 
 

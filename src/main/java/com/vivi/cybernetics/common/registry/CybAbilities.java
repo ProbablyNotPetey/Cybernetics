@@ -1,10 +1,7 @@
 package com.vivi.cybernetics.common.registry;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.common.ability.AbilityType;
-import com.vivi.cybernetics.common.ability.NightVisionAbilityType;
-import com.vivi.cybernetics.common.ability.ScanAbilityType;
-import com.vivi.cybernetics.common.ability.SynapticDisablerAbilityType;
+import com.vivi.cybernetics.common.ability.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -23,7 +20,8 @@ public class CybAbilities {
     public static final RegistryObject<AbilityType>
             NIGHT_VISION = ABILITY_TYPES.register("night_vision", NightVisionAbilityType::new),
             SYNAPTIC_DISABLER = ABILITY_TYPES.register("synaptic_disabler", SynapticDisablerAbilityType::new),
-            SCAN = ABILITY_TYPES.register("scan", ScanAbilityType::new)
+            SCAN = ABILITY_TYPES.register("scan", ScanAbilityType::new),
+            MK1_BERSERK = ABILITY_TYPES.register("mk1_berserk", () -> new BerserkAbilityType(200, 20))
     ;
 
 

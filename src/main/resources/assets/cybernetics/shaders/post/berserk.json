@@ -1,0 +1,36 @@
+{
+    "targets": [
+        "a",
+        "b"
+    ],
+    "passes": [
+        {
+            "name": "cybernetics:chromatic_aberration",
+            "intarget": "minecraft:main",
+            "outtarget": "a",
+            "uniforms": [
+                {
+                    "name": "Scale",
+                    "values": [ 0.05 ]
+                }
+            ]
+        },
+        {
+            "name": "cybernetics:tint",
+            "intarget": "a",
+            "outtarget": "b",
+            "uniforms": [
+                {
+                    "name": "Color",
+                    "values": [ 0.98, 0.44, 0.18 ]
+                }
+            ]
+
+        },
+        {
+            "name": "blit",
+            "intarget": "b",
+            "outtarget": "minecraft:main"
+        }
+    ]
+}

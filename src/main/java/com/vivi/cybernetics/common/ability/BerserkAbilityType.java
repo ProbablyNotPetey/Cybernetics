@@ -1,5 +1,10 @@
 package com.vivi.cybernetics.common.ability;
 
+import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.client.shader.BerserkRenderer;
+import com.vivi.cybernetics.client.util.Easing;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -10,11 +15,11 @@ import net.minecraft.world.level.Level;
 
 import java.util.UUID;
 
-public abstract class AbstractBerserkAbilityType extends AbilityType {
+public class BerserkAbilityType extends AbilityType {
 
     protected final int duration;
     private static final UUID speedUUID = UUID.fromString("346cc9b7-3c4a-4bee-9c8a-360daa1381ea");
-    public AbstractBerserkAbilityType(int duration, int maxCooldown) {
+    public BerserkAbilityType(int duration, int maxCooldown) {
         super(maxCooldown);
         this.duration = duration;
     }
@@ -24,6 +29,8 @@ public abstract class AbstractBerserkAbilityType extends AbilityType {
         super.onEnable(ability, level, player);
         if(level.isClientSide) {
             //enable orange post shader
+            BerserkRenderer.getInstance().start(20, Easing.EXPO_IN_OUT);
+//            Minecraft.getInstance().gameRenderer.loadEffect(new ResourceLocation(Cybernetics.MOD_ID, "shaders/post/tint.json"));
         }
     }
 
@@ -41,6 +48,8 @@ public abstract class AbstractBerserkAbilityType extends AbilityType {
 
         if(level.isClientSide) {
             //disable orange post shader
+            BerserkRenderer.getInstance().stop(20, Easing.EXPO_IN_OUT);
+//            Minecraft.getInstance().gameRenderer.shutdownEffect();
         }
     }
 

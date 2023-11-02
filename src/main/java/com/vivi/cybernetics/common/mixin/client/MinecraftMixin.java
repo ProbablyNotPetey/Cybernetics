@@ -14,7 +14,7 @@ public class MinecraftMixin {
 
     @Inject(method = "shouldEntityAppearGlowing", at = @At("HEAD"), cancellable = true)
     private void cybernetics$shouldEntityAppearGlowing(Entity entity, CallbackInfoReturnable<Boolean> cir) {
-        if(ScannerRenderer.shouldRenderGlowingEntiy(entity)) {
+        if(ScannerRenderer.getInstance().shouldRenderGlowingEntiy(entity)) {
             cir.setReturnValue(true);
         }
     }

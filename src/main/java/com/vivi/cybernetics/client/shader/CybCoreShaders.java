@@ -19,12 +19,12 @@ import java.util.List;
 import java.util.function.Consumer;
 
 
-public class CybShaders implements ResourceManagerReloadListener {
-    private static final CybShaders INSTANCE = new CybShaders();
-    private CybShaders() {
+public class CybCoreShaders implements ResourceManagerReloadListener {
+    private static final CybCoreShaders INSTANCE = new CybCoreShaders();
+    private CybCoreShaders() {
 
     }
-    public static CybShaders getInstance() {
+    public static CybCoreShaders getInstance() {
         return INSTANCE;
     }
 

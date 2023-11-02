@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 public class ScanAbilityType extends AbilityType {
 
     public ScanAbilityType() {
-        super(300);
+        super(10);
     }
 
     @Override
@@ -16,6 +16,6 @@ public class ScanAbilityType extends AbilityType {
         super.onEnable(ability, level, player);
         ability.disable(player);
         if(!level.isClientSide) return;
-        ScannerRenderer.setup(player, 200);
+        ScannerRenderer.getInstance().setup(player, 200);
     }
 }
