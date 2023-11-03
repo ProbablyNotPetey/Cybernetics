@@ -1,0 +1,12 @@
+{
+  "capacity": 2,
+  "incompatibilities": [],
+  "requirements": [
+    {
+      "item": "cybernetics:bionic_feet"
+    }
+  ],
+  "show_description": true,
+  "show_incompatibilities": true,
+  "show_requirements": true
+}

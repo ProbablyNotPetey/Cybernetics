@@ -1,9 +1,15 @@
 package com.vivi.cybernetics.server.data;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.vivi.cybernetics.common.item.CyberwareItem;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -30,9 +36,12 @@ public class CyberwareProperties {
         this.capacity = capacity;
     }
 
+    @Deprecated(forRemoval = true)
     public static CyberwareProperties fromStringList(List<String> requirements, List<String> incompatibilities, boolean showRequirements, boolean showIncompatibilities, boolean showDescription, int capacity) {
         return new CyberwareProperties(toIngredientList(requirements), toIngredientList(incompatibilities), showRequirements, showIncompatibilities, showDescription, capacity);
     }
+
+    @Deprecated(forRemoval = true)
     public static List<Ingredient> toIngredientList(List<String> stringList) {
         List<Ingredient> output = new ArrayList<>();
         stringList.forEach(str -> {
@@ -77,6 +86,66 @@ public class CyberwareProperties {
         boolean showDesc = buf.readBoolean();
         int cap = buf.readVarInt();
         return new CyberwareProperties(req, inc, showReq, showInc, showDesc, cap);
+    }
+
+    public JsonObject serialize() {
+        JsonObject output = new JsonObject();
+        output.addProperty("capacity", capacity);
+        output.addProperty("show_requirements", showRequirements);
+        output.addProperty("show_incompatibilities", showIncompatibilities);
+        output.addProperty("show_description", showDescription);
+        JsonArray jsonRequirements = new JsonArray();
+        requirements.forEach(req -> {
+            jsonRequirements.add(req.toJson());
+        });
+        output.add("requirements", jsonRequirements);
+        JsonArray jsonIncompatibilities = new JsonArray();
+        incompatibilities.forEach(inc -> {
+            jsonIncompatibilities.add(inc.toJson());
+        });
+        output.add("incompatibilities", jsonIncompatibilities);
+
+        return output;
+    }
+
+    public static CyberwareProperties deserialize(JsonElement json) {
+        JsonObject object = json.getAsJsonObject();
+//            List<String> strRequirements = new ArrayList<>();
+        List<Ingredient> req = new ArrayList<>();
+        if(object.has("requirements")) {
+            JsonArray requirements = object.getAsJsonArray("requirements");
+            requirements.forEach(str -> {
+//                    strRequirements.add(str.getAsString());
+                req.add(Ingredient.fromJson(str));
+            });
+        }
+//            List<String> strIncompatibilites = new ArrayList<>();
+        List<Ingredient> inc = new ArrayList<>();
+        if(object.has("incompatibilities")) {
+            JsonArray incompatibilities = object.getAsJsonArray("incompatibilities");
+            incompatibilities.forEach(str -> {
+//                    strIncompatibilites.add(str.getAsString());
+                inc.add(Ingredient.fromJson(str));
+            });
+        }
+        boolean showRequirements = true;
+        if(object.has("show_requirements")) {
+            showRequirements = object.get("show_requirements").getAsBoolean();
+        }
+        boolean showIncompatibilities = true;
+        if(object.has("show_incompatibilities")) {
+            showIncompatibilities = object.get("show_incompatibilities").getAsBoolean();
+        }
+        boolean showDescription = true;
+        if(object.has("show_description")) {
+            showDescription = object.get("show_description").getAsBoolean();
+        }
+        int capacity = CyberwareItem.DEFAULT_CAPACITY;
+        if(object.has("capacity")) {
+            capacity = object.get("capacity").getAsInt();
+        }
+//            properties.put(location, CyberwareProperties.fromStringList(strRequirements, strIncompatibilites, showRequirements, showIncompatibilities, showDescription, capacity));
+        return new CyberwareProperties(req, inc, showRequirements, showIncompatibilities, showDescription, capacity);
     }
 
     @Override

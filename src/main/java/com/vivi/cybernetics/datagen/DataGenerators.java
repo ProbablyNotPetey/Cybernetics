@@ -14,6 +14,7 @@ public class DataGenerators {
         DataGenerator generator = event.getGenerator();
 
         generator.addProvider(event.includeClient(), new ItemModelGenerator(generator, event.getExistingFileHelper()));
+        generator.addProvider(event.includeServer(), new CyberwarePropertiesGenerator(generator, event.getExistingFileHelper()));
 
     }
 }

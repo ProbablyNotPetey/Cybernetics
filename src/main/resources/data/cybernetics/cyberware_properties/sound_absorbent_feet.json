@@ -1,8 +1,0 @@
-{
-  "requirements": [
-    "cybernetics:bionic_feet"
-  ],
-  "incompatibilities": [
-    "cybernetics:full_speed_feet"
-  ]
-}

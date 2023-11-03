@@ -1,0 +1,12 @@
+{
+  "capacity": 6,
+  "incompatibilities": [
+    {
+      "tag": "cybernetics:optics"
+    }
+  ],
+  "requirements": [],
+  "show_description": true,
+  "show_incompatibilities": false,
+  "show_requirements": true
+}

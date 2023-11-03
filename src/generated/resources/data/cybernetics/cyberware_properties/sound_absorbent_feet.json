@@ -1,0 +1,16 @@
+{
+  "capacity": 2,
+  "incompatibilities": [
+    {
+      "item": "cybernetics:jump_boost_feet"
+    }
+  ],
+  "requirements": [
+    {
+      "item": "cybernetics:bionic_feet"
+    }
+  ],
+  "show_description": true,
+  "show_incompatibilities": true,
+  "show_requirements": true
+}

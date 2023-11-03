@@ -1,0 +1,12 @@
+{
+  "capacity": 7,
+  "incompatibilities": [
+    {
+      "tag": "cybernetics:skeletons"
+    }
+  ],
+  "requirements": [],
+  "show_description": true,
+  "show_incompatibilities": false,
+  "show_requirements": true
+}
