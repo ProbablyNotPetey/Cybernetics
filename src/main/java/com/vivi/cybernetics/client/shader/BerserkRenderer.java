@@ -1,8 +1,8 @@
 package com.vivi.cybernetics.client.shader;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.util.Easing;
+import com.vivi.cybernetics.common.config.ClientConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.client.renderer.PostChain;
@@ -43,6 +43,7 @@ public class BerserkRenderer {
     }
 
     public void render(PoseStack poseStack, int ticks, float partialTick) {
+        if(!ClientConfig.enableBerserkShaders.get()) return;
         if(renderPhase == -1) return;
         if(startTicks == -1) startTicks = ticks;
 
