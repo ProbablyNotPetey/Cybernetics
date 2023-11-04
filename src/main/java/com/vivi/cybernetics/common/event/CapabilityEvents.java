@@ -53,7 +53,7 @@ public class CapabilityEvents {
             });
             event.getOriginal().getCapability(Cybernetics.PLAYER_ABILITIES).ifPresent(oldStore -> {
                 event.getEntity().getCapability(Cybernetics.PLAYER_ABILITIES).ifPresent(newStore -> {
-                    Cybernetics.LOGGER.info("Old id: " + event.getOriginal().getId() + ", new id: " + event.getEntity().getId());
+//                    Cybernetics.LOGGER.info("Old id: " + event.getOriginal().getId() + ", new id: " + event.getEntity().getId());
                     newStore.copyFrom(oldStore);
                 });
             });
