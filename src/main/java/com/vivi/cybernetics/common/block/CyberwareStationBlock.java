@@ -26,7 +26,6 @@ import org.jetbrains.annotations.Nullable;
 public class CyberwareStationBlock extends BaseEntityBlock {
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public CyberwareStationBlock(Properties pProperties) {
         super(pProperties);
@@ -45,12 +44,12 @@ public class CyberwareStationBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
+        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite()).setValue(BlockStateProperties.LIT, false);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING, POWERED);
+        pBuilder.add(FACING, BlockStateProperties.LIT);
     }
 
     @Nullable

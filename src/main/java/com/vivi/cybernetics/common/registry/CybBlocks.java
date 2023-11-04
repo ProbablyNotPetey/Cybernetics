@@ -13,6 +13,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -21,6 +23,7 @@ import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Objects;
+import java.util.function.ToIntFunction;
 
 public class CybBlocks {
 
@@ -29,8 +32,8 @@ public class CybBlocks {
 
     public static final RegistryObject<Block>
             FREEZER_BLOCK = BLOCKS.register("freezer", () -> new FreezerBlock(BlockBehaviour.Properties.of(Material.METAL))),
-            CYBERWARE_STATION_BLOCK = BLOCKS.register("cyberware_station", () -> new CyberwareStationBlock(BlockBehaviour.Properties.of(Material.METAL))),
-            SURGICAL_CHAMBER_BLOCK = BLOCKS.register("surgical_chamber", () -> new SurgicalChamberBlock(BlockBehaviour.Properties.of(Material.METAL)))
+            CYBERWARE_STATION_BLOCK = BLOCKS.register("cyberware_station", () -> new CyberwareStationBlock(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(3.5F).lightLevel(litBlockEmission(5)))),
+            SURGICAL_CHAMBER_BLOCK = BLOCKS.register("surgical_chamber", () -> new SurgicalChamberBlock(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(3.5F)))
     ;
 
     public static final RegistryObject<BlockEntityType<FreezerBlockEntity>> FREEZER_BLOCK_ENTITY =
@@ -52,5 +55,11 @@ public class CybBlocks {
             event.register(ForgeRegistries.Keys.ITEMS,
                     helper -> helper.register(new ResourceLocation(Objects.requireNonNull(block.getId().toString())), new BlockItem(block.get(), new Item.Properties().tab(Cybernetics.TAB))));
         });
+    }
+
+    private static ToIntFunction<BlockState> litBlockEmission(int pLightValue) {
+        return (state) -> {
+            return state.getValue(BlockStateProperties.LIT) ? pLightValue : 0;
+        };
     }
 }

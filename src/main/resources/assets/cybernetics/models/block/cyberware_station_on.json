@@ -1,0 +1,48 @@
+{
+    "parent": "minecraft:block/cube",
+    "render_type": "translucent",
+    "elements": [
+        {
+            "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "faces": {
+                "down":  { "texture": "#down", "cullface": "down" },
+                "up":    { "texture": "#up", "cullface": "up" },
+                "north": { "texture": "#north", "cullface": "north" },
+                "south": { "texture": "#south", "cullface": "south" },
+                "west":  { "texture": "#west", "cullface": "west" },
+                "east":  { "texture": "#east", "cullface": "east" }
+            }
+        },
+        {
+            "from": [0, 0, 0],
+            "to": [ 16, 16, 16 ],
+            "faces": {
+                "down": { "texture": "#down", "cullface": "down" },
+                "up": { "texture": "#glow_top", "cullface": "up", "emissivity": 15 },
+                "north": { "texture": "#glow_side", "cullface": "north", "emissivity": 15 },
+                "south": { "texture": "#glow_side", "cullface": "south", "emissivity": 15 },
+                "west": { "texture": "#glow_side", "cullface": "west", "emissivity": 15 },
+                "east": { "texture": "#glow_side", "cullface": "east", "emissivity": 15 }
+            }
+        }
+    ],
+    "display": {
+        "firstperson_righthand": {
+            "rotation": [ 0, 135, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.40, 0.40, 0.40 ]
+        }
+    },
+    "textures": {
+        "particle": "#north",
+        "down": "cybernetics:block/cyberware_station/bottom",
+        "up": "cybernetics:block/cyberware_station/top",
+        "north": "cybernetics:block/cyberware_station/north",
+        "east": "cybernetics:block/cyberware_station/east",
+        "south": "cybernetics:block/cyberware_station/south",
+        "west": "cybernetics:block/cyberware_station/west",
+        "glow_side": "cybernetics:block/cyberware_station/glow_side",
+        "glow_top": "cybernetics:block/cyberware_station/glow_top"
+    }
+}

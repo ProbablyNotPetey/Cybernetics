@@ -22,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -181,7 +182,7 @@ public class CyberwareStationBlockEntity extends BlockEntity implements MenuProv
     @Override
     protected void saveAdditional(CompoundTag tag) {
         tag.put("inventory", itemHandler.serializeNBT());
-        tag.put("energy", energyHandler.serializeNBT());
+        tag.putInt("energy", energyHandler.getEnergyStored());
         super.saveAdditional(tag);
     }
 
@@ -189,7 +190,7 @@ public class CyberwareStationBlockEntity extends BlockEntity implements MenuProv
     public void load(CompoundTag tag) {
         super.load(tag);
         itemHandler.deserializeNBT(tag.getCompound("inventory"));
-        energyHandler.deserializeNBT(tag.getCompound("energy"));
+        energyHandler.setEnergy(tag.getInt("energy"));
     }
 
 
@@ -210,7 +211,8 @@ public class CyberwareStationBlockEntity extends BlockEntity implements MenuProv
             blockEntity.energyHandler.extractEnergy(RATE, false);
 
 
-            state = state.setValue(CyberwareStationBlock.POWERED, true);
+            state = state.setValue(BlockStateProperties.LIT, true);
+            level.setBlock(pos, state, 3);
             setChanged(level, pos, state);
 
             if(blockEntity.progress >= blockEntity.maxProgress) {
@@ -219,7 +221,8 @@ public class CyberwareStationBlockEntity extends BlockEntity implements MenuProv
         }
         else {
             blockEntity.resetProgress();
-            state = state.setValue(CyberwareStationBlock.POWERED, false);
+            state = state.setValue(BlockStateProperties.LIT, false);
+            level.setBlock(pos, state, 3);
             setChanged(level, pos, state);
         }
     }
@@ -268,7 +271,7 @@ public class CyberwareStationBlockEntity extends BlockEntity implements MenuProv
     private SimpleContainer createContainerFromHandler() {
         SimpleContainer out = new SimpleContainer(itemHandler.getSlots());
         for(int i = 0; i < itemHandler.getSlots(); i++) {
-            out.setItem(i, itemHandler.getStackInSlot(i));
+            out.setItem(i, itemHandler.getStackInSlot(i).copy());
         }
         return out;
     }

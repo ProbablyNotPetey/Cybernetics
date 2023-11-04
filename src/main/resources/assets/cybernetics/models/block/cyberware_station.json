@@ -1,0 +1,19 @@
+{
+    "parent": "minecraft:block/cube",
+    "display": {
+        "firstperson_righthand": {
+            "rotation": [ 0, 135, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.40, 0.40, 0.40 ]
+        }
+    },
+    "textures": {
+        "particle": "cybernetics:block/cyberware_station/north",
+        "down": "cybernetics:block/cyberware_station/bottom",
+        "up": "cybernetics:block/cyberware_station/top",
+        "north": "cybernetics:block/cyberware_station/north",
+        "east": "cybernetics:block/cyberware_station/east",
+        "south": "cybernetics:block/cyberware_station/south",
+        "west": "cybernetics:block/cyberware_station/west"
+    }
+}
