@@ -1,5 +1,6 @@
 package com.vivi.cybernetics.server.network.packet;
 
+import com.vivi.cybernetics.common.menu.PlayerCyberwareMenu;
 import com.vivi.cybernetics.common.menu.deprecated.PlayerCyberwareMenuOld;
 import com.vivi.cybernetics.common.util.CyberwareHelper;
 import net.minecraft.network.FriendlyByteBuf;
@@ -32,7 +33,7 @@ public class C2SOpenCyberwarePacket extends Packet {
         ctx.enqueueWork(() -> {
             ServerPlayer player = ctx.getSender();
             CyberwareHelper.getCyberware(player).ifPresent(cyberware -> {
-                NetworkHooks.openScreen(player, new SimpleMenuProvider(((pContainerId, pPlayerInventory, pPlayer) -> new PlayerCyberwareMenuOld(pContainerId, pPlayerInventory, cyberware)), Component.literal(("Cyberware"))));
+                NetworkHooks.openScreen(player, new SimpleMenuProvider(((pContainerId, pPlayerInventory, pPlayer) -> new PlayerCyberwareMenu(pContainerId, pPlayerInventory, cyberware)), Component.literal(("Cyberware"))));
             });
 
         });

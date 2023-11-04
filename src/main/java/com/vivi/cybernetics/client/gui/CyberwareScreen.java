@@ -8,6 +8,7 @@ import com.vivi.cybernetics.client.gui.event.GuiEvent;
 import com.vivi.cybernetics.client.gui.event.StateEvent;
 import com.vivi.cybernetics.client.gui.util.*;
 import com.vivi.cybernetics.common.cyberware.CyberwareSection;
+import com.vivi.cybernetics.common.menu.CyberwareMenu;
 import com.vivi.cybernetics.common.menu.deprecated.CyberwareMenuOld;
 import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.server.network.packet.C2SSwitchActiveSlotPacket;
@@ -28,7 +29,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 import java.util.*;
 
-public class CyberwareScreen<T extends CyberwareMenuOld> extends CybAbstractContainerScreen<T> {
+public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContainerScreen<T> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/cyberware/background.png");
 
     public static final ResourceLocation SLOT_TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/cyberware/slot.png");

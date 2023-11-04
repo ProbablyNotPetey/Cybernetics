@@ -27,9 +27,10 @@ public class CyberwareMenu extends AbstractContainerMenu {
     protected final CyberwareInventory cyberware;
     private int capacity;
     private int maxCapacity;
+    private CyberwareSectionType activeSection;
 
     private final MenuType<?> menuType;
-    protected CyberwareMenu(@Nullable MenuType<?> menuType, int containerId, Inventory inventory, CyberwareInventory cyberware) {
+    public CyberwareMenu(@Nullable MenuType<?> menuType, int containerId, Inventory inventory, CyberwareInventory cyberware) {
         super(menuType, containerId);
         this.menuType = menuType;
         int counter = 0;
@@ -78,6 +79,30 @@ public class CyberwareMenu extends AbstractContainerMenu {
                     return false;
                 }
             });
+        }
+    }
+
+    public CyberwareInventory getCyberware() {
+        return cyberware;
+    }
+
+    public int getStoredCapacity() {
+        return 0;
+    }
+
+    public int getMaxCapacity() {
+        return 50;
+    }
+
+    public void switchActiveSlots(CyberwareSectionType section) {
+        this.activeSection = section;
+        for(int i = 0; i < cyberware.getSlots(); i++) {
+            if(cyberware.getSectionFromSlot(i).getType().equals(section)) {
+                ((ToggleableSlot)getSlot(i)).turnOn();
+            }
+            else {
+                ((ToggleableSlot)getSlot(i)).turnOff();
+            }
         }
     }
 
