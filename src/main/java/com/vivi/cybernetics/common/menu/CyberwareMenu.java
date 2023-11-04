@@ -1,9 +1,13 @@
 package com.vivi.cybernetics.common.menu;
 
+import com.mojang.datafixers.util.Pair;
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.common.cyberware.CyberwareSectionType;
+import com.vivi.cybernetics.common.item.AttributeCyberwareItem;
 import com.vivi.cybernetics.common.registry.CybAttributes;
 import com.vivi.cybernetics.common.util.ToggleableSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -17,6 +21,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
 
     protected Inventory inventory;
     protected CyberwareInventory cyberware;
+    protected CyberwareSectionType activeSection;
     protected final int invX = 24;
     protected final int invY = 157;
     protected final DataSlot capacityData;
@@ -55,14 +60,16 @@ public class CyberwareMenu extends AbstractContainerMenu {
         };
         addDataSlot(capacityData);
         maxCapacityData = new DataSlot() {
+            private int maxCapacity = (int) inventory.player.getAttribute(CybAttributes.MAX_CAPACITY.get()).getValue();
+
             @Override
             public int get() {
-                return (int) inventory.player.getAttribute(CybAttributes.MAX_CAPACITY.get()).getValue();
+                return maxCapacity;
             }
 
             @Override
             public void set(int pValue) {
-
+                maxCapacity = pValue;
             }
         };
         addDataSlot(maxCapacityData);
@@ -160,6 +167,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
     }
 
     public void switchActiveSlots(CyberwareSectionType section) {
+        this.activeSection = section;
         for(int i = 0; i < cyberware.getSlots(); i++) {
             if(cyberware.getSectionFromSlot(i).getType().equals(section)) {
                 ((ToggleableSlot)getSlot(i)).turnOn();

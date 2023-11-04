@@ -62,7 +62,9 @@ public class ClientEvents {
         LocalPlayer player = Minecraft.getInstance().player;
         if(player == null) return;
 
-        if(isSpiking && player.isOnGround() && !(player.isInWater()) && !player.getAbilities().flying) {
+        if(isSpiking && player.isOnGround() && !(player.isInWater()) && !player.getAbilities().flying
+                && CyberwareHelper.hasCyberwareItem(player, CybItems.KINETIC_DISCHARGER.get())
+                &&  !player.getCooldowns().isOnCooldown(CybItems.KINETIC_DISCHARGER.get())) {
             //shockwave
             CybPackets.sendToServer(new C2SSpikeShockwavePacket());
         }

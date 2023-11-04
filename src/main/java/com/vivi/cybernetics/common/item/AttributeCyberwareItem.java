@@ -44,4 +44,8 @@ public class AttributeCyberwareItem extends CyberwareItem {
             }
         }
     }
+
+    public Pair<Attribute, AttributeModifier>[] getAttributes() {
+        return attributes;
+    }
 }
