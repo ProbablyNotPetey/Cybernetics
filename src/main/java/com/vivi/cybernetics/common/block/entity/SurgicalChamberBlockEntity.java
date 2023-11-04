@@ -3,7 +3,7 @@ package com.vivi.cybernetics.common.block.entity;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.block.SurgicalChamberBlock;
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
-import com.vivi.cybernetics.common.menu.SurgicalChamberCyberwareMenu;
+import com.vivi.cybernetics.common.menu.deprecated.SurgicalChamberCyberwareMenuOld;
 import com.vivi.cybernetics.common.registry.CybBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -87,7 +87,7 @@ public class SurgicalChamberBlockEntity extends BlockEntity implements MenuProvi
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new SurgicalChamberCyberwareMenu(pContainerId, pPlayerInventory, cyberware, getMainBlockEntity());
+        return new SurgicalChamberCyberwareMenuOld(pContainerId, pPlayerInventory, cyberware, getMainBlockEntity());
     }
 
     public SurgicalChamberBlockEntity getMainBlockEntity() {

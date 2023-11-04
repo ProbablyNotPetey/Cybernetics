@@ -19,7 +19,7 @@ public class KineticDischargerItem extends CyberwareItem {
     }
 
     public static void spike(Player player) {
-        Cybernetics.LOGGER.info("Spiking");
+//        Cybernetics.LOGGER.info("Spiking");
         player.fallDistance = 0;
 
         Vec3 movement = player.getDeltaMovement();

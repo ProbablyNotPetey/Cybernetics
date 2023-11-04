@@ -1,4 +1,4 @@
-package com.vivi.cybernetics.common.menu;
+package com.vivi.cybernetics.common.menu.deprecated;
 
 import com.mojang.datafixers.util.Pair;
 import com.vivi.cybernetics.Cybernetics;
@@ -6,6 +6,7 @@ import com.vivi.cybernetics.common.block.entity.SurgicalChamberBlockEntity;
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.common.item.AttributeCyberwareItem;
 import com.vivi.cybernetics.common.item.CyberwareItem;
+import com.vivi.cybernetics.common.menu.CyberwareSlot;
 import com.vivi.cybernetics.common.registry.CybAttributes;
 import com.vivi.cybernetics.common.registry.CybMenuTypes;
 import com.vivi.cybernetics.common.registry.CybTags;
@@ -21,24 +22,24 @@ import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
-public class SurgicalChamberCyberwareMenu extends CyberwareMenu  {
+public class SurgicalChamberCyberwareMenuOld extends CyberwareMenuOld {
 
     private final SurgicalChamberBlockEntity blockEntity;
 
-    public SurgicalChamberCyberwareMenu(int id, Inventory inv, FriendlyByteBuf buf) {
+    public SurgicalChamberCyberwareMenuOld(int id, Inventory inv, FriendlyByteBuf buf) {
         this(id, inv, (SurgicalChamberBlockEntity) inv.player.level.getBlockEntity(buf.readBlockPos()));
     }
-    public SurgicalChamberCyberwareMenu(int id, Inventory inv, SurgicalChamberBlockEntity be) {
+    public SurgicalChamberCyberwareMenuOld(int id, Inventory inv, SurgicalChamberBlockEntity be) {
         this(id, inv, be.getCapability(Cybernetics.CYBERWARE).orElse(null), be);
     }
-    public SurgicalChamberCyberwareMenu(int pContainerId, Inventory inventory, CyberwareInventory cyberware, SurgicalChamberBlockEntity be) {
+    public SurgicalChamberCyberwareMenuOld(int pContainerId, Inventory inventory, CyberwareInventory cyberware, SurgicalChamberBlockEntity be) {
         super(CybMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), pContainerId, inventory, cyberware);
         this.blockEntity = be.getMainBlockEntity();
 
         addSlotListener(new ContainerListener() {
             @Override
             public void slotChanged(AbstractContainerMenu menu, int slot, ItemStack stack) {
-                if(!(menu instanceof CyberwareMenu cyberwareMenu)) return;
+                if(!(menu instanceof CyberwareMenuOld cyberwareMenu)) return;
                 if(!(cyberwareMenu.getSlot(slot) instanceof CyberwareSlot)) return;
                 if(activeSection == null) return; //bad hack but i dont care anymore
 
@@ -59,7 +60,7 @@ public class SurgicalChamberCyberwareMenu extends CyberwareMenu  {
                     }
                     for (Ingredient req : item.getRequirements()) {
                         if (req.test(cyberwareMenu.getCarried())) {
-                            SurgicalChamberCyberwareMenu.this.moveItemStackTo(cyberwareMenu.getCyberware().getStackInSlot(i), cyberwareMenu.getCyberware().getSlots(), cyberwareMenu.slots.size(), false);
+                            SurgicalChamberCyberwareMenuOld.this.moveItemStackTo(cyberwareMenu.getCyberware().getStackInSlot(i), cyberwareMenu.getCyberware().getSlots(), cyberwareMenu.slots.size(), false);
                             break;
                         }
                     }

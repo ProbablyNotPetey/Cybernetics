@@ -1,180 +1,116 @@
 package com.vivi.cybernetics.common.menu;
 
-import com.mojang.datafixers.util.Pair;
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.common.cyberware.CyberwareSectionType;
-import com.vivi.cybernetics.common.item.AttributeCyberwareItem;
-import com.vivi.cybernetics.common.registry.CybAttributes;
+import com.vivi.cybernetics.common.item.CyberwareItem;
 import com.vivi.cybernetics.common.util.ToggleableSlot;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.CrashReport;
+import net.minecraft.CrashReportCategory;
+import net.minecraft.ReportedException;
+import net.minecraft.core.Registry;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.DataSlot;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class CyberwareMenu extends AbstractContainerMenu {
 
-    protected Inventory inventory;
-    protected CyberwareInventory cyberware;
-    protected CyberwareSectionType activeSection;
-    protected final int invX = 24;
-    protected final int invY = 157;
-    protected final DataSlot capacityData;
-    protected final DataSlot maxCapacityData;
+    protected final IItemHandlerModifiable inventory;
+    protected final CyberwareInventory cyberware;
+    private int capacity;
+    private int maxCapacity;
 
-    protected CyberwareMenu(@Nullable MenuType<?> pMenuType, int pContainerId, Inventory inventory, CyberwareInventory cyberware) {
-        super(pMenuType, pContainerId);
-
-        this.inventory = inventory;
+    private final MenuType<?> menuType;
+    protected CyberwareMenu(@Nullable MenuType<?> menuType, int containerId, Inventory inventory, CyberwareInventory cyberware) {
+        super(menuType, containerId);
+        this.menuType = menuType;
+        int counter = 0;
+        this.inventory = new ItemStackHandler(Inventory.INVENTORY_SIZE);
+        for(int i = 0; i < Inventory.INVENTORY_SIZE; i++) {
+            if(inventory.getItem(i).getItem() instanceof CyberwareItem) {
+                this.inventory.insertItem(counter++, inventory.getItem(i), false);
+            }
+        }
         this.cyberware = cyberware;
-        int x = 10, y = 30;
+        int slotX = 10, slotY = 30;
 
-        int counter = 0, rows = 4;
-
+        counter = 0;
+        int rows = 4;
+        int maxCols = 0;
         for(int i = 0; i < cyberware.getSlots(); i++) {
             CyberwareSectionType last = i > 0 ? cyberware.getSectionFromSlot(i - 1).getType() : null;
             if(last != null && !last.equals(cyberware.getSectionFromSlot(i).getType())) {
+                if(counter > maxCols) {
+                    maxCols = counter;
+                }
                 counter = 0;
             }
-            addSlot(new CyberwareSlot(cyberware, i, x + ((counter % rows) * 25) - 1, y + ((counter / rows) * 23) + 1, this.inventory.player));
+            addSlot(new CyberwareSlot(cyberware, i, slotX + ((counter % rows) * 25) - 1, slotY + ((counter / rows) * 23) + 1, inventory.player) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    return false;
+                }
+                @Override
+                public boolean mayPickup(Player playerIn) {
+                    return false;
+                }
+            });
             counter++;
         }
 
-        addPlayerInventory(this.inventory);
-        addPlayerHotbar(this.inventory);
-        capacityData = new DataSlot() {
-            @Override
-            public int get() {
-                return cyberware.getStoredCapacity();
-            }
-
-            @Override
-            public void set(int pValue) {
-
-            }
-        };
-        addDataSlot(capacityData);
-        maxCapacityData = new DataSlot() {
-            private int maxCapacity = (int) inventory.player.getAttribute(CybAttributes.MAX_CAPACITY.get()).getValue();
-
-            @Override
-            public int get() {
-                return maxCapacity;
-            }
-
-            @Override
-            public void set(int pValue) {
-                maxCapacity = pValue;
-            }
-        };
-        addDataSlot(maxCapacityData);
-    }
-
-    private void addPlayerInventory(Inventory inv) {
-        for(int r = 0; r < 3; r++) {
-            for(int c = 0; c < 9; c++) {
-                this.addSlot(new Slot(inv, c + r*9 + 9, invX + c*18, invY + r*18));
-            }
+        int invX = 10, invY = slotY + (maxCols * 23) + 5;
+        for(int i = 0; i < this.inventory.getSlots(); i++) {
+            addSlot(new ToggleableSlot(this.inventory, i, invX + ((i % rows) * 18) - 1, invY + ((i / rows) * 18) + 1) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    return false;
+                }
+                @Override
+                public boolean mayPickup(Player playerIn) {
+                    return false;
+                }
+            });
         }
     }
 
-    private void addPlayerHotbar(Inventory inv) {
-        for(int c = 0; c < 9; c++) {
-            this.addSlot(new Slot(inv, c, invX + c*18, invY + 58));
-        }
-
-    }
-
-    public int getStoredCapacity() {
-        return capacityData.get();
-    }
-
-    public int getMaxCapacity() {
-        return maxCapacityData.get();
-    }
-
-
-
-
-
-    /**
-     * Mostly stolen from {@link net.minecraft.world.inventory.InventoryMenu#quickMoveStack(Player, int)}.
-     * <p>
-     * Moves cyberware into inventory, you cannot shift click inventory items into cyberware
-     */
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
-        ItemStack stackOut = ItemStack.EMPTY;
-        Slot slot = this.slots.get(index);
-
-        //clicked on item
-        if(slot != null && slot.hasItem()) {
-            ItemStack stackInSlot = slot.getItem();
-            stackOut = stackInSlot.copy();
-            //clicked on cyberware slot
-            if(index < cyberware.getSlots()) {
-                if(!this.moveItemStackTo(stackInSlot, cyberware.getSlots(), this.slots.size(), false)) {
-                    return ItemStack.EMPTY;
-                }
-            }
-            //clicked on inventory slot
-            else if(index >= cyberware.getSlots() && index < this.slots.size() - 9) {
-                if(!this.moveItemStackTo(stackInSlot, this.slots.size() - 9, this.slots.size(), false)) {
-                    return ItemStack.EMPTY;
-                }
-            }
-            //clicked on hotbar slot
-            else if(index >= cyberware.getSlots() - 9 && index < this.slots.size()) {
-                if(!this.moveItemStackTo(stackInSlot, cyberware.getSlots(), this.slots.size() - 9, false)) {
-                    return ItemStack.EMPTY;
-                }
-            }
-            //failsafe
-            else if(!this.moveItemStackTo(stackInSlot, cyberware.getSlots(), this.slots.size(), false)) {
-                return ItemStack.EMPTY;
-            }
-
-            //idk below this line lol
-            if (stackInSlot.isEmpty()) {
-                slot.set(ItemStack.EMPTY);
-            } else {
-                slot.setChanged();
-            }
-
-            if (stackInSlot.getCount() == stackOut.getCount()) {
-                return ItemStack.EMPTY;
-            }
-
-            slot.onTake(player, stackInSlot);
+    public void clicked(int pSlotId, int pButton, ClickType pClickType, Player pPlayer) {
+        try {
+            this.doClick(pSlotId, pButton, pClickType, pPlayer);
+        } catch (Exception exception) {
+            CrashReport crashreport = CrashReport.forThrowable(exception, "Container click");
+            CrashReportCategory crashreportcategory = crashreport.addCategory("Click info");
+            crashreportcategory.setDetail("Menu Type", () -> this.menuType != null ? ForgeRegistries.MENU_TYPES.getKey(this.menuType).toString() : "<no type>");
+            crashreportcategory.setDetail("Menu Class", () -> this.getClass().getCanonicalName());
+            crashreportcategory.setDetail("Slot Count", this.slots.size());
+            crashreportcategory.setDetail("Slot", pSlotId);
+            crashreportcategory.setDetail("Button", pButton);
+            crashreportcategory.setDetail("Type", pClickType);
+            throw new ReportedException(crashreport);
         }
+    }
 
+    private void doClick(int slot, int button, ClickType clickType, Player player) {
+        if(clickType == ClickType.PICKUP) {
 
-        return stackOut;
+        }
+    }
+
+    @Override
+    public ItemStack quickMoveStack(Player pPlayer, int index) {
+        return slots.get(index).getItem();
     }
 
     @Override
     public boolean stillValid(Player pPlayer) {
         return pPlayer.isAlive();
-    }
-
-    public CyberwareInventory getCyberware() {
-        return cyberware;
-    }
-
-    public void switchActiveSlots(CyberwareSectionType section) {
-        this.activeSection = section;
-        for(int i = 0; i < cyberware.getSlots(); i++) {
-            if(cyberware.getSectionFromSlot(i).getType().equals(section)) {
-                ((ToggleableSlot)getSlot(i)).turnOn();
-            }
-            else {
-                ((ToggleableSlot)getSlot(i)).turnOff();
-            }
-        }
     }
 }

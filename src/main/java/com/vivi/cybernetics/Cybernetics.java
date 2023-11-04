@@ -10,8 +10,8 @@ import com.vivi.cybernetics.client.gui.CyberwareStationScreen;
 import com.vivi.cybernetics.common.config.ClientConfig;
 import com.vivi.cybernetics.common.config.CommonConfig;
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
-import com.vivi.cybernetics.common.menu.PlayerCyberwareMenu;
-import com.vivi.cybernetics.common.menu.SurgicalChamberCyberwareMenu;
+import com.vivi.cybernetics.common.menu.deprecated.PlayerCyberwareMenuOld;
+import com.vivi.cybernetics.common.menu.deprecated.SurgicalChamberCyberwareMenuOld;
 import com.vivi.cybernetics.common.registry.*;
 import com.vivi.cybernetics.server.network.CybPackets;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -86,8 +86,8 @@ public class Cybernetics {
 //        MenuScreens.register(CybMenuTypes.PLAYER_CYBERWARE_MENU.get(), PlayerCyberwareScreenOld::new);
 //        MenuScreens.register(CybMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), SurgicalChamberCyberwareScreenOld::new);
 
-        MenuScreens.register(CybMenuTypes.PLAYER_CYBERWARE_MENU.get(), CyberwareScreen<PlayerCyberwareMenu>::new);
-        MenuScreens.register(CybMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), CyberwareScreen<SurgicalChamberCyberwareMenu>::new);
+        MenuScreens.register(CybMenuTypes.PLAYER_CYBERWARE_MENU.get(), CyberwareScreen<PlayerCyberwareMenuOld>::new);
+        MenuScreens.register(CybMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), CyberwareScreen<SurgicalChamberCyberwareMenuOld>::new);
 
         CybCoreShaders.getInstance().init();
         CybPostShaders.getInstance().init();
