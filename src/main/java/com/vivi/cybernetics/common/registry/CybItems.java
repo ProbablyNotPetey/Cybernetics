@@ -32,7 +32,7 @@ public class CybItems {
     public static final RegistryObject<Item>
 
             //HEAD
-            CAPACITY_EXTENSION_HEAD = ITEMS.register("capacity_extension_head", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(CybAttributes.MAX_CAPACITY.get(), new AttributeModifier(UUID.fromString("2c54b860-db1f-4c59-bfd2-6cc7dfac1afe"), "Capacity Boost Head", 0.3, AttributeModifier.Operation.MULTIPLY_TOTAL)))),
+            CAPACITY_EXTENSION_HEAD = ITEMS.register("capacity_extension_head", () -> new CapacityCyberwareItem(cyberwareProps(), 0.3f, CapacityCyberwareItem.Operation.MULTIPLY)),
             MK1_BERSERK = ITEMS.register("mk1_berserk", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.MK1_BERSERK)),
             MK2_BERSERK = ITEMS.register("mk2_berserk", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.MK2_BERSERK)),
             MK3_BERSERK = ITEMS.register("mk3_berserk", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.MK3_BERSERK)),

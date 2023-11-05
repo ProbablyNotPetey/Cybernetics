@@ -1,6 +1,7 @@
 package com.vivi.cybernetics.common.cyberware;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.common.item.CapacityCyberwareItem;
 import com.vivi.cybernetics.common.item.CyberwareItem;
 import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.server.network.packet.S2CSyncAbilitiesPacket;
@@ -23,9 +24,11 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
 
     private final Player owner;
     private int capacity;
+    private int maxCapacity;
     public CyberwareInventory(Player owner, IItemHandlerModifiable... itemHandler) {
         super(itemHandler);
         this.owner = owner;
+        this.maxCapacity = 50;
     }
 
 
@@ -59,7 +62,7 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
     public void setStackInSlot(int slot, @NotNull ItemStack stack) {
         super.setStackInSlot(slot, stack);
         onContentsChanged(slot);
-        initCapacity();
+//        initCapacity();
     }
 
     @Override
@@ -67,9 +70,9 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
         ItemStack out = super.extractItem(slot, amount, simulate);
         if(!simulate) {
             onContentsChanged(slot);
-            if(getStackInSlot(slot).getItem() instanceof CyberwareItem) {
-                capacity -= ((CyberwareItem) getStackInSlot(slot).getItem()).getCapacity();
-            }
+//            if(getStackInSlot(slot).getItem() instanceof CyberwareItem) {
+//                capacity -= ((CyberwareItem) getStackInSlot(slot).getItem()).getCapacity();
+//            }
         }
         return out;
     }
@@ -79,18 +82,18 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
         ItemStack out =  super.insertItem(slot, stack, simulate);
         if(!simulate) {
             onContentsChanged(slot);
-            if(getStackInSlot(slot).getItem() instanceof CyberwareItem) {
-                capacity += ((CyberwareItem) getStackInSlot(slot).getItem()).getCapacity();
-            }
+//            if(getStackInSlot(slot).getItem() instanceof CyberwareItem) {
+//                capacity += ((CyberwareItem) getStackInSlot(slot).getItem()).getCapacity();
+//            }
         }
         return out;
     }
 
-    protected void onContentsChanged(int slot) {
+    public void onContentsChanged(int slot) {
+        initCapacity();
         if(owner != null && !owner.level.isClientSide) {
             CybPackets.sendToClient(new S2CSyncCyberwarePacket(owner, this, true), (ServerPlayer) owner);
         }
-//        initCapacity();
     }
 
     public void copyFrom(CyberwareInventory other, boolean shouldUpdate) {
@@ -205,16 +208,29 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
 
     public void initCapacity() {
         capacity = 0;
+        maxCapacity = 50;
         for(int i = 0; i < getSlots(); i++) {
             Item item = getStackInSlot(i).getItem();
             if(item instanceof CyberwareItem) {
                 capacity += ((CyberwareItem) item).getCapacity();
+            }
+            if(item instanceof CapacityCyberwareItem capacityItem) {
+                if(capacityItem.getOperation() == CapacityCyberwareItem.Operation.ADDITION) {
+                    maxCapacity += (int) capacityItem.getValue();
+                }
+                else if(capacityItem.getOperation() == CapacityCyberwareItem.Operation.MULTIPLY) {
+                    maxCapacity = (int) (maxCapacity * (1 + capacityItem.getValue()));
+                }
             }
         }
     }
 
     public int getStoredCapacity() {
         return capacity;
+    }
+
+    public int getMaxCapacity() {
+        return maxCapacity;
     }
 
     public void syncToClient(ServerPlayer client) {

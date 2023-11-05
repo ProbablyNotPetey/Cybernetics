@@ -9,7 +9,6 @@ import com.vivi.cybernetics.client.gui.event.StateEvent;
 import com.vivi.cybernetics.client.gui.util.*;
 import com.vivi.cybernetics.common.cyberware.CyberwareSection;
 import com.vivi.cybernetics.common.menu.CyberwareMenu;
-import com.vivi.cybernetics.common.menu.deprecated.CyberwareMenuOld;
 import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.server.network.packet.C2SSwitchActiveSlotPacket;
 import com.vivi.cybernetics.client.util.Easing;
@@ -40,8 +39,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
     protected TextWidget textWidget;
     protected State state;
     protected List<MaskWidget> itemMasks = new ArrayList<>();
-    protected CapacityGuiComponent leftCapacity;
-    protected CapacityGuiComponent rightCapacity;
+    protected CapacityGuiComponent capacityComponent;
 
     protected List<EntityWidgetRotate> entityWidgetsToRotate = new ArrayList<>();
     public CyberwareScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
@@ -107,9 +105,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         }
         maskWidgetIterator = itemMasks.iterator();
 
-        leftCapacity = new CapacityGuiComponent(leftPos + 2, topPos + 153, true);
-        rightCapacity = new CapacityGuiComponent(leftPos + 190, topPos + 153, false);
-
+        capacityComponent = new CapacityGuiComponent(leftPos -17, topPos + 5);
 //        Cybernetics.LOGGER.info("Capacity: " + menu.getStoredCapacity());
 //        Cybernetics.LOGGER.info("Max Capacity: " + menu.getMaxCapacity());
     }
@@ -198,7 +194,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
     @Override
     protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShaderTexture(0, TEXTURE);
-        this.blit(pPoseStack, leftPos, topPos, 0, 0, this.imageWidth, this.imageHeight);
+        this.blit(pPoseStack, leftPos - 18, topPos, 0, 0, this.imageWidth + 18, this.imageHeight);
 
         RenderSystem.setShaderTexture(0, SLOT_TEXTURE);
 
@@ -210,18 +206,14 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             blit(pPoseStack, leftPos + menu.getSlot(i).x - 3, topPos + menu.getSlot(i).y - 1, u, 0, 20, 18, 48, 48);
         }
 
-        leftCapacity.draw(pPoseStack, menu.getStoredCapacity(), menu.getMaxCapacity());
-        rightCapacity.draw(pPoseStack, menu.getStoredCapacity(), menu.getMaxCapacity());
+        capacityComponent.draw(pPoseStack, menu.getStoredCapacity(), menu.getMaxCapacity());
 
     }
 
     @Override
     protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-        if(MouseHelper.isHovering(leftCapacity.x, leftCapacity.y, leftCapacity.width, leftCapacity.height, mouseX, mouseY)) {
-            renderTooltip(poseStack, leftCapacity.getTooltip(menu.getStoredCapacity(), menu.getMaxCapacity()), Optional.empty(), mouseX - leftPos, mouseY - topPos);
-        }
-        if(MouseHelper.isHovering(rightCapacity.x, rightCapacity.y, rightCapacity.width, rightCapacity.height, mouseX, mouseY)) {
-            renderTooltip(poseStack, rightCapacity.getTooltip(menu.getStoredCapacity(), menu.getMaxCapacity()), Optional.empty(), mouseX - leftPos, mouseY - topPos);
+        if(MouseHelper.isHovering(capacityComponent.x, capacityComponent.y, capacityComponent.width, capacityComponent.height, mouseX, mouseY)) {
+            renderTooltip(poseStack, capacityComponent.getTooltip(menu.getStoredCapacity(), menu.getMaxCapacity()), Optional.empty(), mouseX - leftPos, mouseY - topPos);
         }
     }
 

@@ -4,6 +4,7 @@ import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.common.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.common.item.CyberwareItem;
+import com.vivi.cybernetics.common.registry.CybAttributes;
 import com.vivi.cybernetics.common.util.ToggleableSlot;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
@@ -13,10 +14,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ClickType;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -33,13 +31,14 @@ public class CyberwareMenu extends AbstractContainerMenu {
     //Note: this opens up for the possibility of a dupe bug, if some mod removes items from the player's inventory before they confirm.
     protected final IItemHandlerModifiable inventory;
     protected final CyberwareInventory cyberware;
-    private int capacity;
-    private int maxCapacity;
     private CyberwareSectionType activeSection;
     private final boolean isClient;
 
     protected final NonNullList<ItemStack> stacksToAdd = NonNullList.create();
     protected final NonNullList<ItemStack> stacksToRemove = NonNullList.create();
+
+    protected final DataSlot capacityData;
+    protected final DataSlot maxCapacityData;
 
     private int inventorySlotId;
 
@@ -75,11 +74,37 @@ public class CyberwareMenu extends AbstractContainerMenu {
         maxCols = Mth.ceil((float) maxCols / rows);
 
         inventorySlotId = slots.size();
-        Cybernetics.LOGGER.info("max cols: " + maxCols);
         int invX = 10, invY = slotY + (maxCols * 23) + 5;
         for(int i = 0; i < this.inventory.getSlots(); i++) {
             addSlot(new SlotItemHandler(this.inventory, i, invX + ((i % rows) * 18) - 1, invY + ((i / rows) * 18) + 1));
         }
+
+
+        capacityData = new DataSlot() {
+            @Override
+            public int get() {
+                return cyberware.getStoredCapacity();
+            }
+
+            @Override
+            public void set(int pValue) {
+
+            }
+        };
+        addDataSlot(capacityData);
+        maxCapacityData = new DataSlot() {;
+
+            @Override
+            public int get() {
+                return cyberware.getMaxCapacity();
+            }
+
+            @Override
+            public void set(int pValue) {
+
+            }
+        };
+        addDataSlot(maxCapacityData);
     }
 
     public CyberwareInventory getCyberware() {
@@ -87,11 +112,11 @@ public class CyberwareMenu extends AbstractContainerMenu {
     }
 
     public int getStoredCapacity() {
-        return 0;
+        return capacityData.get();
     }
 
     public int getMaxCapacity() {
-        return 50;
+        return maxCapacityData.get();
     }
 
     public void switchActiveSlots(CyberwareSectionType section) {
@@ -105,6 +130,8 @@ public class CyberwareMenu extends AbstractContainerMenu {
             }
         }
     }
+
+
 
     @Override
     public void clicked(int pSlotId, int pButton, ClickType pClickType, Player pPlayer) {
@@ -150,6 +177,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
                 }
                 if(moveItemStackTo(getSlot(slotId).getItem(), inventorySlotId, slots.size(), false)) {
 
+                    cyberware.onContentsChanged(slotId);
                     for (ItemStack addStack : stacksToRemove) {
                         if (addStack.equals(stack, false)) {
                             stacksToRemove.remove(addStack);

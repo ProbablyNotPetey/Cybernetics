@@ -16,15 +16,13 @@ public class CapacityGuiComponent extends GuiComponent {
     public final int y;
     public final int width;
     public final int height;
-    private final boolean left;
     public static final ResourceLocation TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/cyberware/bar_filled.png");
 
-    public CapacityGuiComponent(int x, int y, boolean left) {
+    public CapacityGuiComponent(int x, int y) {
         this.x = x;
         this.y = y;
         this.width = 16;
-        this.height = 82;
-        this.left = left;
+        this.height = 229;
     }
 
     public List<Component> getTooltip(int capacity, int maxCapacity) {
@@ -57,8 +55,7 @@ public class CapacityGuiComponent extends GuiComponent {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int u = left ? 0 : 16;
-        if(capacity > maxCapacity) u += 32;
-        blit(poseStack, x, y + (height - scaledHeight), u, height - scaledHeight, width, scaledHeight, 96, 96);
+        int u = capacity > maxCapacity ? 16 : 0;
+        blit(poseStack, x, y + (height - scaledHeight), u, height - scaledHeight, width, scaledHeight, 256, 256);
     }
 }
