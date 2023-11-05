@@ -1,6 +1,7 @@
 package com.vivi.cybernetics.server.network.packet;
 
 import com.vivi.cybernetics.common.cyberware.CyberwareSectionType;
+import com.vivi.cybernetics.common.menu.CyberwareMenu;
 import com.vivi.cybernetics.common.menu.deprecated.CyberwareMenuOld;
 import com.vivi.cybernetics.common.registry.CybCyberware;
 import net.minecraft.network.FriendlyByteBuf;
@@ -45,7 +46,7 @@ public class C2SSwitchActiveSlotPacket extends Packet {
         NetworkEvent.Context ctx = sup.get();
         ctx.enqueueWork(() -> {
             ServerPlayer player = ctx.getSender();
-            if(player.containerMenu instanceof CyberwareMenuOld menu) {
+            if(player.containerMenu instanceof CyberwareMenu menu) {
                 menu.switchActiveSlots(section);
             }
         });

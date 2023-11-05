@@ -1,5 +1,6 @@
 package com.vivi.cybernetics.common.menu;
 
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.common.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.common.item.CyberwareItem;
@@ -7,13 +8,17 @@ import com.vivi.cybernetics.common.util.ToggleableSlot;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -21,18 +26,28 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class CyberwareMenu extends AbstractContainerMenu {
 
+    //Note: this opens up for the possibility of a dupe bug, if some mod removes items from the player's inventory before they confirm.
     protected final IItemHandlerModifiable inventory;
     protected final CyberwareInventory cyberware;
     private int capacity;
     private int maxCapacity;
     private CyberwareSectionType activeSection;
+    private final boolean isClient;
+
+    protected final NonNullList<ItemStack> stacksToAdd = NonNullList.create();
+    protected final NonNullList<ItemStack> stacksToRemove = NonNullList.create();
+
+    private int inventorySlotId;
 
     private final MenuType<?> menuType;
     public CyberwareMenu(@Nullable MenuType<?> menuType, int containerId, Inventory inventory, CyberwareInventory cyberware) {
         super(menuType, containerId);
         this.menuType = menuType;
+        this.isClient = inventory.player.level.isClientSide;
         int counter = 0;
         this.inventory = new ItemStackHandler(Inventory.INVENTORY_SIZE);
         for(int i = 0; i < Inventory.INVENTORY_SIZE; i++) {
@@ -54,31 +69,16 @@ public class CyberwareMenu extends AbstractContainerMenu {
                 }
                 counter = 0;
             }
-            addSlot(new CyberwareSlot(cyberware, i, slotX + ((counter % rows) * 25) - 1, slotY + ((counter / rows) * 23) + 1, inventory.player) {
-                @Override
-                public boolean mayPlace(@NotNull ItemStack stack) {
-                    return false;
-                }
-                @Override
-                public boolean mayPickup(Player playerIn) {
-                    return false;
-                }
-            });
+            addSlot(new CyberwareSlot(cyberware, i, slotX + ((counter % rows) * 25) - 1, slotY + ((counter / rows) * 23) + 1, inventory.player));
             counter++;
         }
+        maxCols = Mth.ceil((float) maxCols / rows);
 
+        inventorySlotId = slots.size();
+        Cybernetics.LOGGER.info("max cols: " + maxCols);
         int invX = 10, invY = slotY + (maxCols * 23) + 5;
         for(int i = 0; i < this.inventory.getSlots(); i++) {
-            addSlot(new ToggleableSlot(this.inventory, i, invX + ((i % rows) * 18) - 1, invY + ((i / rows) * 18) + 1) {
-                @Override
-                public boolean mayPlace(@NotNull ItemStack stack) {
-                    return false;
-                }
-                @Override
-                public boolean mayPickup(Player playerIn) {
-                    return false;
-                }
-            });
+            addSlot(new SlotItemHandler(this.inventory, i, invX + ((i % rows) * 18) - 1, invY + ((i / rows) * 18) + 1));
         }
     }
 
@@ -123,9 +123,53 @@ public class CyberwareMenu extends AbstractContainerMenu {
         }
     }
 
-    private void doClick(int slot, int button, ClickType clickType, Player player) {
-        if(clickType == ClickType.PICKUP) {
+    private void doClick(int slotId, int button, ClickType clickType, Player player) {
 
+        if(slotId < 0) {
+            if(!getCarried().isEmpty()) {
+                player.drop(getCarried(), true);
+            }
+            return;
+        }
+        if(clickType == ClickType.PICKUP || clickType == ClickType.QUICK_MOVE) {
+            ItemStack stack = getSlot(slotId).getItem().copy();
+            if(!(stack.getItem() instanceof CyberwareItem)) return;
+            if(getSlot(slotId) instanceof CyberwareSlot) {
+                for(int i = 0; i < inventorySlotId; i++) {
+                    if(!(getSlot(i).getItem().getItem() instanceof CyberwareItem item)) {
+                        continue;
+                    }
+                    List<Ingredient> requirements = item.getRequirements();
+                    for(Ingredient req : requirements) {
+                        if(req.test(stack)) {
+                            //gui events etc.
+                            //todo: refactor gui events to use forge events?
+                            return;
+                        }
+                    }
+                }
+                if(moveItemStackTo(getSlot(slotId).getItem(), inventorySlotId, slots.size(), false)) {
+
+                    for (ItemStack addStack : stacksToRemove) {
+                        if (addStack.equals(stack, false)) {
+                            stacksToRemove.remove(addStack);
+                            break;
+                        }
+                    }
+                    stacksToAdd.add(stack);
+                }
+            }
+            else if(moveItemStackTo(getSlot(slotId).getItem(), 0, inventorySlotId, false)) {
+                for (ItemStack addStack : stacksToAdd) {
+                    if (addStack.equals(stack, false)) {
+                        stacksToAdd.remove(addStack);
+                        break;
+                    }
+                }
+                stacksToRemove.add(stack);
+            }
+
+            Cybernetics.LOGGER.info("Client: " + isClient + ", stacksToAdd: " + stacksToAdd + ", stacksToRemove: " + stacksToRemove);
         }
     }
 
@@ -137,5 +181,24 @@ public class CyberwareMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player pPlayer) {
         return pPlayer.isAlive();
+    }
+
+    @Override
+    public void removed(Player player) {
+        super.removed(player);
+        Inventory inventory = player.getInventory();
+        stacksToAdd.forEach(stack -> {
+            if(!inventory.add(stack)) {
+                player.drop(stack, true);
+            }
+        });
+        stacksToRemove.forEach(stack -> {
+            for(int i = 35; i >= 0; i--) {
+                if(inventory.getItem(i).equals(stack, false)) {
+                    inventory.removeItem(i, inventory.getItem(i).getCount());
+                    return;
+                }
+            }
+        });
     }
 }

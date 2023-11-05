@@ -39,4 +39,8 @@ public class ToggleableSlot extends SlotItemHandler {
     public boolean mayPickup(Player playerIn) {
         return isOn && super.mayPickup(playerIn);
     }
+
+    public boolean isOn() {
+        return isOn;
+    }
 }

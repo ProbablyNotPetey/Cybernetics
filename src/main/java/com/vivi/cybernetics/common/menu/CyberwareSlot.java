@@ -41,4 +41,8 @@ public class CyberwareSlot extends ToggleableSlot {
     public void setCanEdit(boolean canEdit) {
         this.canEdit = canEdit;
     }
+
+    public boolean canEdit() {
+        return canEdit;
+    }
 }
