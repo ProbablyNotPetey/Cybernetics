@@ -13,21 +13,6 @@ import java.util.List;
 
 public class CyberwareSection extends ItemStackHandler {
 
-    //Mod devs can probably just add elements to this list to change the sorting.
-    public static final List<ResourceLocation> SECTION_SORT = new ArrayList<>();
-
-    static {
-        SECTION_SORT.add(new ResourceLocation(Cybernetics.MOD_ID, "head"));
-        SECTION_SORT.add(new ResourceLocation(Cybernetics.MOD_ID, "eyes"));
-        SECTION_SORT.add(new ResourceLocation(Cybernetics.MOD_ID, "upper_organs"));
-        SECTION_SORT.add(new ResourceLocation(Cybernetics.MOD_ID, "lower_organs"));
-        SECTION_SORT.add(new ResourceLocation(Cybernetics.MOD_ID, "skeleton"));
-        SECTION_SORT.add(new ResourceLocation(Cybernetics.MOD_ID, "skin"));
-        SECTION_SORT.add(new ResourceLocation(Cybernetics.MOD_ID, "hands"));
-        SECTION_SORT.add(new ResourceLocation(Cybernetics.MOD_ID, "arms"));
-        SECTION_SORT.add(new ResourceLocation(Cybernetics.MOD_ID, "legs"));
-        SECTION_SORT.add(new ResourceLocation(Cybernetics.MOD_ID, "feet"));
-    }
 
     private final ResourceLocation id;
 

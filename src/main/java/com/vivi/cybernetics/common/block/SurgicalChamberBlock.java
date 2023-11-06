@@ -78,17 +78,21 @@ public class SurgicalChamberBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!level.isClientSide) {
             BlockEntity entity = level.getBlockEntity(pos);
-            if (entity instanceof SurgicalChamberBlockEntity be && !be.getMainBlockEntity().isInUse()) {
-
-                player.getCapability(Cybernetics.CYBERWARE).ifPresent(playerCyberware -> {
-                    SurgicalChamberBlockEntity main = be.getMainBlockEntity();
-                    main.getCapability(Cybernetics.CYBERWARE).ifPresent(beCyberware -> {
-                        beCyberware.copyFrom(playerCyberware);
+            if (entity instanceof SurgicalChamberBlockEntity be) {
+                if(be.getMainBlockEntity().isInUse()) {
+                    //do something
+                }
+                else {
+                    player.getCapability(Cybernetics.CYBERWARE).ifPresent(playerCyberware -> {
+                        SurgicalChamberBlockEntity main = be.getMainBlockEntity();
+                        main.getCapability(Cybernetics.CYBERWARE).ifPresent(beCyberware -> {
+                            beCyberware.copyFrom(playerCyberware);
 //                        Cybernetics.LOGGER.info(beCyberware.serializeNBT().getAsString());
+                        });
+                        NetworkHooks.openScreen((ServerPlayer) player, main, pos);
+                        main.setInUse(true);
                     });
-                    NetworkHooks.openScreen((ServerPlayer) player, main, pos);
-                    main.setInUse(true);
-                });
+                }
             } else {
                 throw new IllegalStateException("Container provider missing!");
             }

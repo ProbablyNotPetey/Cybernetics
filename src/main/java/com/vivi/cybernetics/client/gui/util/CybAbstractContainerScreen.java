@@ -1,8 +1,6 @@
 package com.vivi.cybernetics.client.gui.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.vivi.cybernetics.client.gui.event.CybGuiEventListener;
-import com.vivi.cybernetics.client.gui.event.GuiEvent;
 import com.vivi.cybernetics.client.util.ScreenHelper;
 import com.vivi.cybernetics.client.util.Easing;
 import com.vivi.cybernetics.client.util.ScheduledTask;
@@ -17,10 +15,6 @@ import java.util.List;
 
 public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
 
-    private final List<WidgetMovement> widgetsToMove = new ArrayList<>();
-    private final List<WidgetScale> widgetsToScale = new ArrayList<>();
-    private final List<WidgetAlpha> widgetsToAlpha = new ArrayList<>();
-    private final List<ScheduledTask> tasks = new ArrayList<>();
     protected long time;
 
 
@@ -135,19 +129,6 @@ public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu
 //        widgetsToScale.clear();
 //        widgetsToAlpha.clear();
 //        tasks.clear();
-    }
-
-    public void broadcastGuiEvent(GuiEvent event) {
-        this.renderables.forEach(renderable -> {
-            if(renderable instanceof CybGuiEventListener listener) {
-                listener.onEvent(event);
-            }
-        });
-        this.onEvent(event);
-    }
-
-    public void onEvent(GuiEvent event) {
-
     }
 
 

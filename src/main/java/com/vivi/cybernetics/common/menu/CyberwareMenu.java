@@ -32,6 +32,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
     protected final IItemHandlerModifiable inventory;
     protected final CyberwareInventory cyberware;
     private CyberwareSectionType activeSection;
+    private int currentPage = -1;
     private final boolean isClient;
 
     protected final NonNullList<ItemStack> stacksToAdd = NonNullList.create();
@@ -43,8 +44,10 @@ public class CyberwareMenu extends AbstractContainerMenu {
     private final int inventorySlotId;
 
     private final MenuType<?> menuType;
-    public CyberwareMenu(@Nullable MenuType<?> menuType, int containerId, Inventory inventory, CyberwareInventory cyberware) {
+    private final boolean canEdit;
+    public CyberwareMenu(@Nullable MenuType<?> menuType, int containerId, Inventory inventory, CyberwareInventory cyberware, boolean canEdit) {
         super(menuType, containerId);
+        this.canEdit = canEdit;
         this.menuType = menuType;
         this.isClient = inventory.player.level.isClientSide;
         int counter = 0;
@@ -55,7 +58,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
             }
         }
         this.cyberware = cyberware;
-        int slotX = 36, slotY = 32;
+        int slotX = 36, slotY = 20;
 
         counter = 0;
         int rows = 4;
@@ -77,7 +80,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
         int invX = 36, invY = 84;
         for(int j = 0; j < 3; j++) {
             for(int i = 0; i < 12; i++) {
-                addSlot(new InventorySlot(this.inventory, i, invX + ((i % rows) * 25) + 1, invY + ((i / rows) * 21) + 1, j));
+                addSlot(new InventorySlot(this.inventory, i + (j*12), invX + ((i % rows) * 25) + 1, invY + ((i / rows) * 21) + 1, j));
             }
         }
 
@@ -121,19 +124,25 @@ public class CyberwareMenu extends AbstractContainerMenu {
         return maxCapacityData.get();
     }
 
+    public boolean canEdit() {
+        return canEdit;
+    }
+
     public void switchActiveSlots(CyberwareSectionType section) {
         this.activeSection = section;
         for(int i = 0; i < cyberware.getSlots(); i++) {
             if(cyberware.getSectionFromSlot(i).getType().equals(section)) {
-                ((ToggleableSlot)getSlot(i)).turnOn();
+                ((CyberwareSlot)getSlot(i)).turnOn();
             }
             else {
-                ((ToggleableSlot)getSlot(i)).turnOff();
+                ((CyberwareSlot)getSlot(i)).turnOff();
             }
         }
     }
 
     public void switchInventoryPage(int page) {
+        if(!canEdit) return;
+        this.currentPage = page;
         for(int i = inventorySlotId; i < slots.size(); i++) {
             InventorySlot slot = (InventorySlot) getSlot(i);
             if(slot.getPage() == page) {
@@ -145,7 +154,9 @@ public class CyberwareMenu extends AbstractContainerMenu {
         }
     }
 
-
+    public int getCurrentPage() {
+        return currentPage;
+    }
 
     @Override
     public void clicked(int pSlotId, int pButton, ClickType pClickType, Player pPlayer) {
@@ -194,39 +205,34 @@ public class CyberwareMenu extends AbstractContainerMenu {
             ItemStack stack = getSlot(slotId).getItem().copy();
             if(!(stack.getItem() instanceof CyberwareItem)) return;
             if(getSlot(slotId) instanceof CyberwareSlot) {
-                for(int i = 0; i < inventorySlotId; i++) {
-                    if(!(getSlot(i).getItem().getItem() instanceof CyberwareItem item)) {
-                        continue;
-                    }
-                    List<Ingredient> requirements = item.getRequirements();
-                    for(Ingredient req : requirements) {
-                        if(req.test(stack)) {
-                            //gui events etc.
-                            //todo: refactor gui events to use forge events?
-                            return;
-                        }
-                    }
+                if(hasDependents(stack)) {
+                    return;
                 }
                 if(moveItemStackTo(getSlot(slotId).getItem(), inventorySlotId, slots.size(), false)) {
 
                     cyberware.onContentsChanged(slotId);
+                    boolean shouldAdd = true;
                     for (ItemStack addStack : stacksToRemove) {
                         if (addStack.equals(stack, false)) {
                             stacksToRemove.remove(addStack);
+                            shouldAdd = false;
                             break;
                         }
                     }
-                    stacksToAdd.add(stack);
+                    if(shouldAdd) stacksToAdd.add(stack);
                 }
             }
             else if(moveItemStackTo(getSlot(slotId).getItem(), 0, inventorySlotId, false)) {
+
+                boolean shouldRemove = true;
                 for (ItemStack addStack : stacksToAdd) {
                     if (addStack.equals(stack, false)) {
                         stacksToAdd.remove(addStack);
+                        shouldRemove = false;
                         break;
                     }
                 }
-                stacksToRemove.add(stack);
+                if(shouldRemove) stacksToRemove.add(stack);
             }
 
             Cybernetics.LOGGER.info("Client: " + isClient + ", stacksToAdd: " + stacksToAdd + ", stacksToRemove: " + stacksToRemove);
@@ -246,6 +252,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
     @Override
     public void removed(Player player) {
         super.removed(player);
+        if(player.level.isClientSide) return;
         Inventory inventory = player.getInventory();
         stacksToAdd.forEach(stack -> {
             if(!inventory.add(stack)) {
@@ -260,5 +267,20 @@ public class CyberwareMenu extends AbstractContainerMenu {
                 }
             }
         });
+    }
+
+    public boolean hasDependents(ItemStack stack) {
+        for(int i = 0; i < inventorySlotId; i++) {
+            if(!(getSlot(i).getItem().getItem() instanceof CyberwareItem item)) {
+                continue;
+            }
+            List<Ingredient> requirements = item.getRequirements();
+            for(Ingredient req : requirements) {
+                if(req.test(stack)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

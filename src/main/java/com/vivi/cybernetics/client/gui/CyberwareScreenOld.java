@@ -3,14 +3,12 @@ package com.vivi.cybernetics.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.client.gui.event.CybGuiEventListener;
-import com.vivi.cybernetics.client.gui.event.GuiEvent;
 import com.vivi.cybernetics.client.gui.event.StateEvent;
+import com.vivi.cybernetics.client.gui.event.StateEvent.State;
 import com.vivi.cybernetics.client.gui.util.*;
 import com.vivi.cybernetics.common.cyberware.CyberwareSection;
 import com.vivi.cybernetics.common.menu.CyberwareMenu;
 import com.vivi.cybernetics.common.menu.InventorySlot;
-import com.vivi.cybernetics.common.menu.deprecated.CyberwareMenuOld;
 import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.server.network.packet.C2SSwitchActiveSlotPacket;
 import com.vivi.cybernetics.client.util.Easing;
@@ -28,10 +26,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.*;
 
-public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContainerScreen<T> {
+public class CyberwareScreenOld<T extends CyberwareMenu> extends CybAbstractContainerScreen<T> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/cyberware/background.png");
 
     public static final ResourceLocation SLOT_TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/cyberware/slots.png");
@@ -45,12 +45,12 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
     protected CapacityGuiComponent capacityComponent;
     protected int currentPage;
 
-    protected List<EntityWidgetRotate> entityWidgetsToRotate = new ArrayList<>();
-    public CyberwareScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
+    public CyberwareScreenOld(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        this.imageHeight = 240;
-        this.imageWidth = 154;
+        this.imageWidth = 226;
+        this.imageHeight = 154;
         this.inventoryLabelY = this.imageHeight - 94;
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
 
@@ -64,8 +64,11 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 
     @Override
     protected void init() {
+        //unregister old objects just in case
+        if(entityWidget != null) MinecraftForge.EVENT_BUS.unregister(entityWidget);
+        sectionButtons.forEach(MinecraftForge.EVENT_BUS::unregister);
+
         super.init();
-        entityWidgetsToRotate.clear();
         itemMasks.clear();
         LocalPlayer player = Minecraft.getInstance().player;
         fakePlayer = new LocalPlayer(Minecraft.getInstance(), Minecraft.getInstance().level, player.connection, player.getStats(), player.getRecipeBook(), false, false);
@@ -231,92 +234,57 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         this.textWidget.setText(text);
     }
 
-    public void updateState(Object... data) {
+    public void updateState(int entityX, int entityY) {
+        State oldState = state;
         state = state.getNextState();
-        this.broadcastGuiEvent(new StateEvent(state).addData(data));
+        if(!MinecraftForge.EVENT_BUS.post(new StateEvent(this, state, entityX, entityY))) {
+            state = oldState;
+        }
     }
 
     public void updateState() {
+        State oldState = state;
         state = state.getNextState();
-        this.broadcastGuiEvent(new StateEvent(state));
+        if(!MinecraftForge.EVENT_BUS.post(new StateEvent(this, state))) {
+            state = oldState;
+        }
     }
 
     @Override
     public void clearAll() {
         super.clearAll();
-        entityWidgetsToRotate.clear();
     }
 
     @Override
-    public void onEvent(GuiEvent event) {
-        if(event instanceof StateEvent stateEvent) {
-            if(stateEvent.getState() == State.TRANSITION_SUB) {
-                scheduleTask(15, this::showMasks);
-                maskWidgetIterator = itemMasks.iterator();
-                scheduleTask(20, 21 + (2 * itemMasks.size()), this::fadeOutMasks);
-            }
-            else if(stateEvent.getState() == State.TRANSITION_MAIN) {
-                fadeInMasks();
-                scheduleTask(6, this::hideMasks);
-                sectionButtonIterator = sectionButtons.iterator();
-                scheduleTask(15, 16 + (2 * sectionButtons.size()), this::initSectionButtons);
-            }
+    public void removed() {
+        super.removed();
+        MinecraftForge.EVENT_BUS.unregister(this);
+        MinecraftForge.EVENT_BUS.unregister(entityWidget);
+        sectionButtons.forEach(MinecraftForge.EVENT_BUS::unregister);
+    }
 
-            if(stateEvent.getState() == State.TRANSITION_SUB || stateEvent.getState() == State.TRANSITION_MAIN) {
-                scheduleTask(20, CyberwareScreen.this::updateState);
-            }
+    @SubscribeEvent
+    public void onStateEvent(StateEvent event) {
+        if(event.getScreen() != this) return;
+        if(event.getState() == State.TRANSITION_SUB) {
+            scheduleTask(15, this::showMasks);
+            maskWidgetIterator = itemMasks.iterator();
+            scheduleTask(20, 21 + (2 * itemMasks.size()), this::fadeOutMasks);
+        }
+        else if(event.getState() == State.TRANSITION_MAIN) {
+            fadeInMasks();
+            scheduleTask(6, this::hideMasks);
+            sectionButtonIterator = sectionButtons.iterator();
+            scheduleTask(15, 16 + (2 * sectionButtons.size()), this::initSectionButtons);
+        }
+
+        if(event.getState() == State.TRANSITION_SUB || event.getState() == State.TRANSITION_MAIN) {
+            scheduleTask(20, CyberwareScreenOld.this::updateState);
         }
     }
 
-    public enum State {
-        MAIN {
-            @Override
-            public State getNextState() {
-                return TRANSITION_SUB;
-            }
 
-            @Override
-            public String toString() {
-                return "main";
-            }
-        },
-        TRANSITION_SUB {
-            @Override
-            public State getNextState() {
-                return SUB;
-            }
-            @Override
-            public String toString() {
-                return "transition_sub";
-            }
-        },
-        SUB {
-            @Override
-            public State getNextState() {
-                return TRANSITION_MAIN;
-            }
-            @Override
-            public String toString() {
-                return "sub";
-            }
-        },
-        TRANSITION_MAIN {
-            @Override
-            public State getNextState() {
-                return MAIN;
-            }
-            @Override
-            public String toString() {
-                return "transition_main";
-            }
-        };
-
-
-        public abstract State getNextState();
-    }
-
-
-    public class EntityWidget extends CybAbstractWidget implements IScalableWidget, CybGuiEventListener {
+    public class EntityWidget extends CybAbstractWidget implements IScalableWidget {
 
         private float scale;
         private float rotation = 0.0f;
@@ -326,12 +294,13 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             this.entity = entity;
             this.playSound = false;
             this.scale = scale;
+            MinecraftForge.EVENT_BUS.register(this);
         }
 
         @Override
         public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
             super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-            enableScissor(CyberwareScreen.this.boxLeft, CyberwareScreen.this.boxTop, CyberwareScreen.this.boxRight, CyberwareScreen.this.boxBottom);
+            enableScissor(CyberwareScreenOld.this.boxLeft, CyberwareScreenOld.this.boxTop, CyberwareScreenOld.this.boxRight, CyberwareScreenOld.this.boxBottom);
             RenderHelper.renderEntity(entity, pPoseStack, x + scale/2, y + scale*2, 20, scale, rotation);
             //7.5f * (float)Math.cos((getGameTime() - startTime + pPartialTick) / 40.0f)
             disableScissor();
@@ -365,25 +334,18 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             this.rotation = rotation;
         }
 
-        @Override
-        public void onEvent(GuiEvent event) {
-            if(event instanceof StateEvent stateEvent) {
-                if(stateEvent.getState() == State.TRANSITION_SUB) {
-                    List<Object> data = stateEvent.getData();
-                    int x = 0, y = 0;
-                    if(data.size() > 0) {
-                        x = (int) data.get(0);
-                        y = (int) data.get(1);
-                    }
-                    CyberwareScreen.this.rotateEntity(this, -45, 20, Easing.CUBIC_IN_OUT);
-                    CyberwareScreen.this.scaleWidget(this, 120, 20, Easing.CUBIC_IN_OUT);
-                    CyberwareScreen.this.moveWidget(this, leftPos + x, topPos + y, 20, Easing.CUBIC_IN_OUT);
-                }
-                else if(stateEvent.getState() == State.TRANSITION_MAIN) {
-                    CyberwareScreen.this.rotateEntity(this, 0, 20, Easing.CUBIC_IN_OUT);
-                    CyberwareScreen.this.scaleWidget(this, 60, 20, Easing.CUBIC_IN_OUT);
-                    CyberwareScreen.this.moveWidget(this, leftPos + 91, topPos + 16, 20, Easing.CUBIC_IN_OUT);
-                }
+        @SubscribeEvent
+        public void onStateEvent(StateEvent event) {
+            if(event.getState() == State.TRANSITION_SUB && event.hasEntityPosData()) {
+                int x = event.getEntityX(), y = event.getEntityY();
+                CyberwareScreenOld.this.rotateEntity(this, -45, 20, Easing.CUBIC_IN_OUT);
+                CyberwareScreenOld.this.scaleWidget(this, 120, 20, Easing.CUBIC_IN_OUT);
+                CyberwareScreenOld.this.moveWidget(this, leftPos + x, topPos + y, 20, Easing.CUBIC_IN_OUT);
+            }
+            else if(event.getState() == State.TRANSITION_MAIN) {
+                CyberwareScreenOld.this.rotateEntity(this, 0, 20, Easing.CUBIC_IN_OUT);
+                CyberwareScreenOld.this.scaleWidget(this, 60, 20, Easing.CUBIC_IN_OUT);
+                CyberwareScreenOld.this.moveWidget(this, leftPos + 91, topPos + 16, 20, Easing.CUBIC_IN_OUT);
             }
         }
     }
@@ -409,7 +371,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         @Override
         public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, CyberwareScreen.TEXTURE);
+            RenderSystem.setShaderTexture(0, CyberwareScreenOld.TEXTURE);
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, alpha);
             RenderSystem.enableBlend();
             RenderSystem.enableDepthTest();
@@ -436,7 +398,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 
 
 
-    abstract static class CyberwareButton extends AbstractButton implements CybGuiEventListener {
+    abstract static class CyberwareButton extends AbstractButton {
 
         protected boolean selected = false;
         protected ResourceLocation texture;
@@ -508,14 +470,14 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 
         @Override
         public void onPress() {
-            if(CyberwareScreen.this.state == State.SUB) {
-                CyberwareScreen.this.updateText(Component.translatable("tooltip.cybernetics.section"));
-                CyberwareScreen.this.clearAll();
-                CyberwareScreen.this.updateState();
-                CyberwareScreen.this.scheduleTask(6, () -> {
-                    CyberwareScreen.this.menu.switchActiveSlots(null);
+            if(CyberwareScreenOld.this.state == State.SUB) {
+                CyberwareScreenOld.this.updateText(Component.translatable("tooltip.cybernetics.section"));
+                CyberwareScreenOld.this.clearAll();
+                CyberwareScreenOld.this.updateState();
+                CyberwareScreenOld.this.scheduleTask(6, () -> {
+                    CyberwareScreenOld.this.menu.switchActiveSlots(null);
                     CybPackets.sendToServer(new C2SSwitchActiveSlotPacket());
-                    CyberwareScreen.this.menu.switchInventoryPage(-1);
+                    CyberwareScreenOld.this.menu.switchInventoryPage(-1);
                     CybPackets.sendToServer(new C2SSwitchPagePacket());
                 });
             }
@@ -523,11 +485,6 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 
         @Override
         public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
-
-        }
-
-        @Override
-        public void onEvent(GuiEvent event) {
 
         }
     }
@@ -545,6 +502,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             alpha = 0.0f;
             visible = false;
             active = false;
+            MinecraftForge.EVENT_BUS.register(this);
         }
 
         @Override
@@ -565,7 +523,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             RenderSystem.enableDepthTest();
 //            int u = this.isHoveredOrFocused() ? width : 0;
 
-            enableScissor(CyberwareScreen.this.boxLeft, CyberwareScreen.this.boxTop, CyberwareScreen.this.boxRight, CyberwareScreen.this.boxBottom);
+            enableScissor(CyberwareScreenOld.this.boxLeft, CyberwareScreenOld.this.boxTop, CyberwareScreenOld.this.boxRight, CyberwareScreenOld.this.boxBottom);
             blit(pPoseStack, this.x, this.y, 0, 0, this.width, this.height, this.width, this.height);
             disableScissor();
         }
@@ -575,15 +533,13 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 
         }
 
-        @Override
-        public void onEvent(GuiEvent event) {
-            if(event instanceof StateEvent stateEvent) {
-                if(stateEvent.getState() == State.TRANSITION_SUB) {
-                    CyberwareScreen.this.alphaWidget(this, 0.0f, 10);
-                    CyberwareScreen.this.scheduleTask(15, () -> {
-                        this.y = topPos + this.section.getType().getY() + 20;
-                    });
-                }
+        @SubscribeEvent
+        public void onStateEvent(StateEvent event) {
+            if(event.getState() == State.TRANSITION_SUB) {
+                CyberwareScreenOld.this.alphaWidget(this, 0.0f, 10);
+                CyberwareScreenOld.this.scheduleTask(15, () -> {
+                    this.y = topPos + this.section.getType().getY() + 20;
+                });
             }
         }
 
@@ -594,14 +550,14 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 
         @Override
         public void onPress() {
-            if(CyberwareScreen.this.state == State.MAIN) {
-                CyberwareScreen.this.updateText(Component.translatable("tooltip." + id.getNamespace() + ".section." + id.getPath()));
-                CyberwareScreen.this.clearAll();
-                CyberwareScreen.this.updateState(section.getType().getXOffset(), section.getType().getYOffset());
-                CyberwareScreen.this.scheduleTask(15, () -> {
-                    CyberwareScreen.this.menu.switchActiveSlots(section.getType());
+            if(CyberwareScreenOld.this.state == State.MAIN) {
+                CyberwareScreenOld.this.updateText(Component.translatable("tooltip." + id.getNamespace() + ".section." + id.getPath()));
+                CyberwareScreenOld.this.clearAll();
+                CyberwareScreenOld.this.updateState(section.getType().getXOffset(), section.getType().getYOffset());
+                CyberwareScreenOld.this.scheduleTask(15, () -> {
+                    CyberwareScreenOld.this.menu.switchActiveSlots(section.getType());
                     CybPackets.sendToServer(new C2SSwitchActiveSlotPacket(section.getType()));
-                    CyberwareScreen.this.menu.switchInventoryPage(0);
+                    CyberwareScreenOld.this.menu.switchInventoryPage(0);
                     CybPackets.sendToServer(new C2SSwitchPagePacket(0));
                 });
             }

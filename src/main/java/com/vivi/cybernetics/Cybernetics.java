@@ -1,19 +1,17 @@
 package com.vivi.cybernetics;
 
 import com.mojang.logging.LogUtils;
+import com.vivi.cybernetics.client.gui.cyberware.CyberwareScreen;
 import com.vivi.cybernetics.client.shader.CybCoreShaders;
 import com.vivi.cybernetics.client.shader.CybPostShaders;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.capability.PlayerEnergyStorage;
-import com.vivi.cybernetics.client.gui.CyberwareScreen;
 import com.vivi.cybernetics.client.gui.CyberwareStationScreen;
 import com.vivi.cybernetics.common.config.ClientConfig;
 import com.vivi.cybernetics.common.config.CommonConfig;
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.common.menu.PlayerCyberwareMenu;
 import com.vivi.cybernetics.common.menu.SurgicalChamberCyberwareMenu;
-import com.vivi.cybernetics.common.menu.deprecated.PlayerCyberwareMenuOld;
-import com.vivi.cybernetics.common.menu.deprecated.SurgicalChamberCyberwareMenuOld;
 import com.vivi.cybernetics.common.registry.*;
 import com.vivi.cybernetics.server.network.CybPackets;
 import net.minecraft.client.gui.screens.MenuScreens;

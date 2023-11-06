@@ -39,18 +39,6 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
         CybCyberware.CYBERWARE_SECTION_TYPE_REGISTRY.get().getEntries().forEach(type -> {
             sections.add(new CyberwareSection(type.getValue(), type.getKey().location()));
         });
-        sections.sort((section1, section2) -> {
-            int idx1 = CyberwareSection.SECTION_SORT.indexOf(section1.getId());
-            int idx2 = CyberwareSection.SECTION_SORT.indexOf(section2.getId());
-            int i = 0;
-            if(idx1 == -1) {
-                idx1 = CyberwareSection.SECTION_SORT.size() + i++;
-            }
-            if(idx2 == -1) {
-                idx2 = CyberwareSection.SECTION_SORT.size() + i++;
-            }
-            return idx1 - idx2;
-        });
 
         return new CyberwareInventory(owner, sections.toArray(new IItemHandlerModifiable[0]));
     }
