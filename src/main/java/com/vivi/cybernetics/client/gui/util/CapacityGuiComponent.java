@@ -21,8 +21,8 @@ public class CapacityGuiComponent extends GuiComponent {
     public CapacityGuiComponent(int x, int y) {
         this.x = x;
         this.y = y;
-        this.width = 16;
-        this.height = 229;
+        this.width = 23;
+        this.height = 140;
     }
 
     public List<Component> getTooltip(int capacity, int maxCapacity) {
@@ -55,7 +55,7 @@ public class CapacityGuiComponent extends GuiComponent {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int u = capacity > maxCapacity ? 16 : 0;
-        blit(poseStack, x, y + (height - scaledHeight), u, height - scaledHeight, width, scaledHeight, 256, 256);
+        int u = capacity > maxCapacity ? 24 : 0;
+        blit(poseStack, x, y + (height - scaledHeight), u, height - scaledHeight, width, scaledHeight, 144, 144);
     }
 }

@@ -115,6 +115,7 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
             this.setStackInSlot(i, newStack.copy());
         }
         initCapacity();
+        this.maxCapacity = other.getMaxCapacity();
     }
 
     public void clear() {
@@ -156,6 +157,7 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
             CyberwareSection section = (CyberwareSection) handler;
             tag.put(section.getId().toString(), section.serializeNBT());
         }
+        tag.putInt("max_capacity", maxCapacity);
         return tag;
     }
 
@@ -165,6 +167,7 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
             CyberwareSection section = (CyberwareSection) handler;
             section.deserializeNBT(tag.getCompound(section.getId().toString()));
         }
+        maxCapacity = tag.getInt("max_capacity");
         initCapacity();
     }
 
@@ -208,19 +211,10 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
 
     public void initCapacity() {
         capacity = 0;
-        maxCapacity = 50;
         for(int i = 0; i < getSlots(); i++) {
             Item item = getStackInSlot(i).getItem();
             if(item instanceof CyberwareItem) {
                 capacity += ((CyberwareItem) item).getCapacity();
-            }
-            if(item instanceof CapacityCyberwareItem capacityItem) {
-                if(capacityItem.getOperation() == CapacityCyberwareItem.Operation.ADDITION) {
-                    maxCapacity += (int) capacityItem.getValue();
-                }
-                else if(capacityItem.getOperation() == CapacityCyberwareItem.Operation.MULTIPLY) {
-                    maxCapacity = (int) (maxCapacity * (1 + capacityItem.getValue()));
-                }
             }
         }
     }
@@ -231,6 +225,10 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
 
     public int getMaxCapacity() {
         return maxCapacity;
+    }
+
+    public void setMaxCapacity(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
     }
 
     public void syncToClient(ServerPlayer client) {

@@ -8,6 +8,8 @@ import com.vivi.cybernetics.client.gui.event.GuiEvent;
 import com.vivi.cybernetics.client.gui.event.StateEvent;
 import com.vivi.cybernetics.client.gui.util.*;
 import com.vivi.cybernetics.common.cyberware.CyberwareSection;
+import com.vivi.cybernetics.common.menu.CyberwareMenu;
+import com.vivi.cybernetics.common.menu.InventorySlot;
 import com.vivi.cybernetics.common.menu.deprecated.CyberwareMenuOld;
 import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.server.network.packet.C2SSwitchActiveSlotPacket;
@@ -15,6 +17,7 @@ import com.vivi.cybernetics.client.util.Easing;
 import com.vivi.cybernetics.client.util.MouseHelper;
 import com.vivi.cybernetics.client.util.RenderHelper;
 import com.vivi.cybernetics.client.util.ScreenHelper;
+import com.vivi.cybernetics.server.network.packet.C2SSwitchPagePacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -28,10 +31,10 @@ import net.minecraft.world.entity.player.Inventory;
 
 import java.util.*;
 
-public class CyberwareScreen<T extends CyberwareMenuOld> extends CybAbstractContainerScreen<T> {
+public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContainerScreen<T> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/cyberware/background.png");
 
-    public static final ResourceLocation SLOT_TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/cyberware/slot.png");
+    public static final ResourceLocation SLOT_TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/cyberware/slots.png");
 
     protected LocalPlayer fakePlayer;
     protected EntityWidget entityWidget;
@@ -40,12 +43,13 @@ public class CyberwareScreen<T extends CyberwareMenuOld> extends CybAbstractCont
     protected State state;
     protected List<MaskWidget> itemMasks = new ArrayList<>();
     protected CapacityGuiComponent capacityComponent;
+    protected int currentPage;
 
     protected List<EntityWidgetRotate> entityWidgetsToRotate = new ArrayList<>();
     public CyberwareScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         this.imageHeight = 240;
-        this.imageWidth = 208;
+        this.imageWidth = 154;
         this.inventoryLabelY = this.imageHeight - 94;
     }
 
@@ -65,11 +69,12 @@ public class CyberwareScreen<T extends CyberwareMenuOld> extends CybAbstractCont
         itemMasks.clear();
         LocalPlayer player = Minecraft.getInstance().player;
         fakePlayer = new LocalPlayer(Minecraft.getInstance(), Minecraft.getInstance().level, player.connection, player.getStats(), player.getRecipeBook(), false, false);
-        boxLeft = leftPos + 1;
-        boxTop = topPos + 1;
-        boxRight = leftPos + 207;
-        boxBottom = topPos + 153;
+        boxLeft = leftPos + 5;
+        boxTop = topPos + 5;
+        boxRight = leftPos + 221;
+        boxBottom = topPos + 149;
         state = State.MAIN;
+        currentPage = -1;
 
         menu.getCyberware().getSections().forEach(section -> {
             SectionButton button = new SectionButton(section.getId(), section);
@@ -86,26 +91,30 @@ public class CyberwareScreen<T extends CyberwareMenuOld> extends CybAbstractCont
         sectionButtonIterator = sectionButtons.iterator();
         scheduleTask(15, 16 + (2 * sectionButtons.size()), this::initSectionButtons);
 
-        addRenderableWidget(new BackButton(leftPos + 184, topPos + 4));
+        addRenderableWidget(new BackButton(leftPos + 199, topPos + 9));
 
-        entityWidget = new EntityWidget(leftPos + 73, topPos - 136, 60, fakePlayer);
+        entityWidget = new EntityWidget(leftPos + 91, topPos - 136, 60, fakePlayer);
         addRenderableWidget(entityWidget);
-        moveWidget(entityWidget, leftPos + 73, topPos + 16, 20, Easing.QUART_OUT);
+        moveWidget(entityWidget, leftPos + 91, topPos + 16, 20, Easing.QUART_OUT);
 
-        textWidget = new TextWidget(this, leftPos + 8, topPos + 4);
+        textWidget = new TextWidget(this, leftPos + 28, topPos + 9);
         addRenderableWidget(textWidget);
         textWidget.setText(Component.translatable("tooltip.cybernetics.section"));
 
-        int slotX = 10, slotY = 30;
+        int slotX = 36, slotY = 32;
         int rows = 4;
 
         for(int i = 0; i < menu.getCyberware().getLongestSectionSize(); i++) {
 //            addSlot(new CyberwareSlot(cyberware, i, slotX + ((counter % 3) * 24) - 1, slotY + ((counter / 3) * 21) + 1, this.inventory.player));
-            itemMasks.add(new MaskWidget(leftPos + slotX + ((i % rows) * 25) - 5, topPos + slotY + ((i / rows) * 23)));
+            itemMasks.add(new MaskWidget(leftPos + slotX + ((i % rows) * 25) - 4, topPos + slotY + ((i / rows) * 21)));
+        }
+        slotY = 84;
+        for(int i = 0; i < 12; i++) {
+            itemMasks.add(new MaskWidget(leftPos + slotX + ((i % rows) * 25) - 4, topPos + slotY + ((i / rows) * 21)));
         }
         maskWidgetIterator = itemMasks.iterator();
 
-        capacityComponent = new CapacityGuiComponent(leftPos -17, topPos + 5);
+        capacityComponent = new CapacityGuiComponent(leftPos + 7, topPos + 7);
 //        Cybernetics.LOGGER.info("Capacity: " + menu.getStoredCapacity());
 //        Cybernetics.LOGGER.info("Max Capacity: " + menu.getMaxCapacity());
     }
@@ -151,7 +160,7 @@ public class CyberwareScreen<T extends CyberwareMenuOld> extends CybAbstractCont
         });
     }
     private void fadeOutMasks() {
-        if(time % 2 == 0 && maskWidgetIterator.hasNext()) {
+        if(maskWidgetIterator.hasNext()) {
             MaskWidget widget = maskWidgetIterator.next();
             alphaWidget(widget, 0.0f, 15);
         }
@@ -194,16 +203,17 @@ public class CyberwareScreen<T extends CyberwareMenuOld> extends CybAbstractCont
     @Override
     protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShaderTexture(0, TEXTURE);
-        this.blit(pPoseStack, leftPos - 18, topPos, 0, 0, this.imageWidth + 18, this.imageHeight);
+        this.blit(pPoseStack, leftPos, topPos, 0, 0, this.imageWidth, this.imageHeight);
 
         RenderSystem.setShaderTexture(0, SLOT_TEXTURE);
 
         for (int i = 0; i < menu.slots.size(); i++) {
-            if(i == menu.slots.size() - 36) break; //inventory slots should be the last 36 slots in the menu
             if(!menu.getSlot(i).isActive()) continue;
-            boolean hasItem = menu.getSlot(i).hasItem();
-            int u = hasItem ? 20 : 0;
-            blit(pPoseStack, leftPos + menu.getSlot(i).x - 3, topPos + menu.getSlot(i).y - 1, u, 0, 20, 18, 48, 48);
+            boolean isInvSlot = menu.getSlot(i) instanceof InventorySlot;
+            boolean slotEmpty = !menu.getSlot(i).hasItem();
+            int u = slotEmpty && !isInvSlot ? 23 : 0;
+            int v = isInvSlot ? 19 : 0;
+            blit(pPoseStack, leftPos + menu.getSlot(i).x - 5, topPos + menu.getSlot(i).y - 1, u, v, 22, 18, 64, 64);
         }
 
         capacityComponent.draw(pPoseStack, menu.getStoredCapacity(), menu.getMaxCapacity());
@@ -372,7 +382,7 @@ public class CyberwareScreen<T extends CyberwareMenuOld> extends CybAbstractCont
                 else if(stateEvent.getState() == State.TRANSITION_MAIN) {
                     CyberwareScreen.this.rotateEntity(this, 0, 20, Easing.CUBIC_IN_OUT);
                     CyberwareScreen.this.scaleWidget(this, 60, 20, Easing.CUBIC_IN_OUT);
-                    CyberwareScreen.this.moveWidget(this, leftPos + 73, topPos + 16, 20, Easing.CUBIC_IN_OUT);
+                    CyberwareScreen.this.moveWidget(this, leftPos + 91, topPos + 16, 20, Easing.CUBIC_IN_OUT);
                 }
             }
         }
@@ -381,7 +391,7 @@ public class CyberwareScreen<T extends CyberwareMenuOld> extends CybAbstractCont
     public class MaskWidget extends CybAbstractWidget implements ITransparentWidget {
 
         public MaskWidget(int pX, int pY) {
-            super(pX, pY, 21, 18, Component.empty());
+            super(pX, pY, 22, 18, Component.empty());
             this.playSound = false;
             this.alpha = 0.0f;
             this.visible = false;
@@ -404,7 +414,7 @@ public class CyberwareScreen<T extends CyberwareMenuOld> extends CybAbstractCont
             RenderSystem.enableBlend();
             RenderSystem.enableDepthTest();
             RenderSystem.defaultBlendFunc();
-            this.blit(pPoseStack, x, y, 9, 9, 21, 18);
+            this.blit(pPoseStack, x, y, 27, 9,  width, height);
             RenderSystem.disableBlend();
         }
 
@@ -505,6 +515,8 @@ public class CyberwareScreen<T extends CyberwareMenuOld> extends CybAbstractCont
                 CyberwareScreen.this.scheduleTask(6, () -> {
                     CyberwareScreen.this.menu.switchActiveSlots(null);
                     CybPackets.sendToServer(new C2SSwitchActiveSlotPacket());
+                    CyberwareScreen.this.menu.switchInventoryPage(-1);
+                    CybPackets.sendToServer(new C2SSwitchPagePacket());
                 });
             }
         }
@@ -589,6 +601,8 @@ public class CyberwareScreen<T extends CyberwareMenuOld> extends CybAbstractCont
                 CyberwareScreen.this.scheduleTask(15, () -> {
                     CyberwareScreen.this.menu.switchActiveSlots(section.getType());
                     CybPackets.sendToServer(new C2SSwitchActiveSlotPacket(section.getType()));
+                    CyberwareScreen.this.menu.switchInventoryPage(0);
+                    CybPackets.sendToServer(new C2SSwitchPagePacket(0));
                 });
             }
         }

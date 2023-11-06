@@ -40,7 +40,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
     protected final DataSlot capacityData;
     protected final DataSlot maxCapacityData;
 
-    private int inventorySlotId;
+    private final int inventorySlotId;
 
     private final MenuType<?> menuType;
     public CyberwareMenu(@Nullable MenuType<?> menuType, int containerId, Inventory inventory, CyberwareInventory cyberware) {
@@ -55,7 +55,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
             }
         }
         this.cyberware = cyberware;
-        int slotX = 10, slotY = 30;
+        int slotX = 36, slotY = 32;
 
         counter = 0;
         int rows = 4;
@@ -68,15 +68,17 @@ public class CyberwareMenu extends AbstractContainerMenu {
                 }
                 counter = 0;
             }
-            addSlot(new CyberwareSlot(cyberware, i, slotX + ((counter % rows) * 25) - 1, slotY + ((counter / rows) * 23) + 1, inventory.player));
+            addSlot(new CyberwareSlot(cyberware, i, slotX + ((counter % rows) * 25) + 1, slotY + ((counter / rows) * 21) + 1, inventory.player));
             counter++;
         }
         maxCols = Mth.ceil((float) maxCols / rows);
 
         inventorySlotId = slots.size();
-        int invX = 10, invY = slotY + (maxCols * 23) + 5;
-        for(int i = 0; i < this.inventory.getSlots(); i++) {
-            addSlot(new SlotItemHandler(this.inventory, i, invX + ((i % rows) * 18) - 1, invY + ((i / rows) * 18) + 1));
+        int invX = 36, invY = 84;
+        for(int j = 0; j < 3; j++) {
+            for(int i = 0; i < 12; i++) {
+                addSlot(new InventorySlot(this.inventory, i, invX + ((i % rows) * 25) + 1, invY + ((i / rows) * 21) + 1, j));
+            }
         }
 
 
@@ -131,6 +133,18 @@ public class CyberwareMenu extends AbstractContainerMenu {
         }
     }
 
+    public void switchInventoryPage(int page) {
+        for(int i = inventorySlotId; i < slots.size(); i++) {
+            InventorySlot slot = (InventorySlot) getSlot(i);
+            if(slot.getPage() == page) {
+                slot.turnOn();
+            }
+            else {
+                slot.turnOff();
+            }
+        }
+    }
+
 
 
     @Override
@@ -152,13 +166,31 @@ public class CyberwareMenu extends AbstractContainerMenu {
 
     private void doClick(int slotId, int button, ClickType clickType, Player player) {
 
-        if(slotId < 0) {
-            if(!getCarried().isEmpty()) {
-                player.drop(getCarried(), true);
-            }
-            return;
-        }
         if(clickType == ClickType.PICKUP || clickType == ClickType.QUICK_MOVE) {
+            if(!getCarried().isEmpty()) {
+                if(!(getCarried().getItem() instanceof CyberwareItem) || slotId < 0) {
+                    if (button == 0) {
+                        player.drop(this.getCarried(), true);
+                        this.setCarried(ItemStack.EMPTY);
+                    } else {
+                        player.drop(this.getCarried().split(1), true);
+                    }
+                    return;
+                }
+                Slot slot = getSlot(slotId);
+                if(slot instanceof CyberwareSlot){
+                    return;
+                }
+                if(slot.getItem().isEmpty() && slot.mayPlace(getCarried())) {
+                    stacksToAdd.add(getCarried().copy());
+                    slot.set(getCarried());
+                    slot.setChanged();
+                    setCarried(ItemStack.EMPTY);
+                }
+                return;
+            }
+
+
             ItemStack stack = getSlot(slotId).getItem().copy();
             if(!(stack.getItem() instanceof CyberwareItem)) return;
             if(getSlot(slotId) instanceof CyberwareSlot) {

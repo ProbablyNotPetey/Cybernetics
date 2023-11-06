@@ -21,7 +21,7 @@ public class CyberwareSectionType {
 //    private final int textureHeight;
 
     public CyberwareSectionType(TagKey<Item> tag, int size, int x, int y, int yOffset) {
-        this(tag, size, x, y, 100, yOffset);
+        this(tag, size, x, y, 130, yOffset);
     }
     public CyberwareSectionType(TagKey<Item> tag, int size, int x, int y, int xOffset, int yOffset) {
         this.tag = tag;

@@ -35,6 +35,12 @@ public class CybPackets {
                 .consumerMainThread(C2SSwitchActiveSlotPacket::handle)
                 .add();
 
+        network.messageBuilder(C2SSwitchPagePacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(C2SSwitchPagePacket::new)
+                .encoder(C2SSwitchPagePacket::toBytes)
+                .consumerMainThread(C2SSwitchPagePacket::handle)
+                .add();
+
         network.messageBuilder(C2SOpenCyberwarePacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(C2SOpenCyberwarePacket::new)
                 .encoder(C2SOpenCyberwarePacket::toBytes)
