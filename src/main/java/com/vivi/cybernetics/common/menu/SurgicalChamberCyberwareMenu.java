@@ -27,17 +27,23 @@ public class SurgicalChamberCyberwareMenu extends CyberwareMenu {
     }
 
     @Override
-    public void removed(Player player) {
-        super.removed(player);
+    public void applyChanges(Player player) {
+        super.applyChanges(player);
         if(player instanceof ServerPlayer) {
             CyberwareInventory playerCyberware = CyberwareHelper.getCyberware(player).orElse(null);
             if(!playerCyberware.equals(cyberware)) {
                 playerCyberware.copyFrom(cyberware, player, true);
             }
-            cyberware.clear();
-            if(blockEntity != null) {
-                blockEntity.setInUse(false);
-            }
+        }
+    }
+
+    @Override
+    public void removed(Player pPlayer) {
+        super.removed(pPlayer);
+        if (pPlayer.level.isClientSide) return;
+        cyberware.clear();
+        if(blockEntity != null) {
+            blockEntity.setInUse(false);
         }
     }
 }

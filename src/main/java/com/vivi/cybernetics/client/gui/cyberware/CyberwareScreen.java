@@ -119,6 +119,16 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
     }
 
     @Override
+    public void onClose() {
+        if(canEdit() && menu.hasModified()) {
+            this.minecraft.pushGuiLayer(new CyberwareConfirmScreen(Component.literal("Confirmation")));
+        }
+        else {
+            super.onClose();
+        }
+    }
+
+    @Override
     protected void containerTick() {
         super.containerTick();
         fakePlayer.tickCount++;
@@ -129,11 +139,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
     public void updateArrow(Slot slot) {
         Cybernetics.LOGGER.info("Updating arrow");
         if(slot == null || slot.getItem().isEmpty()) {
-            scheduleTask(30, () -> {
-                if(this.slot == null || this.slot.getItem().isEmpty()) {
-                    arrowWidget.setMode(ArrowWidget.Mode.NONE);
-                }
-            });
+            return;
         }
         else if(slot instanceof CyberwareSlot) {
             if(getMenu().hasDependents(slot.getItem())) {

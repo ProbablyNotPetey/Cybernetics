@@ -23,6 +23,7 @@
     "jei.cybernetics.cyberware_crafting": "Cyberware Crafting",
 
 
+    "tooltip.cybernetics.confirm": "Apply Changes?",
     "tooltip.cybernetics.section": "Cyberware",
     "tooltip.cybernetics.capacity": "Capacity",
     "tooltip.cybernetics.requirements": "Requires",

@@ -87,5 +87,6 @@ public class SectionButton extends AbstractButton implements ITransparentWidget 
         enableScissor(boxLeft, boxTop, boxRight, boxBottom);
         blit(pPoseStack, this.x, this.y, 0, 0, this.width, this.height, this.width, this.height);
         disableScissor();
+        RenderSystem.disableBlend();
     }
 }

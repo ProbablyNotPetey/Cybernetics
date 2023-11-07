@@ -7,6 +7,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.FormattedCharSequence;
 
 public class TextWidget extends CybAbstractWidget {
 
@@ -17,14 +18,20 @@ public class TextWidget extends CybAbstractWidget {
     private int animationMode = 0; //0: no animate, 1: delete, 2: write
     private int character = 0;
     private Font font;
+    private int maxWidth;
 
     public TextWidget(Screen screen, int pX, int pY) {
-        super(pX, pY, 1, 1, Component.empty());
+        this(screen, pX, pY, -1);
+    }
+
+    public TextWidget(Screen screen, int x, int y, int maxWidth) {
+        super(x, y, 1, 1, Component.empty());
         this.screen = screen;
         this.playSound = false;
         text = Component.empty();
         mutableText = text.copy();
         this.font = Minecraft.getInstance().font;
+        this.maxWidth = maxWidth;
     }
 
 
@@ -56,7 +63,16 @@ public class TextWidget extends CybAbstractWidget {
     @Override
     public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
         MutableComponent drawText = drawUnderscore ? mutableText.copy().append("_") : mutableText.copy();
-        font.draw(pPoseStack, drawText, x, y, 0xff00fff7);
+        if(maxWidth != -1) {
+            int yOffset = 0;
+            for(FormattedCharSequence fcq : font.split(drawText, maxWidth)) {
+                font.draw(pPoseStack, fcq, x, y + yOffset, 0xff00fff7);
+                yOffset += 9;
+            }
+        }
+        else {
+            font.draw(pPoseStack, drawText, x, y, 0xff00fff7);
+        }
     }
 
     @Override
@@ -69,6 +85,11 @@ public class TextWidget extends CybAbstractWidget {
         animationMode = 1;
         character = 0;
     }
+
+    public void setMaxWidth(int maxWidth) {
+        this.maxWidth = maxWidth;
+    }
+
     public void setText(Component text, boolean instant) {
         if(instant) {
             this.text = text;

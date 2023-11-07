@@ -47,6 +47,12 @@ public class CybPackets {
                 .consumerMainThread(C2SOpenCyberwarePacket::handle)
                 .add();
 
+        network.messageBuilder(C2SApplyCyberwareChangesPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(C2SApplyCyberwareChangesPacket::new)
+                .encoder(C2SApplyCyberwareChangesPacket::toBytes)
+                .consumerMainThread(C2SApplyCyberwareChangesPacket::handle)
+                .add();
+
         network.messageBuilder(C2SDoubleJumpPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(C2SDoubleJumpPacket::new)
                 .encoder(C2SDoubleJumpPacket::toBytes)

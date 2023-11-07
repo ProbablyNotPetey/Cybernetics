@@ -54,7 +54,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
         this.inventory = new ItemStackHandler(Inventory.INVENTORY_SIZE);
         for(int i = 0; i < Inventory.INVENTORY_SIZE; i++) {
             if(inventory.getItem(i).getItem() instanceof CyberwareItem) {
-                this.inventory.insertItem(counter++, inventory.getItem(i), false);
+                this.inventory.insertItem(counter++, inventory.getItem(i).copy(), false);
             }
         }
         this.cyberware = cyberware;
@@ -249,10 +249,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
         return pPlayer.isAlive();
     }
 
-    @Override
-    public void removed(Player player) {
-        super.removed(player);
-        if(player.level.isClientSide) return;
+    public void applyChanges(Player player) {
         Inventory inventory = player.getInventory();
         stacksToAdd.forEach(stack -> {
             if(!inventory.add(stack)) {
@@ -282,5 +279,9 @@ public class CyberwareMenu extends AbstractContainerMenu {
             }
         }
         return false;
+    }
+
+    public boolean hasModified() {
+        return stacksToAdd.size() > 0 || stacksToRemove.size() > 0;
     }
 }

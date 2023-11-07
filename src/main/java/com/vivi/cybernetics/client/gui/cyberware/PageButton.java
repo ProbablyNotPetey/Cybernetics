@@ -61,11 +61,13 @@ public class PageButton extends AbstractButton implements ITransparentWidget {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
         float color = this.isHoveredOrFocused() ? 1.0F : 0.65F;
         RenderSystem.setShaderColor(color, color, color, alpha);
         int v = left ? 0 : 10;
         int u;
         u = canPress ? 0 : 13;
         blit(pPoseStack, this.x, this.y, this.width, this.height, u, v, this.width, this.height, 32, 32);
+        RenderSystem.disableBlend();
     }
 }
