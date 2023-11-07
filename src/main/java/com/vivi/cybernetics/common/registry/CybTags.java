@@ -17,7 +17,7 @@ public class CybTags {
             OPTICS = itemTag("optics"),
             BERSERKS = itemTag("berserks"),
             SKELETONS = itemTag("skeletons"),
-            CAPACITY_ITEMS = itemTag("capacity_items"),
+            DOUBLE_JUMP_ADDERS = itemTag("double_jump_adders"),
 
 
             ANY_SECTION = itemTag("cyberware_section/any"),

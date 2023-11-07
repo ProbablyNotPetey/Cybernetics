@@ -1,5 +1,5 @@
 package com.vivi.cybernetics.common.menu.deprecated;
-
+/*
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.common.menu.CyberwareSlot;
 import com.vivi.cybernetics.common.menu.deprecated.CyberwareMenuOld;
@@ -17,3 +17,5 @@ public class PlayerCyberwareMenuOld extends CyberwareMenuOld {
 
     }
 }
+
+ */

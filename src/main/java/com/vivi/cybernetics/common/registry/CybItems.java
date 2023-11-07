@@ -8,6 +8,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -32,7 +33,8 @@ public class CybItems {
     public static final RegistryObject<Item>
 
             //HEAD
-            CAPACITY_EXTENSION_HEAD = ITEMS.register("capacity_extension_head", () -> new CapacityCyberwareItem(cyberwareProps(), 0.3f, CapacityCyberwareItem.Operation.MULTIPLY)),
+            CAPACITY_EXTENSION_HEAD = ITEMS.register("capacity_extension_head", () -> new CyberwareItem(cyberwareProps())),
+            CARBON_FIBER_SKULL = ITEMS.register("carbon_fiber_skull", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(Attributes.ARMOR, new AttributeModifier(UUID.fromString("7588e022-9e81-4c44-85e8-82979dec2e0c"), "Armor Boost Head", 2.0, AttributeModifier.Operation.ADDITION)))),
             MK1_BERSERK = ITEMS.register("mk1_berserk", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.MK1_BERSERK)),
             MK2_BERSERK = ITEMS.register("mk2_berserk", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.MK2_BERSERK)),
             MK3_BERSERK = ITEMS.register("mk3_berserk", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.MK3_BERSERK)),
@@ -51,14 +53,15 @@ public class CybItems {
             //LOWER ORGANS
             STOMACH_FILTER = ITEMS.register("stomach_filter", () -> new StomachFilterItem(cyberwareProps())),
             SYNAPTIC_DISABLER = ITEMS.register("synaptic_disabler", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.SYNAPTIC_DISABLER)),
-
+            MK1_DOUBLE_JUMP_ADDER = ITEMS.register("mk1_double_jump_adder", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(CybAttributes.DOUBLE_JUMPS.get(), new AttributeModifier(UUID.fromString("053bf72d-a9e1-4e3f-8373-e2491155f9f5"), "Lower Organs Double Jump Boost", 1.0, AttributeModifier.Operation.ADDITION)))),
+            MK2_DOUBLE_JUMP_ADDER = ITEMS.register("mk2_double_jump_adder", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(CybAttributes.DOUBLE_JUMPS.get(), new AttributeModifier(UUID.fromString("a819279b-894b-4c33-bb05-74d5751859f6"), "Lower Organs Double Jump Boost", 2.0, AttributeModifier.Operation.ADDITION)))),
 
             //SKELETON
-            REINFORCED_SKELETON = ITEMS.register("reinforced_skeleton", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(Attributes.ARMOR, new AttributeModifier(UUID.fromString("1a9c9f62-d28f-48fb-8c9e-b688046f7099"), "Skeleton Armor", 2.0, AttributeModifier.Operation.ADDITION))).hideIncompatibilities()),
+            REINFORCED_SKELETON = ITEMS.register("reinforced_skeleton", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(Attributes.ARMOR, new AttributeModifier(UUID.fromString("1a9c9f62-d28f-48fb-8c9e-b688046f7099"), "Skeleton Armor", 2.0, AttributeModifier.Operation.ADDITION)))),
             TITANIUM_SKELETON = ITEMS.register("titanium_skeleton", () -> new AttributeCyberwareItem(cyberwareProps(),
                     Pair.of(Attributes.ARMOR, new AttributeModifier(UUID.fromString("d4490a2f-e05e-4ddf-beea-66ec7ca6e5f1"), "Skeleton Armor", 5.0, AttributeModifier.Operation.ADDITION)),
                     Pair.of(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(UUID.fromString("d4490a2f-e05e-4ddf-beea-66ec7ca6e5f1"), "Skeleton Armor Toughness", 2.0, AttributeModifier.Operation.ADDITION))
-                    ).hideIncompatibilities()),
+                    )),
             HEALTH_BOOST_SKELETON = ITEMS.register("health_boost_skeleton", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(Attributes.MAX_HEALTH, new AttributeModifier(UUID.fromString("b2014109-6700-4e83-9fc6-5250bd9d558c"), "Health Boost Skeleton", 5, AttributeModifier.Operation.ADDITION)))),
             KINETIC_DISCHARGER = ITEMS.register("kinetic_discharger", () -> new KineticDischargerItem(cyberwareProps())),
 
@@ -67,7 +70,7 @@ public class CybItems {
             PROJECTILE_DEFLECTOR = ITEMS.register("projectile_deflector", () -> new CyberwareItem(cyberwareProps())),
 
             //ARMS
-
+            RANGE_EXTENDER = ITEMS.register("range_extender", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(UUID.fromString("7c79b65a-615b-4d40-8268-a33b51ae757d"), "Arm Reach Boost", 0.3, AttributeModifier.Operation.MULTIPLY_TOTAL)))),
 
 
             //HANDS

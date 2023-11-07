@@ -2,7 +2,6 @@ package com.vivi.cybernetics.server.network.packet;
 
 import com.vivi.cybernetics.common.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.common.menu.CyberwareMenu;
-import com.vivi.cybernetics.common.menu.deprecated.CyberwareMenuOld;
 import com.vivi.cybernetics.common.registry.CybCyberware;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

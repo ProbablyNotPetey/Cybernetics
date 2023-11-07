@@ -4,7 +4,6 @@ import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.block.SurgicalChamberBlock;
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.common.menu.SurgicalChamberCyberwareMenu;
-import com.vivi.cybernetics.common.menu.deprecated.SurgicalChamberCyberwareMenuOld;
 import com.vivi.cybernetics.common.registry.CybBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -1,7 +1,6 @@
 package com.vivi.cybernetics.server.network.packet;
 
 import com.vivi.cybernetics.common.menu.PlayerCyberwareMenu;
-import com.vivi.cybernetics.common.menu.deprecated.PlayerCyberwareMenuOld;
 import com.vivi.cybernetics.common.util.CyberwareHelper;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;

@@ -64,11 +64,9 @@ public class CyberwareProperties {
     }
 
     public void toNetwork(FriendlyByteBuf buf) {
-//        buf.writeVarInt(REQUIREMENTS_LIST);
         buf.writeCollection(requirements, (buf1, ingredient) -> {
             ingredient.toNetwork(buf1);
         });
-//        buf.writeVarInt(INCOMPATIBILITIES_LIST);
         buf.writeCollection(incompatibilities, (buf1, ingredient) -> {
             ingredient.toNetwork(buf1);
         });
@@ -110,21 +108,17 @@ public class CyberwareProperties {
 
     public static CyberwareProperties deserialize(JsonElement json) {
         JsonObject object = json.getAsJsonObject();
-//            List<String> strRequirements = new ArrayList<>();
         List<Ingredient> req = new ArrayList<>();
         if(object.has("requirements")) {
             JsonArray requirements = object.getAsJsonArray("requirements");
             requirements.forEach(str -> {
-//                    strRequirements.add(str.getAsString());
                 req.add(Ingredient.fromJson(str));
             });
         }
-//            List<String> strIncompatibilites = new ArrayList<>();
         List<Ingredient> inc = new ArrayList<>();
         if(object.has("incompatibilities")) {
             JsonArray incompatibilities = object.getAsJsonArray("incompatibilities");
             incompatibilities.forEach(str -> {
-//                    strIncompatibilites.add(str.getAsString());
                 inc.add(Ingredient.fromJson(str));
             });
         }
@@ -144,7 +138,6 @@ public class CyberwareProperties {
         if(object.has("capacity")) {
             capacity = object.get("capacity").getAsInt();
         }
-//            properties.put(location, CyberwareProperties.fromStringList(strRequirements, strIncompatibilites, showRequirements, showIncompatibilities, showDescription, capacity));
         return new CyberwareProperties(req, inc, showRequirements, showIncompatibilities, showDescription, capacity);
     }
 

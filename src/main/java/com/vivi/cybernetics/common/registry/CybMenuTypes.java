@@ -1,12 +1,9 @@
 package com.vivi.cybernetics.common.registry;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.common.menu.CyberwareMenu;
 import com.vivi.cybernetics.common.menu.CyberwareStationMenu;
 import com.vivi.cybernetics.common.menu.PlayerCyberwareMenu;
 import com.vivi.cybernetics.common.menu.SurgicalChamberCyberwareMenu;
-import com.vivi.cybernetics.common.menu.deprecated.PlayerCyberwareMenuOld;
-import com.vivi.cybernetics.common.menu.deprecated.SurgicalChamberCyberwareMenuOld;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;

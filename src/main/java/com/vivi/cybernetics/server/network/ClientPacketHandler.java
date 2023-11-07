@@ -35,13 +35,9 @@ public class ClientPacketHandler {
 
     public static void handleSyncAbiilitiesPacket(NetworkEvent.Context ctx, S2CSyncAbilitiesPacket packet) {
         Player player = (Player)Minecraft.getInstance().level.getEntity(packet.getOwnerId());
-//        Cybernetics.LOGGER.info("Player id: " + packet.getOwnerId() + ", real player id: " + Minecraft.getInstance().player.getUUID());
         PlayerAbilities abilities = new PlayerAbilities(player);
-//        Cybernetics.LOGGER.info("Sent abilities data: " + packet.getAbilitiesData());
-//        Cybernetics.LOGGER.info("Is player null? " + (player == null));
         abilities.deserializeNBT(packet.getAbilitiesData());
         AbilityHelper.getAbilities(player).ifPresent(playerAbilities -> {
-//            Cybernetics.LOGGER.info("Abilities definitely exist");
             playerAbilities.copyFrom(abilities);
         });
     }

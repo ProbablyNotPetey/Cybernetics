@@ -1,7 +1,6 @@
 package com.vivi.cybernetics.client.gui.cyberware;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.vivi.cybernetics.client.gui.CyberwareScreenOld;
 import com.vivi.cybernetics.client.util.Easing;
 import com.vivi.cybernetics.common.cyberware.CyberwareSection;
 import com.vivi.cybernetics.server.network.CybPackets;

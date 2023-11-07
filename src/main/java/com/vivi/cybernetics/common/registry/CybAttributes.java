@@ -1,6 +1,7 @@
 package com.vivi.cybernetics.common.registry;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.common.attribute.RangedIntAttribute;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
@@ -17,8 +18,9 @@ public class CybAttributes {
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, Cybernetics.MOD_ID);
 
 //    public static final RegistryObject<Attribute> CAPACITY = ATTRIBUTES.register("capacity", () -> new RangedAttribute("attribute.cybernetics.name.capacity", 0, 0, 1024).setSyncable(true));
-    public static final RegistryObject<Attribute> MAX_CAPACITY = ATTRIBUTES.register("max_capacity", () -> new RangedAttribute("attribute.cybernetics.name.max_capacity", 50, 1, 1024).setSyncable(true));
+//    public static final RegistryObject<Attribute> MAX_CAPACITY = ATTRIBUTES.register("max_capacity", () -> new RangedAttribute("attribute.cybernetics.name.max_capacity", 50, 1, 1024).setSyncable(true));
 
+    public static final RegistryObject<Attribute> DOUBLE_JUMPS = ATTRIBUTES.register("double_jumps", () -> new RangedIntAttribute("attribute,cybernetics.name.double_jumps", 1, 0, 1024));
     public static void register(IEventBus eventBus) {
         ATTRIBUTES.register(eventBus);
     }

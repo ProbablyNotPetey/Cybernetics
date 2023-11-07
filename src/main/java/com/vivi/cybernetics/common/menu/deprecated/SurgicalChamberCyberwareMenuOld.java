@@ -1,5 +1,5 @@
 package com.vivi.cybernetics.common.menu.deprecated;
-
+/*
 import com.mojang.datafixers.util.Pair;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.block.entity.SurgicalChamberBlockEntity;
@@ -120,3 +120,5 @@ public class SurgicalChamberCyberwareMenuOld extends CyberwareMenuOld {
 
 
 }
+
+ */

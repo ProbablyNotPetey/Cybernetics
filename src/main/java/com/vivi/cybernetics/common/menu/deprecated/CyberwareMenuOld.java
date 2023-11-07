@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
-
+/*
 public class CyberwareMenuOld extends AbstractContainerMenu {
 
     protected Inventory inventory;
@@ -100,11 +100,7 @@ public class CyberwareMenuOld extends AbstractContainerMenu {
         Cybernetics.LOGGER.info("ClickType: " + pClickType);
     }
 
-    /**
-     * Mostly stolen from {@link net.minecraft.world.inventory.InventoryMenu#quickMoveStack(Player, int)}.
-     * <p>
-     * Moves cyberware into inventory, you cannot shift click inventory items into cyberware
-     */
+
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
         ItemStack stackOut = ItemStack.EMPTY;
@@ -176,3 +172,4 @@ public class CyberwareMenuOld extends AbstractContainerMenu {
         }
     }
 }
+*/

@@ -3,16 +3,17 @@ package com.vivi.cybernetics.client.gui.cyberware;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.client.gui.CyberwareScreenOld;
 import com.vivi.cybernetics.client.gui.util.CapacityGuiComponent;
 import com.vivi.cybernetics.client.gui.util.CybAbstractContainerScreen;
 import com.vivi.cybernetics.client.gui.util.TextWidget;
 import com.vivi.cybernetics.client.util.Easing;
+import com.vivi.cybernetics.client.util.FakeLocalPlayer;
 import com.vivi.cybernetics.client.util.MouseHelper;
 import com.vivi.cybernetics.client.util.ScreenHelper;
 import com.vivi.cybernetics.common.menu.CyberwareMenu;
 import com.vivi.cybernetics.common.menu.CyberwareSlot;
 import com.vivi.cybernetics.common.menu.InventorySlot;
+import com.vivi.cybernetics.common.mixin.PlayerMixin;
 import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.server.network.packet.C2SSwitchPagePacket;
 import net.minecraft.client.Minecraft;
@@ -56,8 +57,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
     protected void init() {
         super.init();
         LocalPlayer player = Minecraft.getInstance().player;
-        fakePlayer = new LocalPlayer(Minecraft.getInstance(), Minecraft.getInstance().level, player.connection, player.getStats(), player.getRecipeBook(), false, false);
-
+        fakePlayer = new FakeLocalPlayer(Minecraft.getInstance(), Minecraft.getInstance().level, player);
 
         //components/widgets
         capacityComponent = new CapacityGuiComponent(leftPos + 7, topPos + 7);

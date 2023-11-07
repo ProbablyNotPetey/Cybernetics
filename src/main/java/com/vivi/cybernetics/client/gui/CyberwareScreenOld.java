@@ -1,5 +1,5 @@
 package com.vivi.cybernetics.client.gui;
-
+/*
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
@@ -579,3 +579,5 @@ public class CyberwareScreenOld<T extends CyberwareMenu> extends CybAbstractCont
         }
     }
 }
+
+ */
