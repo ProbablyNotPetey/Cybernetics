@@ -40,8 +40,7 @@ public class CyberwareConfirmScreen extends Screen {
         time = 0;
         this.leftPos = (this.width - this.imageWidth) / 2;
         this.topPos = (this.height - this.imageHeight) / 2;
-        textWidget = new TextWidget(this, leftPos + 8, topPos + 8, 75);
-        addRenderableWidget(textWidget);
+        textWidget = new TextWidget(this, leftPos + 8, topPos + 8, 85);
 
         addRenderableWidget(new ConfirmButton(leftPos + 9, topPos + 39, true));
         addRenderableWidget(new ConfirmButton(leftPos + 65, topPos + 39, false));
@@ -70,12 +69,19 @@ public class CyberwareConfirmScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(pPoseStack);
+    public void render(PoseStack poseStack, int pMouseX, int pMouseY, float pPartialTick) {
+        renderBackground(poseStack);
         enableScissor(leftPos, topPos, leftPos + imageWidth, topPos + scissorY);
-        this.renderBg(pPoseStack, pPartialTick, pMouseX, pMouseY);
+        this.renderBg(poseStack, pPartialTick, pMouseX, pMouseY);
         RenderSystem.disableDepthTest();
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        super.render(poseStack, pMouseX, pMouseY, pPartialTick);
+
+        poseStack.pushPose();
+        poseStack.scale(0.8888f, 0.8888f, 0);
+        poseStack.translate(0.125 * textWidget.x, 0.125 * textWidget.y, 0);
+        textWidget.render(poseStack, pMouseX, pMouseY, pPartialTick);
+        poseStack.popPose();
+
         disableScissor();
         RenderSystem.enableDepthTest();
     }

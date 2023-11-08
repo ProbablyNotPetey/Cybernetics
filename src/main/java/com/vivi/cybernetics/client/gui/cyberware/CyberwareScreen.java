@@ -3,17 +3,16 @@ package com.vivi.cybernetics.client.gui.cyberware;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.client.gui.util.CapacityGuiComponent;
 import com.vivi.cybernetics.client.gui.util.CybAbstractContainerScreen;
 import com.vivi.cybernetics.client.gui.util.TextWidget;
 import com.vivi.cybernetics.client.util.Easing;
 import com.vivi.cybernetics.client.util.FakeLocalPlayer;
 import com.vivi.cybernetics.client.util.MouseHelper;
 import com.vivi.cybernetics.client.util.ScreenHelper;
+import com.vivi.cybernetics.common.item.CyberwareItem;
 import com.vivi.cybernetics.common.menu.CyberwareMenu;
 import com.vivi.cybernetics.common.menu.CyberwareSlot;
 import com.vivi.cybernetics.common.menu.InventorySlot;
-import com.vivi.cybernetics.common.mixin.PlayerMixin;
 import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.server.network.packet.C2SSwitchPagePacket;
 import net.minecraft.client.Minecraft;
@@ -39,6 +38,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
     private TextWidget textWidget;
     private ArrowWidget arrowWidget;
     private CapacityGuiComponent capacityComponent;
+    private PreviewCapacityGuiComponent capacityPreview;
     private final List<SectionButton> sectionButtons = new ArrayList<>();
     private final List<MaskWidget> itemMasks = new ArrayList<>();
     private PageButton pageButtonLeft;
@@ -47,6 +47,8 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 
     //misc
     private LocalPlayer fakePlayer;
+    private int capacityValue;
+    private int previewCapacityValue;
     public CyberwareScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         this.imageWidth = 226;
@@ -58,10 +60,11 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         super.init();
         LocalPlayer player = Minecraft.getInstance().player;
         fakePlayer = new FakeLocalPlayer(Minecraft.getInstance(), Minecraft.getInstance().level, player);
-
+        previewCapacityValue = -1;
+        capacityValue = -1;
         //components/widgets
         capacityComponent = new CapacityGuiComponent(leftPos + 7, topPos + 7);
-
+        capacityPreview = new PreviewCapacityGuiComponent(leftPos + 7, topPos + 7);
 
         entityWidget = new EntityWidget(leftPos + 91, topPos - 136, 60, fakePlayer)
                 .setBox(leftPos + 5, leftPos + 221, topPos + 5, topPos + 149);
@@ -134,12 +137,21 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         fakePlayer.tickCount++;
         textWidget.tick(time);
         currentState.tick(time);
+        if(capacityValue == -1) capacityValue = menu.getStoredCapacity();
+
+        if(slot != hoveredSlot) {
+            slot = hoveredSlot;
+            //update arrow
+            updateArrow(slot);
+        }
+        else if(slot != null && slot.getItem().isEmpty()) {
+            updateArrow(slot);
+        }
     }
 
     public void updateArrow(Slot slot) {
-        Cybernetics.LOGGER.info("Updating arrow");
         if(slot == null || slot.getItem().isEmpty()) {
-            return;
+
         }
         else if(slot instanceof CyberwareSlot) {
             if(getMenu().hasDependents(slot.getItem())) {
@@ -147,6 +159,11 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             }
             else {
                 arrowWidget.setMode(ArrowWidget.Mode.OUT_OK);
+                previewCapacityValue = menu.getStoredCapacity();
+                capacityPreview.resetStartTime();
+                capacityPreview.setRemove(true);
+                capacityValue = previewCapacityValue - ((CyberwareItem) slot.getItem().getItem()).getCapacity();
+                return;
             }
         }
         else if(slot instanceof InventorySlot) {
@@ -159,11 +176,18 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             }
             if(firstEnabledSlot != -1 && menu.getCyberware().isItemValid(firstEnabledSlot, slot.getItem())) {
                 arrowWidget.setMode(ArrowWidget.Mode.IN_OK);
+                previewCapacityValue = menu.getStoredCapacity() + ((CyberwareItem) slot.getItem().getItem()).getCapacity();
+                capacityPreview.resetStartTime();
+                capacityPreview.setRemove(false);
+                return;
             }
             else {
                 arrowWidget.setMode(ArrowWidget.Mode.IN_ERROR);
             }
         }
+        //else everything
+        previewCapacityValue = -1;
+        capacityValue = menu.getStoredCapacity();
     }
 
     public void setCurrentState(State state) {
@@ -230,11 +254,6 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         super.render(pPoseStack, pMouseX, pMouseY, frameTimeDelta);
         currentState.render(pPoseStack, getPartialTick());
         renderTooltip(pPoseStack, pMouseX, pMouseY);
-        if(slot != hoveredSlot) {
-            slot = hoveredSlot;
-            //update arrow
-            updateArrow(slot);
-        }
 
         itemMasks.forEach(mask -> mask.render(pPoseStack, pMouseX, pMouseY, frameTimeDelta));
 
@@ -256,8 +275,10 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             blit(poseStack, leftPos + menu.getSlot(i).x - 5, topPos + menu.getSlot(i).y - 1, u, v, 22, 18, 64, 64);
         }
 
-        capacityComponent.draw(poseStack, menu.getStoredCapacity(), menu.getMaxCapacity());
-
+        capacityComponent.draw(poseStack, capacityValue, menu.getMaxCapacity());
+        if(previewCapacityValue != -1) {
+            capacityPreview.draw(poseStack, capacityValue, previewCapacityValue, menu.getMaxCapacity());
+        }
     }
 
     @Override
