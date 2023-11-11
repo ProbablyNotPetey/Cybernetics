@@ -18,12 +18,14 @@ public class CyberwarePropertiesGenerator extends CyberwarePropertiesProvider{
         add(CybItems.MK1_BERSERK.get(), new Builder().addIncompatibilities(CybTags.BERSERKS).setShowIncompatibilities(false).setCapacity(9));
         add(CybItems.MK2_BERSERK.get(), new Builder().addIncompatibilities(CybTags.BERSERKS).setShowIncompatibilities(false).setCapacity(9));
         add(CybItems.MK3_BERSERK.get(), new Builder().addIncompatibilities(CybTags.BERSERKS).setShowIncompatibilities(false).setCapacity(9));
+        add(CybItems.MK1_DASH.get(), new Builder().addIncompatibilities(CybTags.DASH_ITEMS).setShowIncompatibilities(false).setCapacity(6));
+        add(CybItems.MK2_DASH.get(), new Builder().addIncompatibilities(CybTags.DASH_ITEMS).setShowIncompatibilities(false).setCapacity(6));
 
         //EYES
-        add(CybItems.MK1_OPTICS.get(), new Builder().addIncompatibilities(CybTags.OPTICS).setShowIncompatibilities(false).setCapacity(6));
-        add(CybItems.MK2_OPTICS.get(), new Builder().addIncompatibilities(CybTags.OPTICS).setShowIncompatibilities(false).setCapacity(6));
-        add(CybItems.MK3_OPTICS.get(), new Builder().addIncompatibilities(CybTags.OPTICS).setShowIncompatibilities(false).setCapacity(6));
-        add(CybItems.NIGHT_VISION_EYES.get(), new Builder().addRequirements(CybTags.OPTICS).setCapacity(4));
+        add(CybItems.MK1_OPTICS.get(), new Builder().addIncompatibilities(CybTags.OPTICS).setShowIncompatibilities(false).setCapacity(5));
+        add(CybItems.MK2_OPTICS.get(), new Builder().addIncompatibilities(CybTags.OPTICS).setShowIncompatibilities(false).setCapacity(5));
+        add(CybItems.MK3_OPTICS.get(), new Builder().addIncompatibilities(CybTags.OPTICS).setShowIncompatibilities(false).setCapacity(5));
+        add(CybItems.NIGHT_VISION_EYES.get(), new Builder().addRequirements(CybTags.OPTICS).setCapacity(3));
 
         //UPPER ORAGANS
         add(CybItems.EMERGENCY_DEFIBRILLATOR.get(), new Builder().setCapacity(11));

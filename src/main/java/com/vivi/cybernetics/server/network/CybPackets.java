@@ -65,6 +65,13 @@ public class CybPackets {
                 .consumerMainThread(C2SSpikePacket::handle)
                 .add();
 
+        network.messageBuilder(C2SDashPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(C2SDashPacket::new)
+                .encoder(C2SDashPacket::toBytes)
+                .consumerMainThread(C2SDashPacket::handle)
+                .add();
+
+
         network.messageBuilder(C2SSpikeShockwavePacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(C2SSpikeShockwavePacket::new)
                 .encoder(C2SSpikeShockwavePacket::toBytes)

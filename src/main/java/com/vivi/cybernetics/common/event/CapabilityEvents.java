@@ -62,12 +62,6 @@ public class CapabilityEvents {
         event.getOriginal().invalidateCaps();
     }
 
-    @SubscribeEvent
-    public static void onRegisterCapabilitiesEvent(RegisterCapabilitiesEvent event) {
-        event.register(CyberwareInventory.class);
-        event.register(PlayerEnergyStorage.class);
-        event.register(PlayerAbilities.class);
-    }
 
 
     //SYNC EVENTS

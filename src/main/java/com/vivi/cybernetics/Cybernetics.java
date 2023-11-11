@@ -18,11 +18,14 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -71,6 +74,8 @@ public class Cybernetics {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
+        modEventBus.addListener(this::registerKeybindings);
+        modEventBus.addListener(this::registerCapabilities);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -89,6 +94,18 @@ public class Cybernetics {
 
         CybCoreShaders.getInstance().init();
         CybPostShaders.getInstance().init();
+    }
+
+    private void registerKeybindings(RegisterKeyMappingsEvent event) {
+        event.register(CybKeybinds.PLAYER_CYBERWARE_MENU);
+        event.register(CybKeybinds.PLAYER_ABILITIES_MENU);
+        event.register(CybKeybinds.DASH);
+    }
+
+    private void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.register(CyberwareInventory.class);
+        event.register(PlayerEnergyStorage.class);
+        event.register(PlayerAbilities.class);
     }
 
 

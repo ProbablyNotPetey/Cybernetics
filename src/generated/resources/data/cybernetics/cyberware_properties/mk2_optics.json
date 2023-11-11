@@ -1,5 +1,5 @@
 {
-  "capacity": 6,
+  "capacity": 5,
   "incompatibilities": [
     {
       "tag": "cybernetics:optics"

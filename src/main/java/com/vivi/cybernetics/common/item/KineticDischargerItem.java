@@ -24,7 +24,7 @@ public class KineticDischargerItem extends CyberwareItem {
 
         Vec3 movement = player.getDeltaMovement();
         if(movement.y > 0) movement = new Vec3(movement.x, 0.0, movement.z);
-        player.setDeltaMovement(movement.x, (movement.y) * 2 - 0.5, movement.z);
+        player.setDeltaMovement(movement.x, ((movement.y)- 0.5) * 2 , movement.z);
 //        if (player.isSprinting()) {
 //            float f = player.getYRot() * ((float)Math.PI / 180F);
 //            player.setDeltaMovement(player.getDeltaMovement().add((double)(-Mth.sin(f) * 0.2F), 0.0D, (double)(Mth.cos(f) * 0.2F)));

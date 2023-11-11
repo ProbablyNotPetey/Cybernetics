@@ -2,14 +2,12 @@ package com.vivi.cybernetics.common.event;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.AbilityScreen;
+import com.vivi.cybernetics.common.item.DashCyberwareItem;
 import com.vivi.cybernetics.common.item.KineticDischargerItem;
 import com.vivi.cybernetics.common.item.ReinforcedTendonsItem;
 import com.vivi.cybernetics.common.registry.CybAttributes;
 import com.vivi.cybernetics.server.network.CybPackets;
-import com.vivi.cybernetics.server.network.packet.C2SDoubleJumpPacket;
-import com.vivi.cybernetics.server.network.packet.C2SOpenCyberwarePacket;
-import com.vivi.cybernetics.server.network.packet.C2SSpikePacket;
-import com.vivi.cybernetics.server.network.packet.C2SSpikeShockwavePacket;
+import com.vivi.cybernetics.server.network.packet.*;
 import com.vivi.cybernetics.common.registry.CybItems;
 import com.vivi.cybernetics.common.registry.CybKeybinds;
 import com.vivi.cybernetics.common.registry.CybMobEffects;
@@ -18,8 +16,9 @@ import com.vivi.cybernetics.common.util.CyberwareHelper;
 import com.vivi.cybernetics.client.util.InputHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -32,11 +31,8 @@ public class ClientEvents {
     private static int currentJumps;
     private static boolean canSpike;
     private static boolean isSpiking;
-    @SubscribeEvent
-    public static void onRegisterKeybindignsEvent(RegisterKeyMappingsEvent event) {
-        event.register(CybKeybinds.PLAYER_CYBERWARE_MENU);
-        event.register(CybKeybinds.PLAYER_ABILITIES_MENU);
-    }
+    private static boolean canDash;
+    private static boolean releasedDash;
 
     @SubscribeEvent
     public static void onClientTickEvent(TickEvent.ClientTickEvent event) {
@@ -50,6 +46,7 @@ public class ClientEvents {
         }
         handleDoubleJump();
         handleSpike();
+        handleDash();
     }
 
     @SubscribeEvent
@@ -79,7 +76,7 @@ public class ClientEvents {
         }
 
         //todo: fix
-        if(canSpike && !isSpiking && player.isShiftKeyDown() && player.getDeltaMovement().y() <= -0.5f) {
+        if(canSpike && !isSpiking && player.isShiftKeyDown() && isHighEnoughToSpike(player)) {
             canSpike = false;
             isSpiking = true;
             if(CyberwareHelper.hasCyberwareItem(player, CybItems.KINETIC_DISCHARGER.get()) && !player.getCooldowns().isOnCooldown(CybItems.KINETIC_DISCHARGER.get())) {
@@ -87,6 +84,18 @@ public class ClientEvents {
                 KineticDischargerItem.spike(player);
             }
         }
+    }
+
+    private static boolean isHighEnoughToSpike(Player player) {
+        if(player.blockPosition().getY() > player.level.getMaxBuildHeight()) {
+            return player.blockPosition().getY() - player.level.getMaxBuildHeight() >= 3;
+        }
+
+        for(int i = 1; i <= 3; i++) {
+            BlockPos pos = player.blockPosition().below(i);
+            if(!player.level.getBlockState(pos).isAir()) return false;
+        }
+        return true;
     }
 
     private static void handleDoubleJump() {
@@ -117,9 +126,37 @@ public class ClientEvents {
                     canSpike = false;
                     isSpiking = false;
                 }
+                canDash = true;
             }
 
 
+        }
+    }
+
+    private static void handleDash() {
+        Player player = Minecraft.getInstance().player;
+        if(player == null) return;
+
+        if(player.isOnGround() || player.onClimbable() && !player.isInWater()) {
+            canDash = true;
+        }
+
+        if(!CybKeybinds.DASH.isDown()) {
+            releasedDash = true;
+        }
+
+        if(!player.getAbilities().flying && canDash && releasedDash && CybKeybinds.DASH.isDown()) {
+            if(((player.isOnGround() || player.onClimbable()) && CyberwareHelper.canDash(player) > -1) || CyberwareHelper.canDash(player) == 1) {
+                Cybernetics.LOGGER.info("Dashing! " + CyberwareHelper.canDash(player));
+                canDash = false;
+                releasedDash = false;
+                if(isSpiking) {
+                    canSpike = false;
+                    isSpiking = false;
+                }
+                CybPackets.sendToServer(new C2SDashPacket());
+                DashCyberwareItem.dash(player);
+            }
         }
     }
 }

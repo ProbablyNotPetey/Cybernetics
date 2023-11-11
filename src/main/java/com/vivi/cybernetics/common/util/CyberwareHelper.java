@@ -3,6 +3,8 @@ package com.vivi.cybernetics.common.util;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.common.cyberware.CyberwareSectionType;
+import com.vivi.cybernetics.common.item.DashCyberwareItem;
+import com.vivi.cybernetics.common.registry.CybItems;
 import com.vivi.cybernetics.server.data.CyberwareProperties;
 import com.vivi.cybernetics.server.data.CyberwarePropertiesReloadListener;
 import com.vivi.cybernetics.common.item.CyberwareItem;
@@ -123,5 +125,21 @@ public class CyberwareHelper {
     public static LazyOptional<CyberwareInventory> getCyberware(Player player) {
         if(player == null) return LazyOptional.empty();
         return player.getCapability(Cybernetics.CYBERWARE);
+    }
+
+    /**
+     * -1 if cannot dash, 0 if can dash on ground, 1 if can dash in midair
+     */
+    public static int canDash(Player player) {
+        if(player.getCooldowns().isOnCooldown(CybItems.MK1_DASH.get())) return -1;
+        CyberwareInventory cyberware = getCyberware(player).orElse(null);
+        if(cyberware == null) return -1;
+        for(int i = 0; i < cyberware.getSlots(); i++) {
+            if(cyberware.getStackInSlot(i).getItem() instanceof DashCyberwareItem item) {
+                if(item.canDashMidair()) return 1;
+                return 0;
+            }
+        }
+        return -1;
     }
 }
