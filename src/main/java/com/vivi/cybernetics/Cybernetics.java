@@ -2,6 +2,7 @@ package com.vivi.cybernetics;
 
 import com.mojang.logging.LogUtils;
 import com.vivi.cybernetics.client.gui.cyberware.CyberwareScreen;
+import com.vivi.cybernetics.client.hud.CyberneticsHUD;
 import com.vivi.cybernetics.client.shader.CybCoreShaders;
 import com.vivi.cybernetics.client.shader.CybPostShaders;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
@@ -18,7 +19,9 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -71,22 +74,18 @@ public class Cybernetics {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
 
-        // Register the commonSetup method for modloading
-        modEventBus.addListener(this::commonSetup);
-        modEventBus.addListener(this::clientSetup);
-        modEventBus.addListener(this::registerKeybindings);
-        modEventBus.addListener(this::registerCapabilities);
-
-        // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
+        // Register ourselves for mod event bus
+        modEventBus.register(this);
 
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event) {
+    @SubscribeEvent
+    public void commonSetup(final FMLCommonSetupEvent event) {
         CybPackets.register();
     }
 
-    private void clientSetup(final FMLClientSetupEvent event) {
+    @SubscribeEvent
+    public void clientSetup(final FMLClientSetupEvent event) {
         MenuScreens.register(CybMenuTypes.CYBERWARE_STATION_MENU.get(), CyberwareStationScreen::new);
 
         MenuScreens.register(CybMenuTypes.PLAYER_CYBERWARE_MENU.get(), CyberwareScreen<PlayerCyberwareMenu>::new);
@@ -96,13 +95,20 @@ public class Cybernetics {
         CybPostShaders.getInstance().init();
     }
 
-    private void registerKeybindings(RegisterKeyMappingsEvent event) {
+    @SubscribeEvent
+    public void registerKeybindings(RegisterKeyMappingsEvent event) {
         event.register(CybKeybinds.PLAYER_CYBERWARE_MENU);
         event.register(CybKeybinds.PLAYER_ABILITIES_MENU);
         event.register(CybKeybinds.DASH);
     }
 
-    private void registerCapabilities(RegisterCapabilitiesEvent event) {
+    @SubscribeEvent
+    public void registerHUD(RegisterGuiOverlaysEvent event) {
+        event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), "cybernetics_hud", CyberneticsHUD.getInstance());
+    }
+
+    @SubscribeEvent
+    public void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.register(CyberwareInventory.class);
         event.register(PlayerEnergyStorage.class);
         event.register(PlayerAbilities.class);

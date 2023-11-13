@@ -21,6 +21,7 @@ public class CybAbilities {
             NIGHT_VISION = ABILITY_TYPES.register("night_vision", NightVisionAbilityType::new),
             SYNAPTIC_DISABLER = ABILITY_TYPES.register("synaptic_disabler", SynapticDisablerAbilityType::new),
             SCAN = ABILITY_TYPES.register("scan", ScanAbilityType::new),
+            HUD = ABILITY_TYPES.register("hud", HUDAbilityType::new),
             MK1_BERSERK = ABILITY_TYPES.register("mk1_berserk", () -> new BerserkAbilityType(CybItems.MK1_BERSERK.get(), 200, 1200)),
             MK2_BERSERK = ABILITY_TYPES.register("mk2_berserk", () -> new BerserkAbilityType(CybItems.MK2_BERSERK.get(), 240, 1000, 3.0, 0)),
             MK3_BERSERK = ABILITY_TYPES.register("mk3_berserk", () -> new BerserkAbilityType(CybItems.MK3_BERSERK.get(), 300, 900, 5.0, 1))

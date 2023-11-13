@@ -1,6 +1,7 @@
 package com.vivi.cybernetics.common.cyberware;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.common.config.CommonConfig;
 import com.vivi.cybernetics.common.item.CapacityCyberwareItem;
 import com.vivi.cybernetics.common.item.CyberwareItem;
 import com.vivi.cybernetics.server.network.CybPackets;
@@ -28,7 +29,7 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
     public CyberwareInventory(Player owner, IItemHandlerModifiable... itemHandler) {
         super(itemHandler);
         this.owner = owner;
-        this.maxCapacity = 50;
+        this.maxCapacity = CommonConfig.initialCapacity.get();
     }
 
 

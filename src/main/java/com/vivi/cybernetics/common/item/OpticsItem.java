@@ -18,11 +18,14 @@ public class OpticsItem extends CyberwareItem {
     public void onEquip(ItemStack stack, Level level, Player player) {
         super.onEquip(stack, level, player);
         if(canScan) AbilityHelper.addAbility(player, CybAbilities.SCAN.get());
+        AbilityHelper.addAbility(player, CybAbilities.HUD.get());
+        AbilityHelper.enableAbility(player, CybAbilities.HUD.get());
     }
 
     @Override
     public void onUnequip(ItemStack stack, Level level, Player player) {
         super.onUnequip(stack, level, player);
         if(canScan) AbilityHelper.removeAbility(player, CybAbilities.SCAN.get());
+        AbilityHelper.removeAbility(player, CybAbilities.HUD.get());
     }
 }
