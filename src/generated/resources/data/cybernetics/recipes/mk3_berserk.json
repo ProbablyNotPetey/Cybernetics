@@ -1,0 +1,29 @@
+{
+  "type": "cybernetics:cyberware_crafting",
+  "ingredients": [
+    {
+      "item": "cybernetics:neural_interface"
+    },
+    {
+      "item": "cybernetics:stimulant_injector"
+    },
+    {
+      "item": "cybernetics:neural_interface"
+    },
+    {
+      "item": "cybernetics:flux_core"
+    },
+    {
+      "tag": "forge:ingots/netherite"
+    },
+    {
+      "item": "cybernetics:flux_core"
+    }
+  ],
+  "input": {
+    "item": "cybernetics:mk2_berserk"
+  },
+  "result": {
+    "item": "cybernetics:mk3_berserk"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": {
+      "tag": "forge:glass"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "GGG",
+    "GRG",
+    "GGG"
+  ],
+  "result": {
+    "item": "cybernetics:lens"
+  }
+}

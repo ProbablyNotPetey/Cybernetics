@@ -14,7 +14,7 @@ public class CyberwarePropertiesGenerator extends CyberwarePropertiesProvider{
     public void addProperties() {
 
         //HEAD
-        add(CybItems.CAPACITY_EXTENSION_HEAD.get(), new Builder().setCapacity(3));
+        add(CybItems.OVERCAPACITY_HEAD.get(), new Builder().setCapacity(3));
         add(CybItems.MK1_BERSERK.get(), new Builder().addIncompatibilities(CybTags.BERSERKS).setShowIncompatibilities(false).setCapacity(9));
         add(CybItems.MK2_BERSERK.get(), new Builder().addIncompatibilities(CybTags.BERSERKS).setShowIncompatibilities(false).setCapacity(9));
         add(CybItems.MK3_BERSERK.get(), new Builder().addIncompatibilities(CybTags.BERSERKS).setShowIncompatibilities(false).setCapacity(9));

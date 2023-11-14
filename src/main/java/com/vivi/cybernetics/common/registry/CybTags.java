@@ -13,6 +13,14 @@ import javax.swing.text.html.parser.Entity;
 
 public class CybTags {
 
+    //Forge tags
+    public static final TagKey<Item>
+            INGOTS_STEEL = forgeTag("ingots/steel")
+
+    ;
+
+
+    //Mod tags
     public static final TagKey<Item>
             OPTICS = itemTag("optics"),
             BERSERKS = itemTag("berserks"),
@@ -40,5 +48,8 @@ public class CybTags {
 
     private static TagKey<Item> itemTag(String name) {
         return ItemTags.create(new ResourceLocation(Cybernetics.MOD_ID, name));
+    }
+    private static TagKey<Item> forgeTag(String name) {
+        return ItemTags.create(new ResourceLocation("forge", name));
     }
 }

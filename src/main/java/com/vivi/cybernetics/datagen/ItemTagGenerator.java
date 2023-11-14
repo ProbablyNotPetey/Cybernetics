@@ -18,7 +18,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
         //section tags
         this.tag(CybTags.HEAD_SECTION).add(
-                CybItems.CAPACITY_EXTENSION_HEAD.get(),
+                CybItems.OVERCAPACITY_HEAD.get(),
                 CybItems.CARBON_FIBER_SKULL.get(),
                 CybItems.MK1_BERSERK.get(),
                 CybItems.MK2_BERSERK.get(),

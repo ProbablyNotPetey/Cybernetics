@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "tag": "forge:ingots/copper"
+    },
+    "P": {
+      "item": "cybernetics:printed_circuit_board"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "RRR",
+    "CPC"
+  ],
+  "result": {
+    "item": "cybernetics:neural_interface"
+  }
+}

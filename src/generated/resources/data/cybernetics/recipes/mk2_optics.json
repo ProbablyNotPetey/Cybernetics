@@ -1,0 +1,29 @@
+{
+  "type": "cybernetics:cyberware_crafting",
+  "ingredients": [
+    {
+      "item": "cybernetics:neural_interface"
+    },
+    {
+      "tag": "forge:gems/diamond"
+    },
+    {
+      "item": "cybernetics:neural_interface"
+    },
+    {
+      "tag": "forge:storage_blocks/redstone"
+    },
+    {
+      "item": "cybernetics:lens"
+    },
+    {
+      "tag": "forge:storage_blocks/redstone"
+    }
+  ],
+  "input": {
+    "item": "cybernetics:mk1_optics"
+  },
+  "result": {
+    "item": "cybernetics:mk2_optics"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "tag": "forge:ingots/copper"
+    },
+    "R": {
+      "item": "minecraft:comparator"
+    },
+    "S": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "pattern": [
+    "RCR",
+    "SSS"
+  ],
+  "result": {
+    "item": "cybernetics:printed_circuit_board"
+  }
+}

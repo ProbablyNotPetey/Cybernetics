@@ -19,17 +19,17 @@ import static net.minecraft.util.GsonHelper.getAsJsonObject;
 
 public class CyberwareStationRecipe implements Recipe<SimpleContainer> {
     private final ResourceLocation id;
-    private final ItemStack output;
+    private final ItemStack result;
     private final NonNullList<Ingredient> ingredients;
     private final Ingredient input;
     protected final List<Boolean> itemMatchesSlot = new ArrayList<>();
 
 
-    public CyberwareStationRecipe(ResourceLocation id, Ingredient input, NonNullList<Ingredient> ingredients, ItemStack output) {
+    public CyberwareStationRecipe(ResourceLocation id, Ingredient input, NonNullList<Ingredient> ingredients, ItemStack result) {
         this.id = id;
         this.input = input;
         this.ingredients = ingredients;
-        this.output = output;
+        this.result = result;
         ingredients.forEach(ingredient -> itemMatchesSlot.add(false));
     }
 
@@ -45,7 +45,7 @@ public class CyberwareStationRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public ItemStack getResultItem() {
-        return output.copy();
+        return result.copy();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class CyberwareStationRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public ItemStack assemble(SimpleContainer pContainer) {
-        return output;
+        return result;
     }
 
     @Override
@@ -126,7 +126,7 @@ public class CyberwareStationRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public CyberwareStationRecipe fromJson(ResourceLocation id, JsonObject json) {
-            ItemStack output = ShapedRecipe.itemStackFromJson(getAsJsonObject(json, "output"));
+            ItemStack result = ShapedRecipe.itemStackFromJson(getAsJsonObject(json, "result"));
 
             JsonArray ingredientJson = getAsJsonArray(json, "ingredients");
             NonNullList<Ingredient> ingredients = NonNullList.withSize(6, Ingredient.EMPTY);
@@ -136,7 +136,7 @@ public class CyberwareStationRecipe implements Recipe<SimpleContainer> {
 
             Ingredient input = Ingredient.fromJson(getAsJsonObject(json, "input"));
 
-            return new CyberwareStationRecipe(id, input, ingredients, output);
+            return new CyberwareStationRecipe(id, input, ingredients, result);
         }
 
         @Override
@@ -147,8 +147,8 @@ public class CyberwareStationRecipe implements Recipe<SimpleContainer> {
             for(int i = 0; i < ingredients.size(); i++) {
                 ingredients.set(i, Ingredient.fromNetwork(buf));
             }
-            ItemStack output = buf.readItem();
-            return new CyberwareStationRecipe(id, input, ingredients, output);
+            ItemStack result = buf.readItem();
+            return new CyberwareStationRecipe(id, input, ingredients, result);
         }
 
         @Override

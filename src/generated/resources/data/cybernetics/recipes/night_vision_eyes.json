@@ -1,0 +1,29 @@
+{
+  "type": "cybernetics:cyberware_crafting",
+  "ingredients": [
+    {
+      "tag": "forge:dusts/redstone"
+    },
+    {
+      "item": "minecraft:glowstone"
+    },
+    {
+      "tag": "forge:dusts/redstone"
+    },
+    {
+      "item": "cybernetics:lens"
+    },
+    {
+      "item": "cybernetics:lens"
+    },
+    {
+      "item": "cybernetics:lens"
+    }
+  ],
+  "input": {
+    "item": "cybernetics:printed_circuit_board"
+  },
+  "result": {
+    "item": "cybernetics:night_vision_eyes"
+  }
+}

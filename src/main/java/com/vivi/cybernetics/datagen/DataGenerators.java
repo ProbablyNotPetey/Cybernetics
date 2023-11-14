@@ -17,6 +17,7 @@ public class DataGenerators {
         generator.addProvider(event.includeClient(), new ItemModelGenerator(generator, event.getExistingFileHelper()));
         generator.addProvider(event.includeServer(), new CyberwarePropertiesGenerator(generator, event.getExistingFileHelper()));
         generator.addProvider(event.includeServer(), new ItemTagGenerator(generator, new BlockTagsProvider(generator), event.getExistingFileHelper()));
+        generator.addProvider(event.includeServer(), new CyberwareRecipesGenerator(generator));
 
     }
 }

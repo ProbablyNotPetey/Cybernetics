@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "N": {
+      "item": "cybernetics:neural_interface"
+    },
+    "P": {
+      "item": "cybernetics:printed_circuit_board"
+    },
+    "R": {
+      "tag": "forge:storage_blocks/redstone"
+    },
+    "S": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "NNN",
+    "RPR"
+  ],
+  "result": {
+    "item": "cybernetics:surgical_chamber"
+  }
+}

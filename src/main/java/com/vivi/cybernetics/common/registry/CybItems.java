@@ -22,9 +22,21 @@ public class CybItems {
 
     //Regular items
     public static final RegistryObject<Item>
-            MOTOR = ITEMS.register("motor", () -> new Item(regularProps())),
-            NEURAL_INTERFACE = ITEMS.register("neural_interface", () -> new Item(regularProps())),
-            PRINTED_CIRCUIT_BOARD = ITEMS.register("printed_circuit_board", () -> new Item(regularProps()))
+            MOTOR = basicItem("motor"),
+            NEURAL_INTERFACE = basicItem("neural_interface"),
+            PRINTED_CIRCUIT_BOARD = basicItem("printed_circuit_board"),
+            LENS = basicItem("lens"),
+            FLUX_CORE = basicItem("flux_core"),
+            STIMULANT_INJECTOR = basicItem("stimulant_injector")
+    ;
+
+    //Capacity shards
+    public static final RegistryObject<Item>
+        MK1_CAPACITY_SHARD = ITEMS.register("mk1_capacity_shard", () -> new Item(cyberwareProps())),
+        MK2_CAPACITY_SHARD = ITEMS.register("mk2_capacity_shard", () -> new Item(cyberwareProps())),
+        MK3_CAPACITY_SHARD = ITEMS.register("mk3_capacity_shard", () -> new Item(cyberwareProps())),
+        MK4_CAPACITY_SHARD = ITEMS.register("mk4_capacity_shard", () -> new Item(cyberwareProps()))
+
     ;
 
 
@@ -33,7 +45,7 @@ public class CybItems {
     public static final RegistryObject<Item>
 
             //HEAD
-            CAPACITY_EXTENSION_HEAD = ITEMS.register("capacity_extension_head", () -> new CyberwareItem(cyberwareProps())),
+            OVERCAPACITY_HEAD = ITEMS.register("overcapacity_head", () -> new CyberwareItem(cyberwareProps())),
             CARBON_FIBER_SKULL = ITEMS.register("carbon_fiber_skull", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(Attributes.ARMOR, new AttributeModifier(UUID.fromString("7588e022-9e81-4c44-85e8-82979dec2e0c"), "Armor Boost Head", 2.0, AttributeModifier.Operation.ADDITION)))),
             MK1_BERSERK = ITEMS.register("mk1_berserk", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.MK1_BERSERK)),
             MK2_BERSERK = ITEMS.register("mk2_berserk", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.MK2_BERSERK)),
@@ -103,5 +115,7 @@ public class CybItems {
         ITEMS.register(eventBus);
     }
 
-
+    private static RegistryObject<Item> basicItem(String name) {
+        return ITEMS.register(name, () -> new Item(regularProps()));
+    }
 }

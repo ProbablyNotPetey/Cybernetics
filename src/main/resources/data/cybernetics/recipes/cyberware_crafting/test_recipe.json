@@ -23,7 +23,7 @@
             "item": "minecraft:lime_wool"
         }
     ],
-    "output": {
+    "result": {
         "item": "minecraft:iron_ingot",
         "count": 2
     }

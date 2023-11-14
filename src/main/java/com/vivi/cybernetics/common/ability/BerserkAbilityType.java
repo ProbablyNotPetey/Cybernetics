@@ -21,17 +21,19 @@ public class BerserkAbilityType extends AbilityType {
     protected final int duration;
     protected final double damageBoost;
     protected final int regenAmp;
+    protected final double speed;
     private static final UUID speedUUID = UUID.fromString("346cc9b7-3c4a-4bee-9c8a-360daa1381ea");
     private static final UUID attackSpeedUUID = UUID.fromString("e12b8786-1e2f-4b72-b91a-fec38b02f905");
     private static final UUID fistAttackUUID = UUID.fromString("2415d2cf-bf8a-42e4-a62b-bd0eca1612aa");
-    public BerserkAbilityType(Item icon, int duration, int maxCooldown, double damageBoost, int regenAmp) {
+    public BerserkAbilityType(Item icon, int duration, int maxCooldown, double damageBoost, int regenAmp, double speed) {
         super(maxCooldown, icon);
         this.duration = duration;
         this.damageBoost = damageBoost;
         this.regenAmp = regenAmp;
+        this.speed = speed;
     }
     public BerserkAbilityType(Item icon, int duration, int maxCooldown) {
-        this(icon, duration, maxCooldown, 0.0, 0);
+        this(icon, duration, maxCooldown, 0.0, 0, 0.3);
     }
 
 
@@ -97,7 +99,7 @@ public class BerserkAbilityType extends AbilityType {
 
             AttributeInstance speed = player.getAttribute(Attributes.MOVEMENT_SPEED);
             if(speed != null && speed.getModifier(speedUUID) == null) {
-                speed.addPermanentModifier(new AttributeModifier(speedUUID, "Berserk Speed", 0.3, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                speed.addPermanentModifier(new AttributeModifier(speedUUID, "Berserk Speed", this.speed, AttributeModifier.Operation.MULTIPLY_TOTAL));
             }
 
             AttributeInstance attackSpeed = player.getAttribute(Attributes.ATTACK_SPEED);

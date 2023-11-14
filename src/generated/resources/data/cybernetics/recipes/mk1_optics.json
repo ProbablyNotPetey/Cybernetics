@@ -1,0 +1,29 @@
+{
+  "type": "cybernetics:cyberware_crafting",
+  "ingredients": [
+    {
+      "tag": "forge:gems/amethyst"
+    },
+    {
+      "item": "cybernetics:neural_interface"
+    },
+    {
+      "tag": "forge:gems/amethyst"
+    },
+    {
+      "tag": "forge:dusts/redstone"
+    },
+    {
+      "item": "cybernetics:lens"
+    },
+    {
+      "tag": "forge:dusts/redstone"
+    }
+  ],
+  "input": {
+    "item": "cybernetics:printed_circuit_board"
+  },
+  "result": {
+    "item": "cybernetics:mk1_optics"
+  }
+}

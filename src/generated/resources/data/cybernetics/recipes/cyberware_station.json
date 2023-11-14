@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "cybernetics:printed_circuit_board"
+    },
+    "I": {
+      "tag": "forge:ingots/steel"
+    },
+    "Q": {
+      "tag": "forge:gems/quartz"
+    },
+    "R": {
+      "tag": "forge:storage_blocks/redstone"
+    }
+  },
+  "pattern": [
+    "III",
+    "CRC",
+    "QQQ"
+  ],
+  "result": {
+    "item": "cybernetics:cyberware_station"
+  }
+}

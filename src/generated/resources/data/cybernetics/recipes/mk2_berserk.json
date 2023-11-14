@@ -1,0 +1,29 @@
+{
+  "type": "cybernetics:cyberware_crafting",
+  "ingredients": [
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "cybernetics:stimulant_injector"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "tag": "forge:ingots/steel"
+    },
+    {
+      "item": "cybernetics:flux_core"
+    },
+    {
+      "tag": "forge:ingots/steel"
+    }
+  ],
+  "input": {
+    "item": "cybernetics:mk1_berserk"
+  },
+  "result": {
+    "item": "cybernetics:mk2_berserk"
+  }
+}
