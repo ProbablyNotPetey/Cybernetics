@@ -2,9 +2,11 @@ package com.vivi.cybernetics;
 
 import com.mojang.logging.LogUtils;
 import com.vivi.cybernetics.client.gui.cyberware.CyberwareScreen;
+import com.vivi.cybernetics.client.hud.AbilityHUD;
 import com.vivi.cybernetics.client.hud.CyberneticsHUD;
 import com.vivi.cybernetics.client.shader.CybCoreShaders;
 import com.vivi.cybernetics.client.shader.CybPostShaders;
+import com.vivi.cybernetics.client.util.HudAnchor;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.capability.PlayerEnergyStorage;
 import com.vivi.cybernetics.client.gui.CyberwareStationScreen;
@@ -93,6 +95,7 @@ public class Cybernetics {
 
         CybCoreShaders.getInstance().init();
         CybPostShaders.getInstance().init();
+        CyberneticsHUD.getInstance().addHUDElement(new AbilityHUD(HudAnchor.TOP_RIGHT, -162, 4));
     }
 
     @SubscribeEvent

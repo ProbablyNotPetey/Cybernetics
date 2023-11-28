@@ -26,16 +26,31 @@ public class CyberneticsHUD implements IGuiOverlay {
 
     public void addHUDElement(IHUDElement elememt) {
         elements.add(elememt);
+        elememt.init();
     }
     public void addHUDElements(IHUDElement... elements) {
-        this.elements.addAll(Arrays.asList(elements));
+        for (IHUDElement element : elements) {
+            this.elements.add(element);
+            element.init();
+        }
+    }
+
+    public List<IHUDElement> getElements() {
+        return elements;
+    }
+    public IHUDElement getElement(String name) {
+        for(IHUDElement element : elements) {
+            if(element.getSerializedName().equals(name)) {
+                return element;
+            }
+        }
+        return null;
     }
 
     @Override
     public void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if(!isEnabled) return;
-
-        elements.forEach(element -> element.render(poseStack, partialTick));
+        elements.forEach(element -> element.render(poseStack, partialTick, screenWidth, screenHeight));
     }
 
 

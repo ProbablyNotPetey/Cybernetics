@@ -1,4 +1,4 @@
-package com.vivi.cybernetics.common.mixin.client;
+package com.vivi.cybernetics.mixin.client;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.shader.ScannerRenderer;

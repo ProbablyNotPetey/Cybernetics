@@ -68,6 +68,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 
     @Override
     public ItemModelBuilder singleTexture(String name, ResourceLocation parent, String textureKey, ResourceLocation texture) {
+        existingFileHelper.trackGenerated(texture, ModelProvider.TEXTURE);
         if(existingFileHelper.exists(texture, ModelProvider.TEXTURE)) {
             return withExistingParent(name, parent)
                     .texture(textureKey, texture);

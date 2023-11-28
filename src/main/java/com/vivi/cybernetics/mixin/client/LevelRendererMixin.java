@@ -1,4 +1,4 @@
-package com.vivi.cybernetics.common.mixin.client;
+package com.vivi.cybernetics.mixin.client;
 
 
 import com.mojang.blaze3d.pipeline.RenderTarget;

@@ -1,4 +1,4 @@
-package com.vivi.cybernetics.common.mixin;
+package com.vivi.cybernetics.mixin;
 
 import com.vivi.cybernetics.common.registry.CybItems;
 import com.vivi.cybernetics.common.util.CyberwareHelper;

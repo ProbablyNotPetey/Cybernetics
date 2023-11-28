@@ -1,6 +1,8 @@
 package com.vivi.cybernetics.server.network;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.client.hud.AbilityHUD;
+import com.vivi.cybernetics.client.hud.CyberneticsHUD;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.server.data.CyberwarePropertiesReloadListener;
@@ -39,6 +41,12 @@ public class ClientPacketHandler {
         abilities.deserializeNBT(packet.getAbilitiesData());
         AbilityHelper.getAbilities(player).ifPresent(playerAbilities -> {
             playerAbilities.copyFrom(abilities);
+        });
+
+        CyberneticsHUD.getInstance().getElements().forEach(element -> {
+            if(element instanceof AbilityHUD abilityHUD) {
+                abilityHUD.updateElementList();
+            }
         });
     }
 
