@@ -61,7 +61,7 @@ public class CybItems {
             NIGHT_VISION_EYES = ITEMS.register("night_vision_eyes", () -> new NightVisionEyesItem(cyberwareProps())),
 
             //UPPER ORGANS
-            EMERGENCY_DEFIBRILLATOR = ITEMS.register("emergency_defibrillator", () -> new CyberwareItem(cyberwareProps())),
+            EMERGENCY_DEFIBRILLATOR = ITEMS.register("emergency_defibrillator", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.EMERGENCY_DEFIBRILLATOR)),
             OXYGEN_RECYCLER = ITEMS.register("oxygen_recycler", () -> new CyberwareItem(cyberwareProps())),
             HEALTH_BOOST_ORGANS = ITEMS.register("health_boost_organs", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(Attributes.MAX_HEALTH, new AttributeModifier(UUID.fromString("f6585ba8-be7a-403a-92ed-620872197db2"), "Health Boost Upper Organs", 5, AttributeModifier.Operation.ADDITION)))),
 

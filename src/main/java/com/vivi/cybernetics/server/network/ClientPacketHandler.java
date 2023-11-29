@@ -5,6 +5,7 @@ import com.vivi.cybernetics.client.hud.AbilityHUD;
 import com.vivi.cybernetics.client.hud.CyberneticsHUD;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
+import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.server.data.CyberwarePropertiesReloadListener;
 import com.vivi.cybernetics.common.item.ReinforcedTendonsItem;
 import com.vivi.cybernetics.server.network.packet.S2CSyncAbilitiesPacket;
@@ -15,6 +16,7 @@ import com.vivi.cybernetics.common.util.CyberwareHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ClientPacketHandler {
 
@@ -41,6 +43,12 @@ public class ClientPacketHandler {
         abilities.deserializeNBT(packet.getAbilitiesData());
         AbilityHelper.getAbilities(player).ifPresent(playerAbilities -> {
             playerAbilities.copyFrom(abilities);
+            packet.getAbilitiesToEnable().forEach(ability -> {
+                playerAbilities.enableAbility(CybAbilities.ABILITY_TYPE_REGISTRY.get().getValue(ability), false);
+            });
+            packet.getAbilitiesToDisable().forEach(ability -> {
+                playerAbilities.disableAbility(CybAbilities.ABILITY_TYPE_REGISTRY.get().getValue(ability), false);
+            });
         });
 
         CyberneticsHUD.getInstance().getElements().forEach(element -> {

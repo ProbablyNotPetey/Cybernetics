@@ -1,14 +1,16 @@
 package com.vivi.cybernetics.common.ability;
 
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.hud.CyberneticsHUD;
 import com.vivi.cybernetics.common.registry.CybItems;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class HUDAbilityType extends AbilityType {
 
     public HUDAbilityType() {
-        super(CybItems.MK1_OPTICS.get());
+        super(new ResourceLocation(Cybernetics.MOD_ID, "textures/item/mk1_optics.png"));
     }
 
     @Override

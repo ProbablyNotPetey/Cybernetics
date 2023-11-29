@@ -130,6 +130,7 @@ public class CyberwareHelper {
     /**
      * -1 if cannot dash, 0 if can dash on ground, 1 if can dash in midair
      */
+    //todo: redo, switch to use abilities
     public static int canDash(Player player) {
         if(player.getCooldowns().isOnCooldown(CybItems.MK1_DASH.get())) return -1;
         CyberwareInventory cyberware = getCyberware(player).orElse(null);

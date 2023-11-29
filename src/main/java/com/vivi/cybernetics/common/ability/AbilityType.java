@@ -1,5 +1,6 @@
 package com.vivi.cybernetics.common.ability;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -8,19 +9,19 @@ import net.minecraft.world.level.Level;
 public class AbilityType {
 
     protected final int maxCooldown;
-    protected final Item itemToRender;
+    protected final ResourceLocation texture;
     public AbilityType() {
         this(-1, null);
     }
     public AbilityType(int maxCooldown) {
         this(maxCooldown, null);
     }
-    public AbilityType(Item itemToRender) {
-        this(-1, itemToRender);
+    public AbilityType(ResourceLocation texture) {
+        this(-1, texture);
     }
-    public AbilityType(int maxCooldown, Item itemToRender) {
+    public AbilityType(int maxCooldown, ResourceLocation texture) {
         this.maxCooldown = maxCooldown;
-        this.itemToRender = itemToRender;
+        this.texture = texture;
     }
 
 
@@ -40,8 +41,8 @@ public class AbilityType {
         return maxCooldown;
     }
 
-    public Item getItemToRender() {
+    public ResourceLocation getTexture() {
 //        if(itemToRender == null) return null;
-        return itemToRender;
+        return texture;
     }
 }

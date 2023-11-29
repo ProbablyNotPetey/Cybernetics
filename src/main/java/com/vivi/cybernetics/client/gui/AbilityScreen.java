@@ -3,7 +3,9 @@ package com.vivi.cybernetics.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.ability.Ability;
+import com.vivi.cybernetics.common.ability.HiddenAbility;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.client.gui.util.CybAbstractWidget;
 import com.vivi.cybernetics.client.gui.util.TextWidget;
@@ -26,6 +28,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+
+import java.io.FileNotFoundException;
+import java.util.List;
 
 public class AbilityScreen extends Screen {
 
@@ -50,10 +55,11 @@ public class AbilityScreen extends Screen {
 
         PlayerAbilities abilities = AbilityHelper.getAbilities(player).orElse(null);
         if(abilities == null) return;
-        int sections = abilities.getAbilities().size();
+        List<Ability> filtered = abilities.getAbilities().stream().filter(ability -> !ability.getType().getClass().isAnnotationPresent(HiddenAbility.class)).toList();
+        int sections = filtered.size();
         float length = 360.0f / sections;
         for(int i = 0; i < sections; i++) {
-            addRenderableWidget(new AbilitySlice(abilities.getAbilities().get(i), 60, 100, length * i, length));
+            addRenderableWidget(new AbilitySlice(filtered.get(i), 60, 100, length * i, length));
         }
         textWidget = new TextWidget(this, (int) centerX, (int) centerY);
         textWidget.y -= textWidget.getTextHeight() / 2;
@@ -243,21 +249,21 @@ public class AbilityScreen extends Screen {
             RenderSystem.disableBlend();
 
             //render item
-            Item item = ability.getType().getItemToRender();
-            if(item != null) {
-
+            ResourceLocation texture = ability.getType().getTexture();
+            if(texture != null) {
+                RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                RenderSystem.setShaderTexture(0, texture);
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                 float centerAngle = Mth.DEG_TO_RAD * (startAngle + (totalAngle / 2));
                 float centerRadius = inner + (outer - inner) / 2;
                 float scale = 2.0f;
-                RenderSystem.getModelViewStack().pushPose();
-                RenderSystem.getModelViewStack().scale(scale, scale, 1.0f);
-                RenderSystem.getModelViewStack().translate((Maath.toX(centerRadius, centerAngle) + centerX) / scale, (-Maath.toY(centerRadius, centerAngle) + centerY) / scale, 0.0);
-                itemRenderer.blitOffset = 200;
-                itemRenderer.renderAndDecorateItem(new ItemStack(item), -8,-8);
-                itemRenderer.blitOffset = 0;
-                RenderSystem.getModelViewStack().popPose();
+                poseStack.pushPose();
+                poseStack.scale(scale, scale, 1.0f);
+                poseStack.translate((Maath.toX(centerRadius, centerAngle) + centerX) / scale, (-Maath.toY(centerRadius, centerAngle) + centerY) / scale, 0.0);
+                blit(poseStack, -8, -8, 200, 0, 0, 16, 16, 16, 16);
+                poseStack.popPose();
                 RenderSystem.applyModelViewMatrix();
+
             }
         }
 

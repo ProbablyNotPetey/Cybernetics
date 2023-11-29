@@ -4,6 +4,7 @@ import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.ability.Ability;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.item.CyberwareItem;
+import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.common.registry.CybItems;
 import com.vivi.cybernetics.common.registry.CybMobEffects;
 import com.vivi.cybernetics.common.registry.CybTags;
@@ -84,12 +85,8 @@ public class ServerEvents {
         Player player = (Player) event.getEntity();
 
         if(!(player.isCreative() || player.isSpectator())) {
-            if(CyberwareHelper.hasCyberwareItem(player, CybItems.EMERGENCY_DEFIBRILLATOR.get()) && !player.getCooldowns().isOnCooldown(CybItems.EMERGENCY_DEFIBRILLATOR.get())) {
+            if(AbilityHelper.enableAbility(player, CybAbilities.EMERGENCY_DEFIBRILLATOR.get(), true)) {
                 event.setCanceled(true);
-                player.setHealth(player.getMaxHealth() / 4.0f);
-                //play some sound
-                player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 2));
-                player.getCooldowns().addCooldown(CybItems.EMERGENCY_DEFIBRILLATOR.get(), 2400);
                 return;
             }
         }

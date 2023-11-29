@@ -1,6 +1,8 @@
 package com.vivi.cybernetics.common.util;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.client.hud.AbilityHUD;
+import com.vivi.cybernetics.client.hud.CyberneticsHUD;
 import com.vivi.cybernetics.common.ability.Ability;
 import com.vivi.cybernetics.common.ability.AbilityType;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
@@ -18,6 +20,13 @@ public class AbilityHelper {
                 abilities.addAbility(new Ability(type), syncToClient);
             }
         });
+        if(player.level.isClientSide) {
+            CyberneticsHUD.getInstance().getElements().forEach(element -> {
+                if(element instanceof AbilityHUD abilityHUD) {
+                    abilityHUD.updateElementList();
+                }
+            });
+        }
     }
     public static void removeAbility(Player player, AbilityType type) {
         removeAbility(player, type, false);
@@ -32,6 +41,13 @@ public class AbilityHelper {
                 }
             }
         });
+        if(player.level.isClientSide) {
+            CyberneticsHUD.getInstance().getElements().forEach(element -> {
+                if(element instanceof AbilityHUD abilityHUD) {
+                    abilityHUD.updateElementList();
+                }
+            });
+        }
     }
 
     public static boolean isEnabled(Player player, AbilityType type) {
@@ -46,21 +62,21 @@ public class AbilityHelper {
         return player.getCapability(Cybernetics.PLAYER_ABILITIES);
     }
 
-    public static void enableAbility(Player player, AbilityType type) {
-        enableAbility(player, type, false);
+    public static boolean enableAbility(Player player, AbilityType type) {
+        return enableAbility(player, type, false);
     }
-    public static void enableAbility(Player player, AbilityType type, boolean syncToClient) {
-        getAbilities(player).ifPresent(abilities -> {
-            abilities.enableAbility(type, syncToClient);
-        });
+    public static boolean enableAbility(Player player, AbilityType type, boolean syncToClient) {
+        PlayerAbilities abilities = getAbilities(player).orElse(null);
+        if(abilities == null) return false;
+        return abilities.enableAbility(type, syncToClient);
     }
-    public static void disableAbility(Player player, AbilityType type) {
-        disableAbility(player, type, false);
+    public static boolean disableAbility(Player player, AbilityType type) {
+        return disableAbility(player, type, false);
     }
-    public static void disableAbility(Player player, AbilityType type, boolean syncToClient) {
-        getAbilities(player).ifPresent(abilities -> {
-            abilities.disableAbility(type, syncToClient);
-        });
+    public static boolean disableAbility(Player player, AbilityType type, boolean syncToClient) {
+        PlayerAbilities abilities = getAbilities(player).orElse(null);
+        if(abilities == null) return false;
+        return abilities.disableAbility(type, syncToClient);
     }
 
 }

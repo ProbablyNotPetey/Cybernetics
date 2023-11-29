@@ -5,12 +5,9 @@ import com.vivi.cybernetics.client.gui.AbilityScreen;
 import com.vivi.cybernetics.common.item.DashCyberwareItem;
 import com.vivi.cybernetics.common.item.KineticDischargerItem;
 import com.vivi.cybernetics.common.item.ReinforcedTendonsItem;
-import com.vivi.cybernetics.common.registry.CybAttributes;
+import com.vivi.cybernetics.common.registry.*;
 import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.server.network.packet.*;
-import com.vivi.cybernetics.common.registry.CybItems;
-import com.vivi.cybernetics.common.registry.CybKeybinds;
-import com.vivi.cybernetics.common.registry.CybMobEffects;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import com.vivi.cybernetics.common.util.CyberwareHelper;
 import com.vivi.cybernetics.client.util.InputHelper;
@@ -61,15 +58,18 @@ public class ClientEvents {
         if(player == null) return;
 
         if(isSpiking && player.isOnGround() && !(player.isInWater()) && !player.getAbilities().flying
-                && CyberwareHelper.hasCyberwareItem(player, CybItems.KINETIC_DISCHARGER.get())
-                &&  !player.getCooldowns().isOnCooldown(CybItems.KINETIC_DISCHARGER.get())) {
+                && AbilityHelper.isEnabled(player, CybAbilities.KINETIC_DISCHARGER.get())) {
             //shockwave
             CybPackets.sendToServer(new C2SSpikeShockwavePacket());
+            CybPackets.sendToServer(new C2SSpikePacket());
         }
 
         if(player.isOnGround() || player.onClimbable()  || player.isInWater() || player.getAbilities().flying) {
             canSpike = false;
             isSpiking = false;
+            if(AbilityHelper.isEnabled(player, CybAbilities.KINETIC_DISCHARGER.get())) {
+                CybPackets.sendToServer(new C2SSpikePacket());
+            }
         }
         else if(!isSpiking) {
             canSpike = true;
@@ -79,10 +79,7 @@ public class ClientEvents {
         if(canSpike && !isSpiking && player.isShiftKeyDown() && isHighEnoughToSpike(player)) {
             canSpike = false;
             isSpiking = true;
-            if(CyberwareHelper.hasCyberwareItem(player, CybItems.KINETIC_DISCHARGER.get()) && !player.getCooldowns().isOnCooldown(CybItems.KINETIC_DISCHARGER.get())) {
-                CybPackets.sendToServer(new C2SSpikePacket());
-                KineticDischargerItem.spike(player);
-            }
+            CybPackets.sendToServer(new C2SSpikePacket());
         }
     }
 
@@ -125,6 +122,9 @@ public class ClientEvents {
                 if(isSpiking) {
                     canSpike = false;
                     isSpiking = false;
+                    if(AbilityHelper.isEnabled(player, CybAbilities.KINETIC_DISCHARGER.get())) {
+                        CybPackets.sendToServer(new C2SSpikePacket());
+                    }
                 }
                 canDash = true;
             }
@@ -153,6 +153,9 @@ public class ClientEvents {
                 if(isSpiking) {
                     canSpike = false;
                     isSpiking = false;
+                    if(AbilityHelper.isEnabled(player, CybAbilities.KINETIC_DISCHARGER.get())) {
+                        CybPackets.sendToServer(new C2SSpikePacket());
+                    }
                 }
                 CybPackets.sendToServer(new C2SDashPacket());
                 DashCyberwareItem.dash(player);

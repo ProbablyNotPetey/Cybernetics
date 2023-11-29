@@ -1,9 +1,12 @@
 package com.vivi.cybernetics.client.hud;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Matrix4f;
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.client.shader.CybCoreShaders;
 import com.vivi.cybernetics.client.util.HudAnchor;
+import com.vivi.cybernetics.client.util.RenderHelper;
 import com.vivi.cybernetics.common.ability.Ability;
 import com.vivi.cybernetics.common.ability.HUDAbilityType;
 import com.vivi.cybernetics.common.registry.CybAbilities;
@@ -11,6 +14,7 @@ import com.vivi.cybernetics.common.util.AbilityHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;
@@ -159,8 +163,47 @@ public class AbilityHUD implements IHUDElement {
         public void render(PoseStack poseStack, float partialTick) {
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
-            GuiComponent.blit(poseStack, 0, 0, 0, 0, 18, 18, 24, 24);
+            int u = ability.isEnabled() ? 19 : 0;
+            GuiComponent.blit(poseStack, 0, 0, u, 0, 18, 18, 48, 48);
 //            GuiComponent.blit(poseStack, 0, 0, 10, 0, 0, 18, 18, 24, 24);
+            ResourceLocation texture = ability.getType().getTexture();
+            if(texture != null) {
+                RenderSystem.setShaderTexture(0, texture);
+                GuiComponent.blit(poseStack, 1, 1, 5, 0, 0, 16, 16, 16, 16);
+            }
+
+            drawProgress(poseStack, partialTick, 1, 1, 16, 16);
+        }
+        private void drawProgress(PoseStack poseStack, float partialTick, float x1, float y1, float width, float height) {
+            if(ability.getCooldown() > 0) {
+
+
+
+                ShaderInstance shader = CybCoreShaders.getCircleProgressShader();
+                float progress = (ability.getCooldown() - partialTick) / ability.getType().getMaxCooldown();
+                shader.safeGetUniform("Progress").set(progress);
+
+
+
+                RenderSystem.setShader(() -> shader);
+                RenderHelper.resetShaderColor();
+                RenderSystem.enableBlend();
+                RenderSystem.defaultBlendFunc();
+
+
+                Matrix4f matrix = poseStack.last().pose();
+                BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+                bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+                bufferbuilder.vertex(matrix, x1, y1 + height, 20.0f).uv(0, 0).endVertex();
+                bufferbuilder.vertex(matrix, x1 + width, y1 + height, 20.0f).uv(1, 0).endVertex();
+                bufferbuilder.vertex(matrix, x1 + width, y1, 20.0f).uv(1, 1).endVertex();
+                bufferbuilder.vertex(matrix, x1, y1, 20.0f).uv(0, 1).endVertex();
+                Tesselator.getInstance().end();
+
+
+
+                RenderSystem.disableBlend();
+            }
         }
     }
 }

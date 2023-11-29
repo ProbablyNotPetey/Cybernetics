@@ -1,6 +1,8 @@
 package com.vivi.cybernetics.common.capability;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.client.hud.AbilityHUD;
+import com.vivi.cybernetics.client.hud.CyberneticsHUD;
 import com.vivi.cybernetics.common.ability.Ability;
 import com.vivi.cybernetics.common.ability.AbilityType;
 import com.vivi.cybernetics.server.network.CybPackets;
@@ -38,6 +40,7 @@ public class PlayerAbilities implements INBTSerializable<CompoundTag> {
 
     public void addAbility(Ability ability, boolean syncToClient) {
         abilities.add(ability);
+
         if(!player.level.isClientSide && syncToClient) {
             syncToClient((ServerPlayer) player);
         }
@@ -72,27 +75,35 @@ public class PlayerAbilities implements INBTSerializable<CompoundTag> {
         });
     }
 
-    public void enableAbility(AbilityType type, boolean syncToClient) {
+    public boolean enableAbility(AbilityType type, boolean syncToClient) {
         Ability ability = getAbility(type);
-        if(ability != null) ability.enable(player);
+        if(ability == null) return false;
+        if(!ability.enable(player)) return false;
         if(!player.level.isClientSide && syncToClient) {
-            syncToClient((ServerPlayer) player);
+            Cybernetics.LOGGER.info("Syncing abilities to client...");
+            syncToClient((ServerPlayer) player, List.of(type), List.of());
         }
+        return true;
     }
 
-    public void disableAbility(AbilityType type, boolean syncToClient) {
+    public boolean disableAbility(AbilityType type, boolean syncToClient) {
         Ability ability = getAbility(type);
-        if(ability != null) ability.disable(player);
+        if(ability == null) return false;
+        if(!ability.disable(player)) return false;
         if(!player.level.isClientSide && syncToClient) {
-            syncToClient((ServerPlayer) player);
+            syncToClient((ServerPlayer) player, List.of(), List.of(type));
         }
+        return true;
     }
 
 
     public void syncToClient(ServerPlayer client) {
+        syncToClient(client, List.of(), List.of());
+    }
+    public void syncToClient(ServerPlayer client, List<AbilityType> abilitiesToEnable, List<AbilityType> abilitiesToDisable) {
 //        Cybernetics.LOGGER.info("Syncing abilities to client");
 //        Cybernetics.LOGGER.info("passed in client id: " + client.getId() + ", stored player id: " + player.getId());
-        CybPackets.sendToClient(new S2CSyncAbilitiesPacket(player, this), client);
+        CybPackets.sendToClient(new S2CSyncAbilitiesPacket(player, this, abilitiesToEnable, abilitiesToDisable), client);
     }
 
 

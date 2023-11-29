@@ -32,13 +32,18 @@ public class CybCoreShaders implements ResourceManagerReloadListener {
     private final List<ShaderReference> shaders = new ArrayList<>();
 
     private ShaderInstance scanShader;
+    private ShaderInstance circleProgressShader;
 
     public static ShaderInstance getScanShader() {
         return INSTANCE.scanShader;
     }
+    public static ShaderInstance getCircleProgressShader() {
+        return INSTANCE.circleProgressShader;
+    }
 
     public void init() {
         shaders.add(new ShaderReference("scan", DefaultVertexFormat.POSITION_TEX, shader -> scanShader = shader));
+        shaders.add(new ShaderReference("circle_progress", DefaultVertexFormat.POSITION_TEX, shader -> circleProgressShader = shader));
 
         Minecraft.getInstance().submitAsync(() -> {
             final ResourceManager manager = Minecraft.getInstance().getResourceManager();

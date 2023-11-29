@@ -25,15 +25,15 @@ public class BerserkAbilityType extends AbilityType {
     private static final UUID speedUUID = UUID.fromString("346cc9b7-3c4a-4bee-9c8a-360daa1381ea");
     private static final UUID attackSpeedUUID = UUID.fromString("e12b8786-1e2f-4b72-b91a-fec38b02f905");
     private static final UUID fistAttackUUID = UUID.fromString("2415d2cf-bf8a-42e4-a62b-bd0eca1612aa");
-    public BerserkAbilityType(Item icon, int duration, int maxCooldown, double damageBoost, int regenAmp, double speed) {
-        super(maxCooldown, icon);
+    public BerserkAbilityType(ResourceLocation texture, int duration, int maxCooldown, double damageBoost, int regenAmp, double speed) {
+        super(maxCooldown, texture);
         this.duration = duration;
         this.damageBoost = damageBoost;
         this.regenAmp = regenAmp;
         this.speed = speed;
     }
-    public BerserkAbilityType(Item icon, int duration, int maxCooldown) {
-        this(icon, duration, maxCooldown, 0.0, 0, 0.3);
+    public BerserkAbilityType(ResourceLocation texture, int duration, int maxCooldown) {
+        this(texture, duration, maxCooldown, 0.0, 0, 0.3);
     }
 
 
