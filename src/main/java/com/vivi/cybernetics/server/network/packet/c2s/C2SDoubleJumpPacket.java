@@ -1,6 +1,7 @@
-package com.vivi.cybernetics.server.network.packet;
+package com.vivi.cybernetics.server.network.packet.c2s;
 
 import com.vivi.cybernetics.common.item.ReinforcedTendonsItem;
+import com.vivi.cybernetics.server.network.packet.Packet;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;

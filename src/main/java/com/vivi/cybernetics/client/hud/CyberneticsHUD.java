@@ -1,6 +1,10 @@
 package com.vivi.cybernetics.client.hud;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.vivi.cybernetics.common.capability.PlayerAbilities;
+import com.vivi.cybernetics.common.registry.CybAbilities;
+import com.vivi.cybernetics.common.util.AbilityHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
@@ -49,6 +53,8 @@ public class CyberneticsHUD implements IGuiOverlay {
 
     @Override
     public void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        PlayerAbilities abilities = AbilityHelper.getAbilities(Minecraft.getInstance().player).orElse(null);
+        if(abilities == null || !abilities.hasAbility(CybAbilities.HUD.get())) return;
         if(!isEnabled) return;
         elements.forEach(element -> element.render(poseStack, partialTick, screenWidth, screenHeight));
     }

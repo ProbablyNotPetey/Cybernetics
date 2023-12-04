@@ -1,7 +1,6 @@
 package com.vivi.cybernetics.common.event;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.common.ability.Ability;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.item.CyberwareItem;
 import com.vivi.cybernetics.common.registry.CybAbilities;
@@ -10,9 +9,10 @@ import com.vivi.cybernetics.common.registry.CybMobEffects;
 import com.vivi.cybernetics.common.registry.CybTags;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import com.vivi.cybernetics.common.util.CyberwareHelper;
+import com.vivi.cybernetics.server.network.CybPackets;
+import com.vivi.cybernetics.server.network.packet.s2c.S2CToggleHUDPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -21,6 +21,7 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -110,6 +111,13 @@ public class ServerEvents {
                 event.setCanceled(true);
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onEntityJoinLevelEvent(EntityJoinLevelEvent event) {
+        if (!(event.getEntity() instanceof Player) || event.getLevel().isClientSide) return;
+        ServerPlayer player = (ServerPlayer) event.getEntity();
+        CybPackets.sendToClient(new S2CToggleHUDPacket(AbilityHelper.isEnabled(player, CybAbilities.HUD.get())), player);
     }
 
 }

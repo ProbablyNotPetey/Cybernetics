@@ -1,8 +1,9 @@
-package com.vivi.cybernetics.server.network.packet;
+package com.vivi.cybernetics.server.network.packet.c2s;
 
 import com.vivi.cybernetics.common.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.common.menu.CyberwareMenu;
 import com.vivi.cybernetics.common.registry.CybCyberware;
+import com.vivi.cybernetics.server.network.packet.Packet;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;

@@ -1,5 +1,6 @@
 package com.vivi.cybernetics.common.ability;
 
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.registry.CybAbilities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -37,11 +38,19 @@ public class Ability implements INBTSerializable<CompoundTag> {
     }
 
     public boolean enable(Player player) {
+        Cybernetics.LOGGER.info("Cooldown: " + cooldown);
         if(cooldown > -1) return false;
         this.enabled = true;
+        Cybernetics.LOGGER.info("Enabled. Client: " + player.level.isClientSide);
         onEnable(player);
         return true;
     }
+
+    /**
+     * Note: do NOT disable an ability on the same tick it was enabled! This will cause sync issues for abilities that need to run onEnabled on both sides.
+     * <p>
+     * todo: prevent this from happening.
+     */
     public boolean disable(Player player) {
         this.enabled = false;
         onDisable(player);

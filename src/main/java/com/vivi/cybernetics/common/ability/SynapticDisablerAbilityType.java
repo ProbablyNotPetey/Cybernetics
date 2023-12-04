@@ -18,7 +18,6 @@ public class SynapticDisablerAbilityType extends AbilityType {
     @Override
     public void onEnable(Ability ability, Level level, Player player) {
         super.onEnable(ability, level, player);
-        ability.disable(player);
         if(level.isClientSide) return;
         //do stuff;
         //todo: implement
@@ -26,5 +25,13 @@ public class SynapticDisablerAbilityType extends AbilityType {
             if(!(entity instanceof LivingEntity)) return;
             ((LivingEntity) entity).addEffect(new MobEffectInstance(CybMobEffects.PARALYZED.get(), 30, 0));
         });
+    }
+
+    @Override
+    public void tick(Ability ability, Level level, Player player) {
+        super.tick(ability, level, player);
+        if(ability.isEnabled()) {
+            ability.disable(player);
+        }
     }
 }

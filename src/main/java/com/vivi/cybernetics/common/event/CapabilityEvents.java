@@ -2,16 +2,12 @@ package com.vivi.cybernetics.common.event;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.capability.*;
-import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
-import com.vivi.cybernetics.server.network.CybPackets;
-import com.vivi.cybernetics.server.network.packet.S2CSyncCyberwarePacket;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import com.vivi.cybernetics.common.util.CyberwareHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;

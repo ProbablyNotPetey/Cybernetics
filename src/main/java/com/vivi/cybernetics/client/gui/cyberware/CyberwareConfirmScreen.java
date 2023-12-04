@@ -8,7 +8,7 @@ import com.vivi.cybernetics.client.util.Easing;
 import com.vivi.cybernetics.client.util.RenderHelper;
 import com.vivi.cybernetics.client.util.ScreenHelper;
 import com.vivi.cybernetics.server.network.CybPackets;
-import com.vivi.cybernetics.server.network.packet.C2SApplyCyberwareChangesPacket;
+import com.vivi.cybernetics.server.network.packet.c2s.C2SApplyCyberwareChangesPacket;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;

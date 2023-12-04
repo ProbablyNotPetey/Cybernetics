@@ -1,7 +1,8 @@
-package com.vivi.cybernetics.server.network.packet;
+package com.vivi.cybernetics.server.network.packet.s2c;
 
 import com.vivi.cybernetics.server.data.CyberwareProperties;
 import com.vivi.cybernetics.server.network.ClientPacketHandler;
+import com.vivi.cybernetics.server.network.packet.Packet;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;

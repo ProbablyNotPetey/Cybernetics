@@ -1,25 +1,29 @@
-package com.vivi.cybernetics.server.network.packet;
+package com.vivi.cybernetics.server.network.packet.c2s;
 
 import com.vivi.cybernetics.common.menu.CyberwareMenu;
+import com.vivi.cybernetics.server.network.packet.Packet;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class C2SApplyCyberwareChangesPacket extends Packet {
+public class C2SSwitchPagePacket extends Packet {
 
-    public C2SApplyCyberwareChangesPacket() {
-
+    private final int page;
+    public C2SSwitchPagePacket(int page) {
+        this.page = page;
     }
-
-    public C2SApplyCyberwareChangesPacket(FriendlyByteBuf buf) {
-
+    public C2SSwitchPagePacket() {
+        this.page = -1;
+    }
+    public C2SSwitchPagePacket(FriendlyByteBuf buf) {
+        this.page = buf.readVarInt();
     }
 
     @Override
     public void toBytes(FriendlyByteBuf buf) {
-
+        buf.writeVarInt(page);
     }
 
     @Override
@@ -28,7 +32,7 @@ public class C2SApplyCyberwareChangesPacket extends Packet {
         ctx.enqueueWork(() -> {
             ServerPlayer player = ctx.getSender();
             if(player.containerMenu instanceof CyberwareMenu menu) {
-                menu.applyChanges(player);
+                menu.switchInventoryPage(page);
             }
         });
         return true;

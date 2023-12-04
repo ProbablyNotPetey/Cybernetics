@@ -1,9 +1,10 @@
-package com.vivi.cybernetics.server.network.packet;
+package com.vivi.cybernetics.server.network.packet.s2c;
 
 import com.vivi.cybernetics.common.ability.AbilityType;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.server.network.ClientPacketHandler;
+import com.vivi.cybernetics.server.network.packet.Packet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

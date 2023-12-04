@@ -16,7 +16,6 @@ public class KineticDischargerAbilityType extends AbilityType {
     @Override
     public void onEnable(Ability ability, Level level, Player player) {
         super.onEnable(ability, level, player);
-        Cybernetics.LOGGER.info("Enabled, on client: " + level.isClientSide);
         KineticDischargerItem.spike(player);
     }
 }

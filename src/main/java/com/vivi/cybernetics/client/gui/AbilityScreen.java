@@ -3,14 +3,13 @@ package com.vivi.cybernetics.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.ability.Ability;
 import com.vivi.cybernetics.common.ability.HiddenAbility;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.client.gui.util.CybAbstractWidget;
 import com.vivi.cybernetics.client.gui.util.TextWidget;
 import com.vivi.cybernetics.server.network.CybPackets;
-import com.vivi.cybernetics.server.network.packet.C2SModifyAbilitiesPacket;
+import com.vivi.cybernetics.server.network.packet.c2s.C2SModifyAbilitiesPacket;
 import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import com.vivi.cybernetics.common.util.Maath;
@@ -26,10 +25,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
 public class AbilityScreen extends Screen {

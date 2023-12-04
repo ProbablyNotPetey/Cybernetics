@@ -1,7 +1,8 @@
-package com.vivi.cybernetics.server.network.packet;
+package com.vivi.cybernetics.server.network.packet.c2s;
 
 import com.vivi.cybernetics.common.menu.PlayerCyberwareMenu;
 import com.vivi.cybernetics.common.util.CyberwareHelper;
+import com.vivi.cybernetics.server.network.packet.Packet;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;

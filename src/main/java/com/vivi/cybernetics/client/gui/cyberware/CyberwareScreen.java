@@ -14,7 +14,7 @@ import com.vivi.cybernetics.common.menu.CyberwareMenu;
 import com.vivi.cybernetics.common.menu.CyberwareSlot;
 import com.vivi.cybernetics.common.menu.InventorySlot;
 import com.vivi.cybernetics.server.network.CybPackets;
-import com.vivi.cybernetics.server.network.packet.C2SSwitchPagePacket;
+import com.vivi.cybernetics.server.network.packet.c2s.C2SSwitchPagePacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;

@@ -1,12 +1,9 @@
 package com.vivi.cybernetics.common.cyberware;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.config.CommonConfig;
-import com.vivi.cybernetics.common.item.CapacityCyberwareItem;
 import com.vivi.cybernetics.common.item.CyberwareItem;
 import com.vivi.cybernetics.server.network.CybPackets;
-import com.vivi.cybernetics.server.network.packet.S2CSyncAbilitiesPacket;
-import com.vivi.cybernetics.server.network.packet.S2CSyncCyberwarePacket;
+import com.vivi.cybernetics.server.network.packet.s2c.S2CSyncCyberwarePacket;
 import com.vivi.cybernetics.common.registry.CybCyberware;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;

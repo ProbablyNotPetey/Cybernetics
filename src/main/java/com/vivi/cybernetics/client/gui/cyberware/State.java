@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.client.util.Easing;
 import com.vivi.cybernetics.common.cyberware.CyberwareSection;
 import com.vivi.cybernetics.server.network.CybPackets;
-import com.vivi.cybernetics.server.network.packet.C2SSwitchActiveSlotPacket;
-import com.vivi.cybernetics.server.network.packet.C2SSwitchPagePacket;
+import com.vivi.cybernetics.server.network.packet.c2s.C2SSwitchActiveSlotPacket;
+import com.vivi.cybernetics.server.network.packet.c2s.C2SSwitchPagePacket;
 import net.minecraft.network.chat.Component;
 
 import java.util.Iterator;

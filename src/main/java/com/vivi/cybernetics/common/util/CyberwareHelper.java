@@ -127,20 +127,4 @@ public class CyberwareHelper {
         return player.getCapability(Cybernetics.CYBERWARE);
     }
 
-    /**
-     * -1 if cannot dash, 0 if can dash on ground, 1 if can dash in midair
-     */
-    //todo: redo, switch to use abilities
-    public static int canDash(Player player) {
-        if(player.getCooldowns().isOnCooldown(CybItems.MK1_DASH.get())) return -1;
-        CyberwareInventory cyberware = getCyberware(player).orElse(null);
-        if(cyberware == null) return -1;
-        for(int i = 0; i < cyberware.getSlots(); i++) {
-            if(cyberware.getStackInSlot(i).getItem() instanceof DashCyberwareItem item) {
-                if(item.canDashMidair()) return 1;
-                return 0;
-            }
-        }
-        return -1;
-    }
 }

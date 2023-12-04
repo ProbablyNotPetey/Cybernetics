@@ -2,15 +2,14 @@ package com.vivi.cybernetics.common.event;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.AbilityScreen;
-import com.vivi.cybernetics.common.item.DashCyberwareItem;
-import com.vivi.cybernetics.common.item.KineticDischargerItem;
+import com.vivi.cybernetics.client.hud.CyberneticsHUD;
 import com.vivi.cybernetics.common.item.ReinforcedTendonsItem;
 import com.vivi.cybernetics.common.registry.*;
 import com.vivi.cybernetics.server.network.CybPackets;
-import com.vivi.cybernetics.server.network.packet.*;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import com.vivi.cybernetics.common.util.CyberwareHelper;
 import com.vivi.cybernetics.client.util.InputHelper;
+import com.vivi.cybernetics.server.network.packet.c2s.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -146,20 +145,16 @@ public class ClientEvents {
         }
 
         if(!player.getAbilities().flying && canDash && releasedDash && CybKeybinds.DASH.isDown()) {
-            if(((player.isOnGround() || player.onClimbable()) && CyberwareHelper.canDash(player) > -1) || CyberwareHelper.canDash(player) == 1) {
-                Cybernetics.LOGGER.info("Dashing! " + CyberwareHelper.canDash(player));
-                canDash = false;
-                releasedDash = false;
-                if(isSpiking) {
-                    canSpike = false;
-                    isSpiking = false;
-                    if(AbilityHelper.isEnabled(player, CybAbilities.KINETIC_DISCHARGER.get())) {
-                        CybPackets.sendToServer(new C2SSpikePacket());
-                    }
+            canDash = false;
+            releasedDash = false;
+            if(isSpiking && !AbilityHelper.isOnCooldown(player, CybAbilities.MK2_DASH.get())) {
+                canSpike = false;
+                isSpiking = false;
+                if(AbilityHelper.isEnabled(player, CybAbilities.KINETIC_DISCHARGER.get())) {
+                    CybPackets.sendToServer(new C2SSpikePacket());
                 }
-                CybPackets.sendToServer(new C2SDashPacket());
-                DashCyberwareItem.dash(player);
             }
+            CybPackets.sendToServer(new C2SDashPacket());
         }
     }
 }

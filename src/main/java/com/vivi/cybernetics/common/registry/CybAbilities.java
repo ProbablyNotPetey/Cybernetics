@@ -24,6 +24,8 @@ public class CybAbilities {
             HUD = ABILITY_TYPES.register("hud", HUDAbilityType::new),
             EMERGENCY_DEFIBRILLATOR = ABILITY_TYPES.register("emergency_defibrillator", EmergencyDefibrillatorAbilityType::new),
             KINETIC_DISCHARGER = ABILITY_TYPES.register("kinetic_discharger", KineticDischargerAbilityType::new),
+            MK1_DASH = ABILITY_TYPES.register("mk1_dash", () -> new DashAbilityType(false)),
+            MK2_DASH = ABILITY_TYPES.register("mk2_dash", () -> new DashAbilityType(true)),
             MK1_BERSERK = ABILITY_TYPES.register("mk1_berserk", () -> new BerserkAbilityType(null, 200, 1200)),
             MK2_BERSERK = ABILITY_TYPES.register("mk2_berserk", () -> new BerserkAbilityType(null, 240, 1000, 3.0, 0, 0.3)),
             MK3_BERSERK = ABILITY_TYPES.register("mk3_berserk", () -> new BerserkAbilityType(null, 300, 900, 5.5, 1, 0.5))

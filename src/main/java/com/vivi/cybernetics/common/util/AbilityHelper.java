@@ -57,6 +57,13 @@ public class AbilityHelper {
         return ability != null && ability.isEnabled();
     }
 
+    public static boolean isOnCooldown(Player player, AbilityType type) {
+        PlayerAbilities abilities = getAbilities(player).orElse(null);
+        if(abilities == null) return true;
+        Ability ability = abilities.getAbility(type);
+        return ability == null || ability.getCooldown() > -1;
+    }
+
     public static LazyOptional<PlayerAbilities> getAbilities(Player player) {
         if(player == null) return LazyOptional.empty();
         return player.getCapability(Cybernetics.PLAYER_ABILITIES);

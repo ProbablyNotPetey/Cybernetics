@@ -15,10 +15,17 @@ public class EmergencyDefibrillatorAbilityType extends AbilityType {
     @Override
     public void onEnable(Ability ability, Level level, Player player) {
         super.onEnable(ability, level, player);
-        ability.disable(player);
         if(level.isClientSide) return;
         player.setHealth(player.getMaxHealth() / 4.0f);
         //play some sound
         player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 2));
+    }
+
+    @Override
+    public void tick(Ability ability, Level level, Player player) {
+        super.tick(ability, level, player);
+        if(ability.isEnabled()) {
+            ability.disable(player);
+        }
     }
 }

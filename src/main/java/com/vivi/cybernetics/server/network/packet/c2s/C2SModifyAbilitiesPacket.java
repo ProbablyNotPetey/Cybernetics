@@ -1,8 +1,9 @@
-package com.vivi.cybernetics.server.network.packet;
+package com.vivi.cybernetics.server.network.packet.c2s;
 
 import com.vivi.cybernetics.common.ability.AbilityType;
 import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.common.util.AbilityHelper;
+import com.vivi.cybernetics.server.network.packet.Packet;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;

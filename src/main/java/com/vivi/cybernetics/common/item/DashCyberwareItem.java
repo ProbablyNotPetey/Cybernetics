@@ -1,19 +1,16 @@
 package com.vivi.cybernetics.common.item;
 
+import com.vivi.cybernetics.common.ability.AbilityType;
 import com.vivi.cybernetics.common.registry.CybItems;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-public class DashCyberwareItem extends CyberwareItem {
+import java.util.function.Supplier;
 
-    private final boolean canDashMidair;
-    public DashCyberwareItem(Properties pProperties, boolean canDashMidair) {
-        super(pProperties);
-        this.canDashMidair = canDashMidair;
-    }
+public class DashCyberwareItem extends SimpleAbilityCyberwareItem {
 
-    public boolean canDashMidair() {
-        return canDashMidair;
+    public DashCyberwareItem(Properties pProperties, Supplier<AbilityType> type) {
+        super(pProperties, type);
     }
 
     public static void dash(Player player) {

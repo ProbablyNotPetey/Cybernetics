@@ -1,19 +1,15 @@
 package com.vivi.cybernetics.server.data;
 
 import com.google.gson.*;
-import com.vivi.cybernetics.common.item.CyberwareItem;
 import com.vivi.cybernetics.server.network.CybPackets;
-import com.vivi.cybernetics.server.network.packet.S2CSyncCyberwarePropertiesPacket;
+import com.vivi.cybernetics.server.network.packet.s2c.S2CSyncCyberwarePropertiesPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.item.crafting.Ingredient;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CyberwarePropertiesReloadListener extends SimpleJsonResourceReloadListener {

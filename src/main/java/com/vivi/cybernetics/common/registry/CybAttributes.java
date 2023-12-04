@@ -20,7 +20,7 @@ public class CybAttributes {
 //    public static final RegistryObject<Attribute> CAPACITY = ATTRIBUTES.register("capacity", () -> new RangedAttribute("attribute.cybernetics.name.capacity", 0, 0, 1024).setSyncable(true));
 //    public static final RegistryObject<Attribute> MAX_CAPACITY = ATTRIBUTES.register("max_capacity", () -> new RangedAttribute("attribute.cybernetics.name.max_capacity", 50, 1, 1024).setSyncable(true));
 
-    public static final RegistryObject<Attribute> DOUBLE_JUMPS = ATTRIBUTES.register("double_jumps", () -> new RangedIntAttribute("attribute,cybernetics.name.double_jumps", 1, 0, 1024));
+    public static final RegistryObject<Attribute> DOUBLE_JUMPS = ATTRIBUTES.register("double_jumps", () -> new RangedIntAttribute("attribute,cybernetics.name.double_jumps", 1, 0, 1024).setSyncable(true));
     public static void register(IEventBus eventBus) {
         ATTRIBUTES.register(eventBus);
     }
