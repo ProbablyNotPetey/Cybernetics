@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.vivi.cybernetics.client.gui.cyberware.CyberwareScreen;
 import com.vivi.cybernetics.client.hud.AbilityHUD;
 import com.vivi.cybernetics.client.hud.CyberneticsHUD;
+import com.vivi.cybernetics.client.hud.MobEffectHUD;
 import com.vivi.cybernetics.client.shader.CybCoreShaders;
 import com.vivi.cybernetics.client.shader.CybPostShaders;
 import com.vivi.cybernetics.client.util.HudAnchor;
@@ -96,6 +97,7 @@ public class Cybernetics {
         CybCoreShaders.getInstance().init();
         CybPostShaders.getInstance().init();
         CyberneticsHUD.getInstance().addHUDElement(new AbilityHUD(HudAnchor.TOP_RIGHT, -162, 4));
+        CyberneticsHUD.getInstance().addHUDElement(new MobEffectHUD(HudAnchor.MIDDLE_LEFT, 4, -79));
     }
 
     @SubscribeEvent

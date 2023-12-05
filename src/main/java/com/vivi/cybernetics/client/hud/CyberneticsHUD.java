@@ -39,6 +39,18 @@ public class CyberneticsHUD implements IGuiOverlay {
         }
     }
 
+    public void removeHUDElement(IHUDElement element) {
+        elements.remove(element);
+    }
+    public void removeHUDElementByName(String name) {
+        for(int i = 0; i < elements.size(); i++) {
+            if(elements.get(i).getSerializedName().equals(name)) {
+                elements.remove(i);
+                i--;
+            }
+        }
+    }
+
     public List<IHUDElement> getElements() {
         return elements;
     }
@@ -56,7 +68,7 @@ public class CyberneticsHUD implements IGuiOverlay {
         PlayerAbilities abilities = AbilityHelper.getAbilities(Minecraft.getInstance().player).orElse(null);
         if(abilities == null || !abilities.hasAbility(CybAbilities.HUD.get())) return;
         if(!isEnabled) return;
-        elements.forEach(element -> element.render(poseStack, partialTick, screenWidth, screenHeight));
+        elements.forEach(element -> element.render(gui, poseStack, partialTick, screenWidth, screenHeight));
     }
 
 

@@ -85,7 +85,7 @@ public class CybItems {
             PROJECTILE_DEFLECTOR = ITEMS.register("projectile_deflector", () -> new CyberwareItem(cyberwareProps())),
 
             //ARMS
-            RANGE_EXTENDER = ITEMS.register("range_extender", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(UUID.fromString("7c79b65a-615b-4d40-8268-a33b51ae757d"), "Arm Reach Boost", 0.3, AttributeModifier.Operation.MULTIPLY_TOTAL)))),
+            RANGE_EXTENDER = ITEMS.register("range_extender", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(UUID.fromString("7c79b65a-615b-4d40-8268-a33b51ae757d"), "Arm Reach Boost", 0.4, AttributeModifier.Operation.MULTIPLY_TOTAL)))),
 
 
             //HANDS

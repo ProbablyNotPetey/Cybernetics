@@ -16,8 +16,5 @@ public class DashCyberwareItem extends SimpleAbilityCyberwareItem {
     public static void dash(Player player) {
         Vec3 movement = player.getDeltaMovement();
         player.setDeltaMovement(new Vec3(movement.x, 0.0, movement.z).normalize().scale(1.5));
-        if(!player.level.isClientSide) {
-            player.getCooldowns().addCooldown(CybItems.MK1_DASH.get(), 40);
-        }
     }
 }
