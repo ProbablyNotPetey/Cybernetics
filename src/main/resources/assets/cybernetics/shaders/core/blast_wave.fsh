@@ -10,7 +10,6 @@ uniform float FogStart;
 uniform float FogEnd;
 uniform vec4 FogColor;
 
-uniform vec2 ScreenSize;
 uniform int Duration;
 uniform float Time;
 

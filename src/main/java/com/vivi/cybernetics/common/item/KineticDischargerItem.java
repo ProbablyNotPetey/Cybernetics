@@ -1,10 +1,10 @@
 package com.vivi.cybernetics.common.item;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.registry.CybAbilities;
-import com.vivi.cybernetics.common.registry.CybItems;
 import com.vivi.cybernetics.common.registry.CybParticles;
 import com.vivi.cybernetics.common.util.AbilityHelper;
+import com.vivi.cybernetics.server.network.CybPackets;
+import com.vivi.cybernetics.server.network.packet.lodestone.CustomPositionedScreenshakePacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -16,10 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
-import team.lodestar.lodestone.network.screenshake.PositionedScreenshakePacket;
-import team.lodestar.lodestone.registry.common.LodestonePacketRegistry;
 import team.lodestar.lodestone.systems.easing.Easing;
 
 public class KineticDischargerItem extends CyberwareItem {
@@ -79,10 +76,9 @@ public class KineticDischargerItem extends CyberwareItem {
         if(level instanceof ServerLevel server) {
             server.sendParticles(CybParticles.BLAST_WAVE.get(), player.position().x, player.position().y + 0.01, player.position().z, 1, 0, 0, 0, 0);
 
-            //todo: fix screenshake not applying if you're not looking (extend PositionedScreenshakeInstance and write custom packed
-            LodestonePacketRegistry.LODESTONE_CHANNEL.send(
+            CybPackets.getInstance().send(
                     PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(player.position().x, player.position().y, player.position().z, 10.0, player.level.dimension())),
-                    new PositionedScreenshakePacket(7, player.position(), 5.0f, 10.0f).setIntensity(0.65f).setEasing(Easing.EXPO_OUT, Easing.SINE_IN_OUT)
+                    new CustomPositionedScreenshakePacket(3, true, player.position(), 5.0f, 10.0f).setIntensity(0.7f).setEasing(Easing.EXPO_OUT, Easing.SINE_IN_OUT)
             );
         }
 

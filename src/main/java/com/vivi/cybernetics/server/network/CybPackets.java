@@ -2,6 +2,7 @@ package com.vivi.cybernetics.server.network;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.server.network.packet.c2s.*;
+import com.vivi.cybernetics.server.network.packet.lodestone.CustomPositionedScreenshakePacket;
 import com.vivi.cybernetics.server.network.packet.s2c.S2CSyncAbilitiesPacket;
 import com.vivi.cybernetics.server.network.packet.s2c.S2CSyncCyberwarePacket;
 import com.vivi.cybernetics.server.network.packet.s2c.S2CSyncCyberwarePropertiesPacket;
@@ -115,6 +116,9 @@ public class CybPackets {
                 .add();
 
 
+        //OTHER
+
+        CustomPositionedScreenshakePacket.register(network, id());
     }
 
     public static <MSG> void sendToServer(MSG message) {
@@ -123,6 +127,10 @@ public class CybPackets {
 
     public static <MSG> void sendToClient(MSG message, ServerPlayer player) {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);
+    }
+
+    public static SimpleChannel getInstance() {
+        return INSTANCE;
     }
 
 }
