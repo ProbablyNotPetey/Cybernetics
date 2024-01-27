@@ -9,6 +9,7 @@ import com.vivi.cybernetics.client.util.RenderHelper;
 import com.vivi.cybernetics.client.util.ScreenHelper;
 import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.server.network.packet.c2s.C2SApplyCyberwareChangesPacket;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
@@ -69,28 +70,30 @@ public class CyberwareConfirmScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack poseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(poseStack);
-        enableScissor(leftPos, topPos, leftPos + imageWidth, topPos + scissorY);
-        this.renderBg(poseStack, pPartialTick, pMouseX, pMouseY);
-        RenderSystem.disableDepthTest();
-        super.render(poseStack, pMouseX, pMouseY, pPartialTick);
+    public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+        renderBackground(guiGraphics);
+        guiGraphics.enableScissor(leftPos, topPos, leftPos + imageWidth, topPos + scissorY);
+        this.renderBg(guiGraphics, pPartialTick, pMouseX, pMouseY);
 
-        poseStack.pushPose();
-        poseStack.scale(0.8888f, 0.8888f, 0);
-        poseStack.translate(0.125 * textWidget.x, 0.125 * textWidget.y, 0);
-        textWidget.render(poseStack, pMouseX, pMouseY, pPartialTick);
-        poseStack.popPose();
+        //todo: fix depth issues
+//        RenderSystem.disableDepthTest();
+        super.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
 
-        disableScissor();
-        RenderSystem.enableDepthTest();
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().scale(0.8888f, 0.8888f, 0);
+        guiGraphics.pose().translate(0.125 * textWidget.getX(), 0.125 * textWidget.getY(), 0);
+        textWidget.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
+        guiGraphics.pose().popPose();
+
+        guiGraphics.disableScissor();
+//        RenderSystem.enableDepthTest();
     }
 
-    public void renderBg(PoseStack poseStack, float frameTimeDelta, int mouseX, int mouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, TEXTURE);
-        RenderHelper.resetShaderColor();
-        blit(poseStack, leftPos, topPos, 0, 0, imageWidth, imageHeight, 128, 128);
+    public void renderBg(GuiGraphics guiGraphics, float frameTimeDelta, int mouseX, int mouseY) {
+//        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+//        RenderSystem.setShaderTexture(0, TEXTURE);
+//        RenderHelper.resetShaderColor();
+        guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight, 128, 128);
     }
 
     public class ConfirmButton extends AbstractButton {
@@ -102,13 +105,12 @@ public class CyberwareConfirmScreen extends Screen {
         }
 
         @Override
-        public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, TEXTURE);
+        public void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
             float color = this.isHoveredOrFocused() ? 1.0F : 0.65F;
-            RenderSystem.setShaderColor(color, color, color, alpha);
+            guiGraphics.setColor(color, color, color, alpha);
+//            RenderSystem.setShaderColor(color, color, color, alpha);
             int v = isConfirm ? 30 : 12;
-            blit(pPoseStack, this.x, this.y, this.width, this.height, 93, v, this.width, this.height, 128, 128);
+            guiGraphics.blit(TEXTURE, this.getX(), this.getY(), this.width, this.height, 93, v, this.width, this.height, 128, 128);
         }
 
         @Override
@@ -120,7 +122,7 @@ public class CyberwareConfirmScreen extends Screen {
         }
 
         @Override
-        public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
+        public void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
 
         }
     }

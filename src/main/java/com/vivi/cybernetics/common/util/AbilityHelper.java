@@ -20,7 +20,7 @@ public class AbilityHelper {
                 abilities.addAbility(new Ability(type), syncToClient);
             }
         });
-        if(player.level.isClientSide) {
+        if(player.level().isClientSide) {
             CyberneticsHUD.getInstance().getElements().forEach(element -> {
                 if(element instanceof AbilityHUD abilityHUD) {
                     abilityHUD.updateElementList();
@@ -41,7 +41,7 @@ public class AbilityHelper {
                 }
             }
         });
-        if(player.level.isClientSide) {
+        if(player.level().isClientSide) {
             CyberneticsHUD.getInstance().getElements().forEach(element -> {
                 if(element instanceof AbilityHUD abilityHUD) {
                     abilityHUD.updateElementList();

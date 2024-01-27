@@ -26,7 +26,7 @@ public class C2SSpikeShockwavePacket extends Packet {
         NetworkEvent.Context ctx = sup.get();
         ctx.enqueueWork(() -> {
             ServerPlayer player = ctx.getSender();
-            KineticDischargerItem.shockwave(player, player.level);
+            KineticDischargerItem.shockwave(player, player.level());
         });
         return true;
     }

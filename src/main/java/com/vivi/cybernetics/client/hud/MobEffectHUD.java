@@ -4,12 +4,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.util.HudAnchor;
 import com.vivi.cybernetics.client.util.RenderHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -102,9 +101,9 @@ public class MobEffectHUD implements IHUDElement {
 
 
     @Override
-    public void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
         Vec2 pos = anchor.getWithOffset(screenWidth, screenHeight, this.x, this.y);
-        renderEffects(gui, poseStack, pos);
+        renderEffects(gui, guiGraphics, pos);
 
     }
 
@@ -113,19 +112,19 @@ public class MobEffectHUD implements IHUDElement {
         return "mob_effect_hud";
     }
 
-    public void renderEffects(ForgeGui gui, PoseStack poseStack, Vec2 pos) {
+    public void renderEffects(ForgeGui gui, GuiGraphics guiGraphics, Vec2 pos) {
         List<MobEffectInstance> effectInstances = Minecraft.getInstance().player.getActiveEffects().stream().filter(MobEffectInstance::showIcon).toList();
         if(effectInstances.isEmpty()) return;
 
 
-        RenderSystem.setShaderTexture(0, TEXTURE);
+//        RenderSystem.setShaderTexture(0, TEXTURE);
         if(u != -1) {
-            GuiComponent.blit(poseStack, (int)pos.x, (int)pos.y, 0, u * 27, 0, width, height, 160,160);
+            guiGraphics.blit(TEXTURE, (int)pos.x, (int)pos.y, 0, u * 27, 0, width, height, 160,160);
         }
 
 
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
+//        RenderSystem.enableBlend();
+//        RenderSystem.defaultBlendFunc();
         MobEffectTextureManager mobEffectTextures = Minecraft.getInstance().getMobEffectTextures();
         int numEffects = 0;
 
@@ -151,14 +150,14 @@ public class MobEffectHUD implements IHUDElement {
 
             // BACKGROUND
 
-            RenderHelper.resetShaderColor();
-            RenderSystem.setShaderTexture(0, AbilityHUD.SubElement.BACKGROUND_TEXTURE);
-            GuiComponent.blit(poseStack, xPos, yPos, 0, 0, 18, 18, 48, 48);
+//            RenderHelper.resetShaderColor();
+//            RenderSystem.setShaderTexture(0, AbilityHUD.SubElement.BACKGROUND_TEXTURE);
+            guiGraphics.blit(AbilityHUD.SubElement.BACKGROUND_TEXTURE, xPos, yPos, 0, 0, 18, 18, 48, 48);
 
 
             // ICONS
 
-            RenderHelper.resetShaderColor();
+//            RenderHelper.resetShaderColor();
             float alpha = 1.0f;
 
             if(!effectInstance.isAmbient()) {
@@ -169,7 +168,7 @@ public class MobEffectHUD implements IHUDElement {
             }
 
             //custom effect rendering
-            if (renderer.renderGuiIcon(effectInstance, gui, poseStack, xPos, yPos, 0, alpha)) continue;
+            if (renderer.renderGuiIcon(effectInstance, gui, guiGraphics, xPos, yPos, 0, alpha)) continue;
 
             //normal sprite rendering
             TextureAtlasSprite textureatlassprite = mobEffectTextures.get(effect);
@@ -177,9 +176,10 @@ public class MobEffectHUD implements IHUDElement {
             int yPosFinal = yPos;
             float alphaFinal = alpha;
             runnables.add(() -> {
-                RenderSystem.setShaderTexture(0, textureatlassprite.atlas().location());
-                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alphaFinal);
-                GuiComponent.blit(poseStack, xPosFinal + 3, yPosFinal + 3, 10, 12, 12, textureatlassprite);
+//                RenderSystem.setShaderTexture(0, );
+//                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alphaFinal);
+                guiGraphics.setColor(1.0f, 1.0f, 1.0f, alphaFinal);
+                guiGraphics.blit(xPosFinal + 3, yPosFinal + 3, 10, 12, 12, textureatlassprite, 1.0f, 1.0f, 1.0f, alphaFinal);
             });
 
 
@@ -197,6 +197,7 @@ public class MobEffectHUD implements IHUDElement {
     /**
      * Vanilla mob effect rendering, with some non-necessary bits removed. Also all local variables named.
      */
+    /*
     public void renderEffectsVanilla(ForgeGui gui, PoseStack poseStack, int screenWidth, int screenHeight) {
         Collection<MobEffectInstance> effectInstances = Minecraft.getInstance().player.getActiveEffects();
         if (!effectInstances.isEmpty()) {
@@ -269,6 +270,8 @@ public class MobEffectHUD implements IHUDElement {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
+
+     */
 
 
 }

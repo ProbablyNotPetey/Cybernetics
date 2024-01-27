@@ -34,7 +34,7 @@ public class C2SDashPacket extends Packet {
             if(player == null) return;
             AbilityHelper.getAbilities(player).ifPresent(abilities -> {
                 for (Ability ability : abilities.getAbilities()) {
-                    if (ability.getType() instanceof DashAbilityType type && type.canDash(ability, player.level, player)) {
+                    if (ability.getType() instanceof DashAbilityType type && type.canDash(ability, player.level(), player)) {
                         AbilityHelper.enableAbility(player, type, true);
                         return;
                     }

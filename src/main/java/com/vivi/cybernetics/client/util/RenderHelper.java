@@ -3,9 +3,7 @@ package com.vivi.cybernetics.client.util;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
+import com.mojang.math.Axis;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.util.Maath;
 import net.minecraft.client.Minecraft;
@@ -15,6 +13,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import org.joml.Quaternionf;
 
 public class RenderHelper {
 
@@ -29,8 +28,8 @@ public class RenderHelper {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(-scale, scale, scale);
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(180.0f));
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(rotation));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(180.0f));
+        poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
 
         //store entity rotations
         float xRot = entity.getXRot();
@@ -67,8 +66,7 @@ public class RenderHelper {
         Lighting.setupForEntityInInventory();
         EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
         try {
-            Quaternion quaternion = Vector3f.XP.rotationDegrees(180.0f);
-            quaternion.conj();
+            Quaternionf quaternion = Axis.XP.rotationDegrees(180.0f).conjugate();
             dispatcher.overrideCameraOrientation(quaternion);
             MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
             dispatcher.setRenderShadow(false);
@@ -109,6 +107,7 @@ public class RenderHelper {
      * Color is ARGB!
      * </p>
      */
+    /*
     public static void drawLine(Vector3f start, Vector3f end, Vector4f color, float width, float offset) {
         double angle = Math.toDegrees(Math.atan2(start.y() - end.y(), start.x() - end.x()));
         Vector3f start1 = Maath.getVertex(start,width/2d,Math.toRadians(angle+90d));
@@ -133,6 +132,7 @@ public class RenderHelper {
         RenderSystem.enableTexture();
         RenderSystem.disableBlend();
     }
+    */
 
     public static void resetShaderColor() {
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);

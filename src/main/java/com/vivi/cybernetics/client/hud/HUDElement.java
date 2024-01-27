@@ -1,6 +1,7 @@
 package com.vivi.cybernetics.client.hud;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 
 public abstract class HUDElement implements IHUDElement {
@@ -21,11 +22,11 @@ public abstract class HUDElement implements IHUDElement {
     }
 
     @Override
-    public void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
-        poseStack.pushPose();
-        poseStack.translate(x, y, 0);
-        renderElement(poseStack, partialTick, screenWidth, screenHeight);
-        poseStack.popPose();
+    public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(x, y, 0);
+        renderElement(guiGraphics, partialTick, screenWidth, screenHeight);
+        guiGraphics.pose().popPose();
     }
-    public abstract void renderElement(PoseStack poseStack, float partialTick, int screenWidth, int screenHeight);
+    public abstract void renderElement(GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight);
 }

@@ -2,6 +2,7 @@ package com.vivi.cybernetics.common.registry;
 
 import com.vivi.cybernetics.Cybernetics;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
@@ -43,7 +44,7 @@ public class CybTags {
     ;
 
     public static final TagKey<EntityType<?>>
-            PROJECTILES_ALWAYS_HIT = TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(Cybernetics.MOD_ID, "projectiles_always_hit"));
+            PROJECTILES_ALWAYS_HIT = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(Cybernetics.MOD_ID, "projectiles_always_hit"));
 
 
     private static TagKey<Item> itemTag(String name) {

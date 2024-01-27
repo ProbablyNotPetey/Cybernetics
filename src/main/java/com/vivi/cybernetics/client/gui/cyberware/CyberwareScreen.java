@@ -16,11 +16,13 @@ import com.vivi.cybernetics.common.menu.InventorySlot;
 import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.server.network.packet.c2s.C2SSwitchPagePacket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +66,9 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
         capacityValue = -1;
         //components/widgets
         capacityComponent = new CapacityGuiComponent(leftPos + 7, topPos + 7);
+        addRenderableWidget(capacityComponent);
         capacityPreview = new PreviewCapacityGuiComponent(leftPos + 7, topPos + 7);
+        addRenderableWidget(capacityPreview);
 
         entityWidget = new EntityWidget(leftPos + 91, topPos - 136, 60, fakePlayer)
                 .setBox(leftPos + 5, leftPos + 221, topPos + 5, topPos + 149);
@@ -80,9 +84,9 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             addRenderableWidget(button);
         });
         sectionButtons.sort((button1, button2) -> {
-            int y = button1.y - button2.y;
+            int y = button1.getY() - button2.getY();
             if(y == 0) {
-                return button1.x - button2.x;
+                return button1.getX() - button2.getX();
             }
             return y;
         });
@@ -249,22 +253,22 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float frameTimeDelta) {
-        renderBackground(pPoseStack);
-        super.render(pPoseStack, pMouseX, pMouseY, frameTimeDelta);
-        currentState.render(pPoseStack, getPartialTick());
-        renderTooltip(pPoseStack, pMouseX, pMouseY);
+    public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float frameTimeDelta) {
+        renderBackground(guiGraphics);
+        super.render(guiGraphics, pMouseX, pMouseY, frameTimeDelta);
+        currentState.render(guiGraphics, getPartialTick());
+        renderTooltip(guiGraphics, pMouseX, pMouseY);
 
-        itemMasks.forEach(mask -> mask.render(pPoseStack, pMouseX, pMouseY, frameTimeDelta));
+        itemMasks.forEach(mask -> mask.render(guiGraphics, pMouseX, pMouseY, frameTimeDelta));
 
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float pPartialTick, int pMouseX, int pMouseY) {
-        RenderSystem.setShaderTexture(0, TEXTURE);
-        this.blit(poseStack, leftPos, topPos, 0, 0, this.imageWidth, this.imageHeight);
+    protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
+//        RenderSystem.setShaderTexture(0, TEXTURE);
+        guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, this.imageWidth, this.imageHeight);
 
-        RenderSystem.setShaderTexture(0, SLOT_TEXTURE);
+//        RenderSystem.setShaderTexture(0, SLOT_TEXTURE);
 
         for (int i = 0; i < menu.slots.size(); i++) {
             if(!menu.getSlot(i).isActive()) continue;
@@ -272,19 +276,26 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
             boolean slotEmpty = !menu.getSlot(i).hasItem();
             int u = slotEmpty && !isInvSlot ? 23 : 0;
             int v = isInvSlot ? 19 : 0;
-            blit(poseStack, leftPos + menu.getSlot(i).x - 5, topPos + menu.getSlot(i).y - 1, u, v, 22, 18, 64, 64);
+            guiGraphics.blit(SLOT_TEXTURE, leftPos + menu.getSlot(i).x - 5, topPos + menu.getSlot(i).y - 1, u, v, 22, 18, 64, 64);
         }
 
-        capacityComponent.draw(poseStack, capacityValue, menu.getMaxCapacity());
-        if(previewCapacityValue != -1) {
-            capacityPreview.draw(poseStack, capacityValue, previewCapacityValue, menu.getMaxCapacity());
-        }
+//        capacityComponent.draw(poseStack, capacityValue, menu.getMaxCapacity());
+        capacityComponent.setCapacity(capacityValue);
+        capacityComponent.setMaxCapacity(menu.getMaxCapacity());
+
+        capacityPreview.setCapacity(capacityValue);
+        capacityPreview.setPreviewCapacity(previewCapacityValue);
+        capacityPreview.setMaxCapacity(menu.getMaxCapacity());
+
+//        if(previewCapacityValue != -1) {
+//            capacityPreview.draw(poseStack, capacityValue, previewCapacityValue, menu.getMaxCapacity());
+//        }
     }
 
     @Override
-    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-        if(MouseHelper.isHovering(capacityComponent.x, capacityComponent.y, capacityComponent.width, capacityComponent.height, mouseX, mouseY)) {
-            renderTooltip(poseStack, capacityComponent.getTooltip(menu.getStoredCapacity(), menu.getMaxCapacity()), Optional.empty(), mouseX - leftPos, mouseY - topPos);
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        if(MouseHelper.isHovering(capacityComponent.getX(), capacityComponent.getY(), capacityComponent.getWidth(), capacityComponent.getHeight(), mouseX, mouseY)) {
+            guiGraphics.renderTooltip(font, capacityComponent.getTooltip(menu.getStoredCapacity(), menu.getMaxCapacity()), Optional.empty(), mouseX - leftPos, mouseY - topPos);
         }
     }
 }

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.client.gui.util.ITransparentWidget;
 import com.vivi.cybernetics.common.cyberware.CyberwareSection;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
@@ -48,7 +49,7 @@ public class SectionButton extends AbstractButton implements ITransparentWidget 
     }
 
     @Override
-    public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
+    public void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
 
     }
 
@@ -67,26 +68,21 @@ public class SectionButton extends AbstractButton implements ITransparentWidget 
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         visible = alpha > 0.0f;
         active = visible;
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        super.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
     }
 
     @Override
-    public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, texture);
+    public void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         float color = this.isHoveredOrFocused() ? 1.0F : 0.65F;
-        RenderSystem.setShaderColor(color, color, color, alpha);
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
+        guiGraphics.setColor(color, color, color, alpha);
+//        RenderSystem.setShaderColor(color, color, color, alpha);
 //            int u = this.isHoveredOrFocused() ? width : 0;
+        guiGraphics.enableScissor(boxLeft, boxTop, boxRight, boxBottom);
+        guiGraphics.blit(texture, this.getX(), this.getY(), 0, 0, this.width, this.height, this.width, this.height);
+        guiGraphics.disableScissor();
 
-        enableScissor(boxLeft, boxTop, boxRight, boxBottom);
-        blit(pPoseStack, this.x, this.y, 0, 0, this.width, this.height, this.width, this.height);
-        disableScissor();
-        RenderSystem.disableBlend();
     }
 }

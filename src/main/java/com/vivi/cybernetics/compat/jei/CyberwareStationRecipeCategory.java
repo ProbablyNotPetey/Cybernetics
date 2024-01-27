@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.recipe.CyberwareStationRecipe;
 import com.vivi.cybernetics.common.registry.CybBlocks;
+import com.vivi.cybernetics.common.util.RecipeUtil;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
@@ -13,6 +14,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -69,12 +71,12 @@ public class CyberwareStationRecipeCategory implements IRecipeCategory<Cyberware
         builder.addSlot(RecipeIngredientRole.INPUT, 62 - x,  39 - y).addIngredients(recipe.getIngredients().get(3));
         builder.addSlot(RecipeIngredientRole.INPUT, 80 - x,  39 - y).addIngredients(recipe.getIngredients().get(4));
         builder.addSlot(RecipeIngredientRole.INPUT, 98 - x,  39 - y).addIngredients(recipe.getIngredients().get(5));
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 148 - x,  56 - y).addItemStack(recipe.getResultItem());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 148 - x,  56 - y).addItemStack(RecipeUtil.getResultItem(recipe));
 
     }
 
     @Override
-    public void draw(CyberwareStationRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
-        arrow.draw(stack, 31 - x, 58 - y);
+    public void draw(CyberwareStationRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        arrow.draw(guiGraphics, 31 - x, 58 - y);
     }
 }

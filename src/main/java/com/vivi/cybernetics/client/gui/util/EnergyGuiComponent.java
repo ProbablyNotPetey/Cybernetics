@@ -1,25 +1,19 @@
 package com.vivi.cybernetics.client.gui.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.vivi.cybernetics.Cybernetics;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.energy.IEnergyStorage;
 
 import java.util.List;
 
-public class EnergyGuiComponent extends GuiComponent {
+public class EnergyGuiComponent extends CybAbstractWidget {
 
-    public final int x;
-    public final int y;
-    public final int width;
-    public final int height;
-
+    private int energyStored;
+    private int maxEnergy;
     public EnergyGuiComponent(int x, int y, int width, int height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        super(x, y, width, height, Component.empty());
+        this.playSound = false;
     }
 
     public List<Component> getTooltip(int energyStored, int maxEnergy) {
@@ -39,13 +33,25 @@ public class EnergyGuiComponent extends GuiComponent {
         return String.format("%.1f%s", (double) (num / Math.pow(1000, prefixId)), prefix);
     }
 
+    public void setEnergyStored(int energyStored) {
+        this.energyStored = energyStored;
+    }
 
+    public void setMaxEnergy(int maxEnergy) {
+        this.maxEnergy = maxEnergy;
+    }
 
-
-    public void draw(PoseStack stack, int energyStored, int maxEnergy) {
+    @Override
+    protected void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         int scaledHeight = (int) (height * (energyStored / (double) maxEnergy));
         //draws from the top, not the bottom
 //        Cybernetics.LOGGER.info("Stored: " + energyStored + ", Max: " + maxEnergy);
-        fillGradient(stack, x, y + (height - scaledHeight), x + width, y + height, 0xfffc3232, 0xff780e00); // color is ARGB
+        guiGraphics.fillGradient(getX(), getY() + (height - scaledHeight), getX() + width, getY() + height, 0xfffc3232, 0xff780e00); // color is ARGB
+
+    }
+
+    @Override
+    protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
+
     }
 }

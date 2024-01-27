@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.client.util.ScreenHelper;
 import com.vivi.cybernetics.client.util.Easing;
 import com.vivi.cybernetics.client.util.ScheduledTask;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -52,8 +53,8 @@ public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float frameTimeDelta) {
-        super.render(pPoseStack, pMouseX, pMouseY, frameTimeDelta);
+    public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float frameTimeDelta) {
+        super.render(guiGraphics, pMouseX, pMouseY, frameTimeDelta);
 
         //on the client so this is fine
 //        long currentGameTime = getGameTime();
@@ -90,8 +91,8 @@ public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu
     }
     public void moveWidget(AbstractWidget widget, int newX, int newY, int duration, Easing easing) {
 //        widgetsToMove.add(new WidgetMovement(widget, newX, newY, getGameTime(), duration, easing));
-        ScreenHelper.addAnimation(this, () -> (float) widget.x, (newValue) -> widget.x = (int) (float) newValue, newX, duration, easing);
-        ScreenHelper.addAnimation(this, () -> (float) widget.y, (newValue) -> widget.y = (int) (float) newValue, newY, duration, easing);
+        ScreenHelper.addAnimation(this, () -> (float) widget.getX(), (newValue) -> widget.setX((int) (float) newValue), newX, duration, easing);
+        ScreenHelper.addAnimation(this, () -> (float) widget.getY(), (newValue) -> widget.setY((int) (float) newValue), newY, duration, easing);
     }
     public void scaleWidget(IScalableWidget widget, float scale, int duration) {
 //        widgetsToScale.add(new WidgetScale(widget, scale, getGameTime(), duration));
@@ -137,6 +138,6 @@ public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu
         return minecraft.getPartialTick();
     }
     public long getGameTime() {
-        return minecraft.player.level.getGameTime();
+        return minecraft.player.level().getGameTime();
     }
 }

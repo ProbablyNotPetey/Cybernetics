@@ -3,6 +3,7 @@ package com.vivi.cybernetics.client.gui.util;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -61,22 +62,23 @@ public class TextWidget extends CybAbstractWidget {
     }
 
     @Override
-    public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         MutableComponent drawText = drawUnderscore ? mutableText.copy().append("_") : mutableText.copy();
+        guiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         if(maxWidth != -1) {
             int yOffset = 0;
             for(FormattedCharSequence fcq : font.split(drawText, maxWidth)) {
-                font.draw(pPoseStack, fcq, x, y + yOffset, 0xff00fff7);
+                guiGraphics.drawString(font, fcq, getX(), getY() + yOffset, 0xff00fff7);
                 yOffset += 9;
             }
         }
         else {
-            font.draw(pPoseStack, drawText, x, y, 0xff00fff7);
+            guiGraphics.drawString(font, drawText, getX(), getY(), 0xff00fff7);
         }
     }
 
     @Override
-    public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
+    public void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
 
     }
 

@@ -16,7 +16,7 @@ public class SurgicalChamberCyberwareMenu extends CyberwareMenu {
     private final SurgicalChamberBlockEntity blockEntity;
 
     public SurgicalChamberCyberwareMenu(int id, Inventory inv, FriendlyByteBuf buf) {
-        this(id, inv, (SurgicalChamberBlockEntity) inv.player.level.getBlockEntity(buf.readBlockPos()));
+        this(id, inv, (SurgicalChamberBlockEntity) inv.player.level().getBlockEntity(buf.readBlockPos()));
     }
     public SurgicalChamberCyberwareMenu(int id, Inventory inv, SurgicalChamberBlockEntity be) {
         this(id, inv, be.getCapability(Cybernetics.CYBERWARE).orElse(null), be);
@@ -40,7 +40,7 @@ public class SurgicalChamberCyberwareMenu extends CyberwareMenu {
     @Override
     public void removed(Player pPlayer) {
         super.removed(pPlayer);
-        if (pPlayer.level.isClientSide) return;
+        if (pPlayer.level().isClientSide) return;
         cyberware.clear();
         if(blockEntity != null) {
             blockEntity.setInUse(false);

@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-
+/*
 public class CyberwareStationRecipeBuilder implements RecipeBuilder {
     private Item result;
     private int count;
@@ -94,9 +94,6 @@ public class CyberwareStationRecipeBuilder implements RecipeBuilder {
         pFinishedRecipeConsumer.accept(new Result(id, result, count, input, ingredients, advancement, new ResourceLocation(id.getNamespace(), "recipes/" + this.result.getItemCategory().getRecipeFolderName() + "/" + id.getPath())));
     }
 
-    /**
-     * Makes sure that this recipe is valid and obtainable.
-     */
     private void ensureValid(ResourceLocation pId) {
         if(this.ingredients.size() > 6) {
             throw new IllegalStateException("Too many ingredients for recipe " + pId);
@@ -167,3 +164,5 @@ public class CyberwareStationRecipeBuilder implements RecipeBuilder {
         }
     }
 }
+
+ */

@@ -6,6 +6,7 @@ import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.util.EnergyGuiComponent;
 import com.vivi.cybernetics.common.menu.CyberwareStationMenu;
 import com.vivi.cybernetics.client.util.MouseHelper;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -34,38 +35,37 @@ public class CyberwareStationScreen extends AbstractContainerScreen<CyberwareSta
         startX = (width - imageWidth) / 2;
         startY = (height - imageHeight) / 2;
         energyGuiComponent = new EnergyGuiComponent(startX + 8, startY + 15, 6, 70);
+        addRenderableWidget(energyGuiComponent);
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        RenderSystem.setShaderTexture(0, TEXTURE);
-        this.blit(poseStack, startX, startY, 0, 0, imageWidth, imageHeight);
-        renderProgressArrow(poseStack, startX, startY);
+    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
+        guiGraphics.blit(TEXTURE, startX, startY, 0, 0, imageWidth, imageHeight);
+        renderProgressArrow(guiGraphics, startX, startY);
 
-        energyGuiComponent.draw(poseStack, menu.getStoredEnergy(), menu.getMaxEnergy());
+        energyGuiComponent.setEnergyStored(menu.getStoredEnergy());
+        energyGuiComponent.setMaxEnergy(menu.getMaxEnergy());
     }
 
     @Override
-    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-        this.font.draw(poseStack, this.title, (float)this.titleLabelX, (float)this.titleLabelY - 2, 4210752);
-        this.font.draw(poseStack, this.playerInventoryTitle, (float)this.inventoryLabelX + 10, (float)this.inventoryLabelY + 9, 4210752);
-        if(MouseHelper.isHovering(energyGuiComponent.x, energyGuiComponent.y, energyGuiComponent.width, energyGuiComponent.height, mouseX, mouseY)) {
-            renderTooltip(poseStack, energyGuiComponent.getTooltip(menu.getStoredEnergy(), menu.getMaxEnergy()), Optional.empty(), mouseX - startX, mouseY - startY);
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        guiGraphics.drawString(font, this.title, this.titleLabelX, this.titleLabelY - 2, 4210752);
+        guiGraphics.drawString(font, this.playerInventoryTitle, this.inventoryLabelX + 10, this.inventoryLabelY + 9, 4210752);
+        if(MouseHelper.isHovering(energyGuiComponent.getX(), energyGuiComponent.getY(), energyGuiComponent.getWidth(), energyGuiComponent.getHeight(), mouseX, mouseY)) {
+            guiGraphics.renderTooltip(font, energyGuiComponent.getTooltip(menu.getStoredEnergy(), menu.getMaxEnergy()), Optional.empty(), mouseX - startX, mouseY - startY);
         }
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
-        renderBackground(poseStack);
-        super.render(poseStack, mouseX, mouseY, partialTick);
-        renderTooltip(poseStack, mouseX, mouseY);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        renderBackground(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
+        renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
-    private void renderProgressArrow(PoseStack poseStack, int xOffset, int yOffset) {
+    private void renderProgressArrow(GuiGraphics guiGraphics, int xOffset, int yOffset) {
         if(menu.isCrafting()) {
-            this.blit(poseStack, xOffset + 31, yOffset + 58, 0, 176, menu.getScaledProgress(), 14);
+            guiGraphics.blit(TEXTURE, xOffset + 31, yOffset + 58, 0, 176, menu.getScaledProgress(), 14);
         }
     }
 }

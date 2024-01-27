@@ -11,11 +11,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -31,9 +32,9 @@ public class CybBlocks {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Cybernetics.MOD_ID);
 
     public static final RegistryObject<Block>
-            FREEZER_BLOCK = BLOCKS.register("freezer", () -> new FreezerBlock(BlockBehaviour.Properties.of(Material.METAL))),
-            CYBERWARE_STATION_BLOCK = BLOCKS.register("cyberware_station", () -> new CyberwareStationBlock(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(3.5F).lightLevel(litBlockEmission(5)))),
-            SURGICAL_CHAMBER_BLOCK = BLOCKS.register("surgical_chamber", () -> new SurgicalChamberBlock(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(3.5F)))
+            FREEZER_BLOCK = BLOCKS.register("freezer", () -> new FreezerBlock(BlockBehaviour.Properties.of().pushReaction(PushReaction.BLOCK).sound(SoundType.METAL))),
+            CYBERWARE_STATION_BLOCK = BLOCKS.register("cyberware_station", () -> new CyberwareStationBlock(BlockBehaviour.Properties.of().pushReaction(PushReaction.BLOCK).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.5F).lightLevel(litBlockEmission(5)))),
+            SURGICAL_CHAMBER_BLOCK = BLOCKS.register("surgical_chamber", () -> new SurgicalChamberBlock(BlockBehaviour.Properties.of().pushReaction(PushReaction.BLOCK).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.5F)))
     ;
 
     public static final RegistryObject<BlockEntityType<FreezerBlockEntity>> FREEZER_BLOCK_ENTITY =
@@ -53,7 +54,7 @@ public class CybBlocks {
     public static void registerBlockItems(final RegisterEvent event) {
         BLOCKS.getEntries().stream().forEach(block -> {
             event.register(ForgeRegistries.Keys.ITEMS,
-                    helper -> helper.register(new ResourceLocation(Objects.requireNonNull(block.getId().toString())), new BlockItem(block.get(), new Item.Properties().tab(Cybernetics.TAB))));
+                    helper -> helper.register(new ResourceLocation(Objects.requireNonNull(block.getId().toString())), new BlockItem(block.get(), new Item.Properties())));
         });
     }
 

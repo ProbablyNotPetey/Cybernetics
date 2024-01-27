@@ -4,10 +4,9 @@ import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.registry.CybItems;
 import com.vivi.cybernetics.common.registry.CybTags;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-
+/*
 public class ItemTagGenerator extends ItemTagsProvider {
     public ItemTagGenerator(DataGenerator pGenerator, BlockTagsProvider pBlockTagsProvider, ExistingFileHelper existingFileHelper) {
         super(pGenerator, pBlockTagsProvider, Cybernetics.MOD_ID, existingFileHelper);
@@ -78,3 +77,4 @@ public class ItemTagGenerator extends ItemTagsProvider {
         this.tag(CybTags.DASH_ITEMS).add(CybItems.MK1_DASH.get(), CybItems.MK2_DASH.get());
     }
 }
+ */

@@ -3,6 +3,7 @@ package com.vivi.cybernetics.common.recipe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.SimpleContainer;
@@ -44,7 +45,7 @@ public class CyberwareStationRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
         return result.copy();
     }
 
@@ -80,7 +81,7 @@ public class CyberwareStationRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer pContainer) {
+    public ItemStack assemble(SimpleContainer pContainer, RegistryAccess registryAccess) {
         return result;
     }
 
@@ -107,6 +108,14 @@ public class CyberwareStationRecipe implements Recipe<SimpleContainer> {
     @Override
     public RecipeType<?> getType() {
         return Type.INSTANCE;
+    }
+
+    public void toNetwork(FriendlyByteBuf buf) {
+        //THE ORDER MATTERS!!! IT MUST MATCH fromNetwork()
+        input.toNetwork(buf);
+        buf.writeVarInt(ingredients.size());
+        ingredients.forEach(ingredient -> ingredient.toNetwork(buf));
+        buf.writeItem(result.copy());
     }
 
     public static class Type implements RecipeType<CyberwareStationRecipe> {
@@ -153,11 +162,7 @@ public class CyberwareStationRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public void toNetwork(FriendlyByteBuf buf, CyberwareStationRecipe recipe) {
-            //THE ORDER MATTERS!!! IT MUST MATCH fromNetwork()
-            recipe.getInput().toNetwork(buf);
-            buf.writeVarInt(recipe.getIngredients().size());
-            recipe.getIngredients().forEach(ingredient -> ingredient.toNetwork(buf));
-            buf.writeItem(recipe.getResultItem());
+            recipe.toNetwork(buf);
         }
     }
 }

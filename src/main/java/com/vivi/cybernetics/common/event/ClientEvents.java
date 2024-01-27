@@ -56,14 +56,14 @@ public class ClientEvents {
         LocalPlayer player = Minecraft.getInstance().player;
         if(player == null) return;
 
-        if(isSpiking && player.isOnGround() && !(player.isInWater()) && !player.getAbilities().flying
+        if(isSpiking && player.onGround() && !(player.isInWater()) && !player.getAbilities().flying
                 && AbilityHelper.isEnabled(player, CybAbilities.KINETIC_DISCHARGER.get())) {
             //shockwave
             CybPackets.sendToServer(new C2SSpikeShockwavePacket());
             CybPackets.sendToServer(new C2SSpikePacket());
         }
 
-        if(player.isOnGround() || player.onClimbable()  || player.isInWater() || player.getAbilities().flying) {
+        if(player.onGround() || player.onClimbable()  || player.isInWater() || player.getAbilities().flying) {
             canSpike = false;
             isSpiking = false;
             if(AbilityHelper.isEnabled(player, CybAbilities.KINETIC_DISCHARGER.get())) {
@@ -83,13 +83,13 @@ public class ClientEvents {
     }
 
     private static boolean isHighEnoughToSpike(Player player) {
-        if(player.blockPosition().getY() > player.level.getMaxBuildHeight()) {
-            return player.blockPosition().getY() - player.level.getMaxBuildHeight() >= 3;
+        if(player.blockPosition().getY() > player.level().getMaxBuildHeight()) {
+            return player.blockPosition().getY() - player.level().getMaxBuildHeight() >= 3;
         }
 
         for(int i = 1; i <= 3; i++) {
             BlockPos pos = player.blockPosition().below(i);
-            if(!player.level.getBlockState(pos).isAir()) return false;
+            if(!player.level().getBlockState(pos).isAir()) return false;
         }
         return true;
     }
@@ -98,7 +98,7 @@ public class ClientEvents {
         LocalPlayer player = Minecraft.getInstance().player;
         if(player == null) return;
 
-        if(player.isOnGround() || player.onClimbable() && !(player.isInWater())) {
+        if(player.onGround() || player.onClimbable() && !(player.isInWater())) {
             releasedJump = false;
             canDoubleJump = true;
             currentJumps = (int) player.getAttribute(CybAttributes.DOUBLE_JUMPS.get()).getValue();
@@ -136,7 +136,7 @@ public class ClientEvents {
         Player player = Minecraft.getInstance().player;
         if(player == null) return;
 
-        if(player.isOnGround() || player.onClimbable() && !player.isInWater()) {
+        if(player.onGround() || player.onClimbable() && !player.isInWater()) {
             canDash = true;
         }
 

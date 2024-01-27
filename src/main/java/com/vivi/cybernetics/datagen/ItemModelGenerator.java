@@ -15,7 +15,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashSet;
 import java.util.Set;
-
+/*
 public class ItemModelGenerator extends ItemModelProvider {
     public ItemModelGenerator(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         super(generator, Cybernetics.MOD_ID, existingFileHelper);
@@ -77,3 +77,4 @@ public class ItemModelGenerator extends ItemModelProvider {
         return null;
     }
 }
+ */

@@ -24,7 +24,7 @@ public class CyberwareStationMenu extends AbstractContainerMenu {
     private final int invY = 92;
 
     public CyberwareStationMenu(int id, Inventory inv, FriendlyByteBuf buf) {
-        this(id, inv, inv.player.level.getBlockEntity(buf.readBlockPos()), new SimpleContainerData(2));
+        this(id, inv, inv.player.level().getBlockEntity(buf.readBlockPos()), new SimpleContainerData(2));
     }
 
     public CyberwareStationMenu(int id, Inventory inv, BlockEntity blockEntity, ContainerData data) {
@@ -32,7 +32,7 @@ public class CyberwareStationMenu extends AbstractContainerMenu {
         checkContainerSize(inv, 8);
         checkContainerDataCount(data, 2);
         this.blockEntity = (CyberwareStationBlockEntity) blockEntity;
-        this.level = inv.player.level;
+        this.level = inv.player.level();
         this.data = data;
 
 

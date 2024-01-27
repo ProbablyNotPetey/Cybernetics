@@ -49,7 +49,7 @@ public class CyberwareMenu extends AbstractContainerMenu {
         super(menuType, containerId);
         this.canEdit = canEdit;
         this.menuType = menuType;
-        this.isClient = inventory.player.level.isClientSide;
+        this.isClient = inventory.player.level().isClientSide;
         int counter = 0;
         this.inventory = new ItemStackHandler(Inventory.INVENTORY_SIZE);
         for(int i = 0; i < Inventory.INVENTORY_SIZE; i++) {

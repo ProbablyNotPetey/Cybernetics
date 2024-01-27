@@ -54,12 +54,6 @@ public class Cybernetics {
 
 
 
-    public static final CreativeModeTab TAB = new CreativeModeTab(Cybernetics.MOD_ID) {
-        @Override
-        public ItemStack makeIcon() {
-            return new ItemStack(Items.BARRIER);
-        }
-    };
 
     public Cybernetics() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -67,6 +61,7 @@ public class Cybernetics {
         //Registration
         CybBlocks.register(modEventBus);
         CybItems.register(modEventBus);
+        CybCreativeTabs.register(modEventBus);
         modEventBus.addListener(CybBlocks::registerBlockItems);
         CybMenuTypes.register(modEventBus);
         CybRecipeTypes.register(modEventBus);
@@ -124,7 +119,7 @@ public class Cybernetics {
 
     @SubscribeEvent
     public void registerParticles(RegisterParticleProvidersEvent event) {
-        event.register(CybParticles.BLAST_WAVE.get(), new BlastWaveParticle.Provider());
+        event.registerSpecial(CybParticles.BLAST_WAVE.get(), new BlastWaveParticle.Provider());
     }
 
 

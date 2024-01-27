@@ -1,6 +1,5 @@
 package com.vivi.cybernetics.common.util;
 
-import com.mojang.math.Vector3f;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
 
@@ -13,9 +12,11 @@ public class Maath {
     /**
      * Adapted from <a href="https://github.com/TheComputerizer/The-Impossible-Library/blob/1.19.2-forge/src/main/java/mods/thecomputerizer/theimpossiblelibrary/util/MathUtil.java">The Impossible Library</a>
      */
+    /*
     public static Vector3f getVertex(Vector3f center, double radius, double angle) {
         return new Vector3f((float)(center.x()+(radius*Math.cos(angle))),(float) (center.y()+(radius*Math.sin(angle))),0);
     }
+     */
 
     /**
      * Returns a polar radius for the cartesian point (x,y).

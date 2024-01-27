@@ -12,7 +12,6 @@ import com.vivi.cybernetics.common.util.CyberwareHelper;
 import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.server.network.packet.s2c.S2CToggleHUDPacket;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -39,7 +38,7 @@ public class ServerEvents {
         CyberwareHelper.getCyberware(player).ifPresent(cyberware -> {
             for(int i = 0; i < cyberware.getSlots(); i++) {
                 if (cyberware.getStackInSlot(i).getItem() instanceof CyberwareItem item) {
-                    item.cyberwareTick(cyberware.getStackInSlot(i), player.level, player);
+                    item.cyberwareTick(cyberware.getStackInSlot(i), player.level(), player);
                 }
             }
         });
@@ -51,7 +50,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public static void onLivingTick(LivingEvent.LivingTickEvent event) {
-        if(event.getEntity().level.isClientSide) return;
+        if(event.getEntity().level().isClientSide) return;
         LivingEntity entity = event.getEntity();
         if(entity.hasEffect(CybMobEffects.PARALYZED.get())) {
             entity.setJumping(false);
@@ -82,7 +81,7 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onLivingDeathEvent(LivingDeathEvent event) {
         if(!(event.getEntity() instanceof Player)) return;
-        if(event.getEntity().level.isClientSide) return;
+        if(event.getEntity().level().isClientSide) return;
         Player player = (Player) event.getEntity();
 
         if(!(player.isCreative() || player.isSpectator())) {
@@ -102,10 +101,10 @@ public class ServerEvents {
 
     @SubscribeEvent
     public static void onLivingAttackEvent(LivingAttackEvent event) {
-        if(event.getEntity().level.isClientSide) return;
+        if(event.getEntity().level().isClientSide) return;
         if(!(event.getEntity() instanceof Player player)) return;
 
-        if(CyberwareHelper.hasCyberwareItem(player, CybItems.PROJECTILE_DEFLECTOR.get()) && event.getSource() instanceof IndirectEntityDamageSource) {
+        if(CyberwareHelper.hasCyberwareItem(player, CybItems.PROJECTILE_DEFLECTOR.get()) && event.getSource().isIndirect()) {
             EntityType<?> entityType = event.getSource().getDirectEntity().getType();
             if(!entityType.is(CybTags.PROJECTILES_ALWAYS_HIT) && player.getRandom().nextInt(10) < 4) {
                 event.setCanceled(true);

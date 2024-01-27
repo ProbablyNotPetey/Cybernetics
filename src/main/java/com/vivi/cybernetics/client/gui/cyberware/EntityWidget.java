@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.client.gui.util.CybAbstractWidget;
 import com.vivi.cybernetics.client.gui.util.IScalableWidget;
 import com.vivi.cybernetics.client.util.RenderHelper;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
@@ -35,7 +36,7 @@ public class EntityWidget extends CybAbstractWidget implements IScalableWidget {
     }
 
     @Override
-    public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
+    public void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
 
     }
 
@@ -58,14 +59,15 @@ public class EntityWidget extends CybAbstractWidget implements IScalableWidget {
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         if(!this.visible) return;
-        enableScissor(boxLeft, boxTop, boxRight, boxBottom);
-        pPoseStack.pushPose();
-        pPoseStack.translate(0, 0, 150);
-        RenderHelper.renderEntity(entity, pPoseStack, x + scale/2, y + scale*2, 20, scale, rotation);
-        pPoseStack.popPose();
+        guiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        guiGraphics.enableScissor(boxLeft, boxTop, boxRight, boxBottom);
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(0, 0, 150);
+        RenderHelper.renderEntity(entity, guiGraphics.pose(), getX() + scale/2, getY() + scale*2, 20, scale, rotation);
+        guiGraphics.pose().popPose();
         //7.5f * (float)Math.cos((getGameTime() - startTime + pPartialTick) / 40.0f)
-        disableScissor();
+        guiGraphics.disableScissor();
     }
 }

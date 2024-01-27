@@ -2,7 +2,6 @@ package com.vivi.cybernetics.client.hud;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.shader.CybCoreShaders;
 import com.vivi.cybernetics.client.util.HudAnchor;
@@ -11,13 +10,14 @@ import com.vivi.cybernetics.common.ability.Ability;
 import com.vivi.cybernetics.common.ability.HUDAbilityType;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,27 +45,27 @@ public class AbilityHUD implements IHUDElement {
     }
 
     @Override
-    public void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
         Vec2 pos = anchor.getWithOffset(screenWidth, screenHeight, x, y);
-        poseStack.pushPose();
-        poseStack.translate(pos.x, pos.y, 0);
-        renderElements(poseStack, partialTick);
-        poseStack.popPose();
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(pos.x, pos.y, 0);
+        renderElements(guiGraphics, partialTick);
+        guiGraphics.pose().popPose();
     }
 
-    private void renderElements(PoseStack poseStack, float partialTick) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, TEXTURE);
+    private void renderElements(GuiGraphics guiGraphics, float partialTick) {
+//        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+//        RenderSystem.setShaderTexture(0, TEXTURE);
 
         if(v != -1) {
-            GuiComponent.blit(poseStack, 0, 0, 0, v * 27, width, height, 256, 256);
+            guiGraphics.blit(TEXTURE, 0, 0, 0, v * 27, width, height, 256, 256);
         }
 
         for(int i = 0; i < elements.size(); i++) {
-            poseStack.pushPose();
-            poseStack.translate(xOffset + (leftOrRight * (i % 7) * 23), yOffset + (upOrDown * (i / 7) * 23), 0);
-            elements.get(i).render(poseStack, partialTick);
-            poseStack.popPose();
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(xOffset + (leftOrRight * (i % 7) * 23), yOffset + (upOrDown * (i / 7) * 23), 0);
+            elements.get(i).render(guiGraphics, partialTick);
+            guiGraphics.pose().popPose();
         }
     }
 
@@ -165,19 +165,19 @@ public class AbilityHUD implements IHUDElement {
             this.ability = ability;
         }
 
-        public void render(PoseStack poseStack, float partialTick) {
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
+        public void render(GuiGraphics guiGraphics, float partialTick) {
+//            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+//            RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
             int u = ability.isEnabled() ? 19 : 0;
-            GuiComponent.blit(poseStack, 0, 0, u, 0, 18, 18, 48, 48);
+            guiGraphics.blit(BACKGROUND_TEXTURE, 0, 0, u, 0, 18, 18, 48, 48);
 //            GuiComponent.blit(poseStack, 0, 0, 10, 0, 0, 18, 18, 24, 24);
             ResourceLocation texture = ability.getType().getTexture();
             if(texture != null) {
-                RenderSystem.setShaderTexture(0, texture);
-                GuiComponent.blit(poseStack, 1, 1, 5, 0, 0, 16, 16, 16, 16);
+//                RenderSystem.setShaderTexture(0, texture);
+                guiGraphics.blit(texture, 1, 1, 5, 0, 0, 16, 16, 16, 16);
             }
 
-            drawProgress(poseStack, partialTick, 1, 1, 16, 16);
+            drawProgress(guiGraphics.pose(), partialTick, 1, 1, 16, 16);
         }
         private void drawProgress(PoseStack poseStack, float partialTick, float x1, float y1, float width, float height) {
             if(ability.getCooldown() > 0) {

@@ -3,8 +3,7 @@ package com.vivi.cybernetics.client.particle;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import com.vivi.cybernetics.client.shader.CybCoreShaders;
 import com.vivi.cybernetics.client.util.RenderHelper;
 import com.vivi.cybernetics.common.util.Maath;
@@ -20,6 +19,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,7 @@ public class BlastWaveParticle extends Particle {
         RenderSystem.enableBlend();
         RenderSystem.disableCull();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        RenderSystem.disableTexture();
+//        RenderSystem.disableTexture();
 
         ShaderInstance shader = CybCoreShaders.getBlastWaveShader();
         if(shader == null) return;
@@ -101,13 +102,14 @@ public class BlastWaveParticle extends Particle {
 
 
         Tesselator.getInstance().end();
-        RenderSystem.enableTexture();
+//        RenderSystem.enableTexture();
         RenderSystem.enableCull();
         RenderSystem.disableBlend();
     }
 
 
 //    @Override
+    /*
     public void renderOld(VertexConsumer pBuffer, Camera camera, float pPartialTicks) {
         Vec3 cameraPos = camera.getPosition();
 
@@ -116,13 +118,13 @@ public class BlastWaveParticle extends Particle {
         float y = (float)(Mth.lerp(pPartialTicks, this.yo, this.y) - cameraPos.y());
         float z = (float)(Mth.lerp(pPartialTicks, this.zo, this.z) - cameraPos.z());
 
-        Quaternion rotation;
+        Quaternionf rotation;
         if (this.roll == 0.0F) {
             rotation = camera.rotation();
         } else {
-            rotation = Vector3f.XP.rotation(camera.getXRot());
+            rotation = Axis.XP.rotation(camera.getXRot());
             float r = Mth.lerp(pPartialTicks, this.oRoll, this.roll);
-            rotation.mul(Vector3f.ZP.rotation(r));
+            rotation.mul(Axis.ZP.rotation(r));
         }
 
 
@@ -133,11 +135,11 @@ public class BlastWaveParticle extends Particle {
         float radius = 3.0f;
 
         Vector3f base1 = new Vector3f(0, -0.5f, 0);
-        base1.transform(rotation);
+        base1.rotate(rotation);
 //        base1.add(x, y, z);
 
         Vector3f base2 = new Vector3f(0, 0.5f, 0);
-        base2.transform(rotation);
+        base2.rotate(rotation);
 //        base2.add(x, y, z);
 
 
@@ -147,15 +149,15 @@ public class BlastWaveParticle extends Particle {
 
 
             float angle = -1.0f * (i/slices) * Mth.TWO_PI;
-            Quaternion yaw = Vector3f.YP.rotation(angle);
+            Quaternionf yaw = Axis.YP.rotation(angle);
 
-            Vector3f v1 = base1.copy();
+            Vector3f v1 = new Vector3f(base1);
             v1.add(start);
-            v1.transform(yaw);
+            v1.rotate(yaw);
             v1.add(x, y, z);
-            Vector3f v2 = base2.copy();
+            Vector3f v2 = new Vector3f(base2);
             v2.add(start);
-            v2.transform(yaw);
+            v2.rotate(yaw);
             v2.add(x, y, z);
 
             verticies.add(v1);
@@ -169,6 +171,7 @@ public class BlastWaveParticle extends Particle {
             pBuffer.vertex(vertex.x(), vertex.y(), vertex.z()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
         }
     }
+     */
 
     @Override
     public ParticleRenderType getRenderType() {

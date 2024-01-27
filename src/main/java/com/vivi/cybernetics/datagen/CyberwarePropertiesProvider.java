@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/*
 public abstract class CyberwarePropertiesProvider implements DataProvider {
 
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -153,3 +153,4 @@ public abstract class CyberwarePropertiesProvider implements DataProvider {
         }
     }
 }
+ */

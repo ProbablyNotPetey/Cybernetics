@@ -23,25 +23,25 @@ public class Ability implements INBTSerializable<CompoundTag> {
 
     private void onEnable(Player player) {
         elapsedTime = 0;
-        this.getType().onEnable(this, player.level, player);
+        this.getType().onEnable(this, player.level(), player);
     }
 
     private void onDisable(Player player) {
         elapsedTime = -1;
-        this.getType().onDisable(this, player.level, player);
+        this.getType().onDisable(this, player.level(), player);
     }
 
     public void tick(Player player) {
         if(cooldown > -1) cooldown--;
         if(elapsedTime != -1 && enabled) elapsedTime++;
-        this.getType().tick(this, player.level, player);
+        this.getType().tick(this, player.level(), player);
     }
 
     public boolean enable(Player player) {
         Cybernetics.LOGGER.info("Cooldown: " + cooldown);
         if(cooldown > -1) return false;
         this.enabled = true;
-        Cybernetics.LOGGER.info("Enabled. Client: " + player.level.isClientSide);
+        Cybernetics.LOGGER.info("Enabled. Client: " + player.level().isClientSide);
         onEnable(player);
         return true;
     }

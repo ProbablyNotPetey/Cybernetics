@@ -2,7 +2,6 @@ package com.vivi.cybernetics.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import com.vivi.cybernetics.common.ability.Ability;
 import com.vivi.cybernetics.common.ability.HiddenAbility;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
@@ -18,6 +17,7 @@ import com.vivi.cybernetics.client.util.InputHelper;
 import com.vivi.cybernetics.client.util.RenderHelper;
 import com.vivi.cybernetics.client.util.ScreenHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -25,9 +25,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import org.joml.Matrix4f;
 
 import java.util.List;
 
+
+//todo: major refactor and cleanup. fix math
 public class AbilityScreen extends Screen {
 
     public static final int SLICES = 128;
@@ -58,7 +61,7 @@ public class AbilityScreen extends Screen {
             addRenderableWidget(new AbilitySlice(filtered.get(i), 60, 100, length * i, length));
         }
         textWidget = new TextWidget(this, (int) centerX, (int) centerY);
-        textWidget.y -= textWidget.getTextHeight() / 2;
+        textWidget.setY(textWidget.getY() - textWidget.getTextHeight() / 2);
         addRenderableWidget(textWidget);
         textWidget.setText(Component.literal("Abilities"));
     }
@@ -67,7 +70,7 @@ public class AbilityScreen extends Screen {
     public void tick() {
         time++;
         textWidget.tick(time);
-        textWidget.x =  (int) centerX - (textWidget.getTextWidth() / 2);
+        textWidget.setX((int) centerX - (textWidget.getTextWidth() / 2));
         this.renderables.forEach(widget -> {
             if(widget instanceof AbilitySlice slice) {
                 slice.setSelected(slice.isHoveredOrFocused() && slice.getAbility().getCooldown() == -1);
@@ -84,12 +87,12 @@ public class AbilityScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack poseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(poseStack, pMouseX, pMouseY, pPartialTick);
+    public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+        super.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.disableTexture();
+//        RenderSystem.disableTexture();
         RenderHelper.resetShaderColor();
 
 //        float length = 60;
@@ -101,16 +104,16 @@ public class AbilityScreen extends Screen {
 //        drawTorus(poseStack, 40, 80, 60, 120);
 
         RenderSystem.setShaderColor(0.45f, 0.05f, 0.05f, 0.75f);
-        drawAnnulus(poseStack, 53, 55);
+        drawAnnulus(guiGraphics.pose(), 53, 55);
 
 
-        RenderSystem.enableTexture();
+//        RenderSystem.enableTexture();
         RenderSystem.disableBlend();
     }
 
     public void updateText(Component text) {
         textWidget.setText(text, true);
-        textWidget.x = (int) centerX - (textWidget.getTextWidth() / 2);
+        textWidget.setX((int) centerX - (textWidget.getTextWidth() / 2));
     }
 
     private void drawAnnulus(PoseStack poseStack, float innerRadius, float outerRadius) {
@@ -207,25 +210,25 @@ public class AbilityScreen extends Screen {
         }
 
         @Override
-        public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
+        public void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
 
         }
         @Override
-        public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+        public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
             if(!this.visible) return;
             //converts mouse points to polar
             float mouseR = Maath.toRadius(pMouseX - centerX, -(pMouseY - centerY));
             float mouseT = Mth.RAD_TO_DEG * Maath.toAngle(pMouseX - centerX, -(pMouseY - centerY));
 
             this.isHovered = (mouseR >= 55) && (mouseT >= startAngle) && (mouseT < (startAngle + totalAngle));
-            renderButton(pPoseStack, pMouseX, pMouseY, pPartialTick);
+            renderWidget(guiGraphics, pMouseX, pMouseY, pPartialTick);
         }
 
         @Override
-        public void renderButton(PoseStack poseStack, int pMouseX, int pMouseY, float pPartialTick) {
+        public void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
-            RenderSystem.disableTexture();
+//            RenderSystem.disableTexture();
             RenderHelper.resetShaderColor();
 
             if(ability.isEnabled()) {
@@ -234,14 +237,14 @@ public class AbilityScreen extends Screen {
             else {
                 RenderSystem.setShaderColor(0.45f, 0.05f, 0.05f, alpha);
             }
-            drawAnnulus(poseStack, inner, outer, startAngle, startAngle + totalAngle);
+            drawAnnulus(guiGraphics.pose(), inner, outer, startAngle, startAngle + totalAngle);
 
             if(ability.getCooldown() > 0) {
                 RenderSystem.setShaderColor(0.25f, 0.25f, 0.25f, alpha);
-                drawAnnulus(poseStack, inner, outer, startAngle + ((totalAngle / 2) * (1 - ((float) ability.getCooldown() / ability.getType().getMaxCooldown()))), startAngle + totalAngle - ((totalAngle / 2) * (1 - ((float) ability.getCooldown() / ability.getType().getMaxCooldown()))));
+                drawAnnulus(guiGraphics.pose(), inner, outer, startAngle + ((totalAngle / 2) * (1 - ((float) ability.getCooldown() / ability.getType().getMaxCooldown()))), startAngle + totalAngle - ((totalAngle / 2) * (1 - ((float) ability.getCooldown() / ability.getType().getMaxCooldown()))));
             }
 
-            RenderSystem.enableTexture();
+//            RenderSystem.enableTexture();
             RenderSystem.disableBlend();
 
             //render item
@@ -253,11 +256,11 @@ public class AbilityScreen extends Screen {
                 float centerAngle = Mth.DEG_TO_RAD * (startAngle + (totalAngle / 2));
                 float centerRadius = inner + (outer - inner) / 2;
                 float scale = 2.0f;
-                poseStack.pushPose();
-                poseStack.scale(scale, scale, 1.0f);
-                poseStack.translate((Maath.toX(centerRadius, centerAngle) + centerX) / scale, (-Maath.toY(centerRadius, centerAngle) + centerY) / scale, 0.0);
-                blit(poseStack, -8, -8, 200, 0, 0, 16, 16, 16, 16);
-                poseStack.popPose();
+                guiGraphics.pose().pushPose();
+                guiGraphics.pose().scale(scale, scale, 1.0f);
+                guiGraphics.pose().translate((Maath.toX(centerRadius, centerAngle) + centerX) / scale, (-Maath.toY(centerRadius, centerAngle) + centerY) / scale, 0.0);
+                guiGraphics.blit(texture, -8, -8, 200, 0, 0, 16, 16, 16, 16);
+                guiGraphics.pose().popPose();
                 RenderSystem.applyModelViewMatrix();
 
             }

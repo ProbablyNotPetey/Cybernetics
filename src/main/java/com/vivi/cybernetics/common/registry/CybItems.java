@@ -85,7 +85,7 @@ public class CybItems {
             PROJECTILE_DEFLECTOR = ITEMS.register("projectile_deflector", () -> new CyberwareItem(cyberwareProps())),
 
             //ARMS
-            RANGE_EXTENDER = ITEMS.register("range_extender", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(UUID.fromString("7c79b65a-615b-4d40-8268-a33b51ae757d"), "Arm Reach Boost", 0.4, AttributeModifier.Operation.MULTIPLY_TOTAL)))),
+            RANGE_EXTENDER = ITEMS.register("range_extender", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(ForgeMod.BLOCK_REACH.get(), new AttributeModifier(UUID.fromString("7c79b65a-615b-4d40-8268-a33b51ae757d"), "Arm Reach Boost", 0.4, AttributeModifier.Operation.MULTIPLY_TOTAL)))),
 
 
             //HANDS
@@ -106,10 +106,10 @@ public class CybItems {
 
 
     private static Item.Properties cyberwareProps() {
-        return new Item.Properties().stacksTo(1).tab(Cybernetics.TAB);
+        return new Item.Properties().stacksTo(1);
     }
     private static Item.Properties regularProps() {
-        return new Item.Properties().tab(Cybernetics.TAB);
+        return new Item.Properties();
     }
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

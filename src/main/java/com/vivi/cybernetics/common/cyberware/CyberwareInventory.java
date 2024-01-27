@@ -77,7 +77,7 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
 
     public void onContentsChanged(int slot) {
         initCapacity();
-        if(owner != null && !owner.level.isClientSide) {
+        if(owner != null && !owner.level().isClientSide) {
             CybPackets.sendToClient(new S2CSyncCyberwarePacket(owner, this, true), (ServerPlayer) owner);
         }
     }
@@ -92,10 +92,10 @@ public class CyberwareInventory extends CombinedInvWrapper implements INBTSerial
             ItemStack newStack = other.getStackInSlot(i);
             if(player != null && shouldUpdate && !oldStack.equals(newStack, false)) {
                 if(oldStack.getItem() instanceof CyberwareItem) {
-                    ((CyberwareItem) oldStack.getItem()).onUnequip(oldStack, player.level, player);
+                    ((CyberwareItem) oldStack.getItem()).onUnequip(oldStack, player.level(), player);
                 }
                 if(newStack.getItem() instanceof CyberwareItem) {
-                    ((CyberwareItem) newStack.getItem()).onEquip(newStack, player.level, player);
+                    ((CyberwareItem) newStack.getItem()).onEquip(newStack, player.level(), player);
                 }
             }
             this.setStackInSlot(i, newStack.copy());

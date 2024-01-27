@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
-
+/*
 public class CybRecipeProvider extends RecipeProvider {
     private static final Logger LOGGER = LogUtils.getLogger();
     protected final boolean generateAdvancements;
@@ -27,9 +27,6 @@ public class CybRecipeProvider extends RecipeProvider {
     }
 
 
-    /**
-     * Only generates advancements if advancements is true
-     */
     @Override
     public void run(CachedOutput pOutput) {
         Set<ResourceLocation> set = Sets.newHashSet();
@@ -57,3 +54,4 @@ public class CybRecipeProvider extends RecipeProvider {
 
     }
 }
+*/

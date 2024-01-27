@@ -12,7 +12,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Consumer;
-
+/*
 public class CyberwareRecipesGenerator extends CybRecipeProvider {
     public CyberwareRecipesGenerator(DataGenerator pGenerator) {
         super(pGenerator);
@@ -149,3 +149,4 @@ public class CyberwareRecipesGenerator extends CybRecipeProvider {
 
     }
 }
+ */

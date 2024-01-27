@@ -3,26 +3,24 @@ package com.vivi.cybernetics.client.gui.cyberware;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.client.gui.util.CybAbstractWidget;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
-public class CapacityGuiComponent extends GuiComponent {
-    public final int x;
-    public final int y;
-    public final int width;
-    public final int height;
+public class CapacityGuiComponent extends CybAbstractWidget {
+
     public static final ResourceLocation TEXTURE = new ResourceLocation(Cybernetics.MOD_ID, "textures/gui/cyberware/bar_filled.png");
 
+    protected int capacity;
+    protected int maxCapacity;
     public CapacityGuiComponent(int x, int y) {
-        this.x = x;
-        this.y = y;
-        this.width = 23;
-        this.height = 140;
+        super(x, y, 23, 140, Component.empty());
     }
 
     public List<Component> getTooltip(int capacity, int maxCapacity) {
@@ -43,10 +41,16 @@ public class CapacityGuiComponent extends GuiComponent {
         return String.format("%.1f%s", (double) (num / Math.pow(1000, prefixId)), prefix);
     }
 
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
 
+    public void setMaxCapacity(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
+    }
 
-
-    public void draw(PoseStack poseStack, int capacity, int maxCapacity) {
+    @Override
+    protected void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         int scaledHeight = (int) (height * (capacity / (double) maxCapacity));
         if(scaledHeight > height) scaledHeight = height;
         //draws from the top, not the bottom
@@ -56,6 +60,11 @@ public class CapacityGuiComponent extends GuiComponent {
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int u = capacity > maxCapacity ? 24 : 0;
-        blit(poseStack, x, y + (height - scaledHeight), u, height - scaledHeight, width, scaledHeight, 144, 144);
+        guiGraphics.blit(TEXTURE, getX(), getY() + (height - scaledHeight), u, height - scaledHeight, width, scaledHeight, 144, 144);
+    }
+
+    @Override
+    protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
+
     }
 }

@@ -1,11 +1,11 @@
 package com.vivi.cybernetics.client.gui.cyberware;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.client.util.Easing;
 import com.vivi.cybernetics.common.cyberware.CyberwareSection;
 import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.server.network.packet.c2s.C2SSwitchActiveSlotPacket;
 import com.vivi.cybernetics.server.network.packet.c2s.C2SSwitchPagePacket;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 import java.util.Iterator;
@@ -23,7 +23,7 @@ public abstract class State {
     public void exit() {
         screen.clearAll();
     }
-    public void render(PoseStack poseStack, float partialTick) {
+    public void render(GuiGraphics guiGraphics, float partialTick) {
 
     }
     public void tick(long time) {
@@ -52,7 +52,7 @@ public abstract class State {
             screen.getSectionButtons().forEach(button -> {
                 screen.alphaWidget(button, 0.0f, 10);
                 screen.scheduleTask(15, () -> {
-                    button.y = screen.getGuiTop() + button.getSection().getType().getY() + 20;
+                    button.setY(screen.getGuiTop() + button.getSection().getType().getY() + 20);
                 });
             });
         }
@@ -60,7 +60,7 @@ public abstract class State {
         private void initSectionButtons() {
             if(time % 2 == 0 && sectionButtonIterator.hasNext()) {
                 SectionButton button = sectionButtonIterator.next();
-                screen.moveWidget(button, button.x, button.y - 20, 15, Easing.CUBIC_OUT);
+                screen.moveWidget(button, button.getX(), button.getY() - 20, 15, Easing.CUBIC_OUT);
                 screen.alphaWidget(button, 1.0f, 15);
             }
         }

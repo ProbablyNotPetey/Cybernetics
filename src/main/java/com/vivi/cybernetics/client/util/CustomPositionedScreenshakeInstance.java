@@ -1,10 +1,11 @@
 package com.vivi.cybernetics.client.util;
 
-import com.mojang.math.Vector3f;
+
 import com.vivi.cybernetics.Cybernetics;
 import net.minecraft.client.Camera;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 import team.lodestar.lodestone.systems.easing.Easing;
 import team.lodestar.lodestone.systems.screenshake.ScreenshakeInstance;
 
@@ -48,7 +49,7 @@ public class CustomPositionedScreenshakeInstance extends ScreenshakeInstance {
         Vector3f lookDirection = camera.getLookVector();
         Vec3 directionToScreenshake = position.subtract(camera.getPosition()).normalize();
         //this is the only change
-        float angle = alwaysApply ? 1.0f : Math.max(0, lookDirection.dot(new Vector3f(directionToScreenshake)));
+        float angle = alwaysApply ? 1.0f : Math.max(0, lookDirection.dot(new Vector3f(directionToScreenshake.toVector3f())));
         Cybernetics.LOGGER.info("Angle: " + angle);
         return ((intensity * distanceMultiplier) + (intensity * angle)) * 0.5f;
     }

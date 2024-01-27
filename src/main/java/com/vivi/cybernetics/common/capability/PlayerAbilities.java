@@ -40,7 +40,7 @@ public class PlayerAbilities implements INBTSerializable<CompoundTag> {
     public void addAbility(Ability ability, boolean syncToClient) {
         abilities.add(ability);
 
-        if(!player.level.isClientSide && syncToClient) {
+        if(!player.level().isClientSide && syncToClient) {
             syncToClient((ServerPlayer) player);
         }
     }
@@ -50,7 +50,7 @@ public class PlayerAbilities implements INBTSerializable<CompoundTag> {
             ability.disable(player);
         }
         abilities.remove(ability);
-        if(!player.level.isClientSide && syncToClient) {
+        if(!player.level().isClientSide && syncToClient) {
             syncToClient((ServerPlayer) player);
         }
     }
@@ -79,7 +79,7 @@ public class PlayerAbilities implements INBTSerializable<CompoundTag> {
         if(ability == null) return false;
         Cybernetics.LOGGER.info("Ability not null");
         if(!ability.enable(player)) return false;
-        if(!player.level.isClientSide && syncToClient) {
+        if(!player.level().isClientSide && syncToClient) {
             Cybernetics.LOGGER.info("Syncing abilities to client, ability to enable: " + CybAbilities.ABILITY_TYPE_REGISTRY.get().getKey(type));
             syncToClient((ServerPlayer) player, List.of(type), List.of());
         }
@@ -90,7 +90,7 @@ public class PlayerAbilities implements INBTSerializable<CompoundTag> {
         Ability ability = getAbility(type);
         if(ability == null) return false;
         if(!ability.disable(player)) return false;
-        if(!player.level.isClientSide && syncToClient) {
+        if(!player.level().isClientSide && syncToClient) {
             syncToClient((ServerPlayer) player, List.of(), List.of(type));
         }
         return true;

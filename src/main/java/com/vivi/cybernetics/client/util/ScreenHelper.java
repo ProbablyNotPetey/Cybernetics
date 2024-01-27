@@ -104,7 +104,7 @@ public class ScreenHelper {
 
     @SubscribeEvent
     public static void onRenderScreenPost(ScreenEvent.Render.Post event) {
-        render(event.getScreen(), event.getPoseStack(), event.getMouseX(), event.getMouseY(), event.getPartialTick());
+        render(event.getScreen(), event.getGuiGraphics().pose(), event.getMouseX(), event.getMouseY(), event.getPartialTick());
     }
 
     @SubscribeEvent

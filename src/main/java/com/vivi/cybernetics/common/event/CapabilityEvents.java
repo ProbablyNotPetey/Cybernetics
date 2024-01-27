@@ -65,7 +65,7 @@ public class CapabilityEvents {
 
     @SubscribeEvent
     public static void onStartTrackingPlayer(PlayerEvent.StartTracking event) {
-        if(event.getEntity().level.isClientSide) return;
+        if(event.getEntity().level().isClientSide) return;
         Entity target = event.getTarget();
         if(target instanceof Player player) {
 //            CyberwareInventory cyberware = CyberwareHelper.getCyberware(player).orElse(null);
@@ -83,7 +83,7 @@ public class CapabilityEvents {
     @SubscribeEvent
     public static void onLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
         Player player = event.getEntity();
-        if(player.level.isClientSide) return;
+        if(player.level().isClientSide) return;
         CyberwareHelper.getCyberware(player).ifPresent(cyberware -> {
             cyberware.syncToClient((ServerPlayer) player);
         });
@@ -108,7 +108,7 @@ public class CapabilityEvents {
     @SubscribeEvent
     public static void onChangeDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event) {
         Player player = event.getEntity();
-        if(player.level.isClientSide) return;
+        if(player.level().isClientSide) return;
         CyberwareHelper.getCyberware(player).ifPresent(cyberware -> {
             cyberware.syncToClient((ServerPlayer) player);
         });

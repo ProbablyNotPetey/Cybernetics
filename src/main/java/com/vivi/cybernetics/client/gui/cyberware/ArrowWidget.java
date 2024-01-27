@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.util.CybAbstractWidget;
 import com.vivi.cybernetics.client.gui.util.ITransparentWidget;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -28,19 +29,15 @@ public class ArrowWidget extends CybAbstractWidget implements ITransparentWidget
     }
 
     @Override
-    public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
+    public void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
 
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         this.visible = (alpha > 0.0f);
         if(!visible) return;
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, TEXTURE);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, alpha);
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
+        guiGraphics.setColor(1.0f, 1.0f, 1.0f, alpha);
         int u = 0, v = 0;
         switch (mode) {
             case IN_OK:
@@ -62,8 +59,7 @@ public class ArrowWidget extends CybAbstractWidget implements ITransparentWidget
                 u = 16;
                 v = 20;
         }
-        blit(pPoseStack, x, y, u, v,  width, height, 48, 48);
-        RenderSystem.disableBlend();
+        guiGraphics.blit(TEXTURE, getX(), getY(), u, v,  width, height, 48, 48);
     }
 
     @Override

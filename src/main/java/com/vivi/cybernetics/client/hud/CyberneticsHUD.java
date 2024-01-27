@@ -5,6 +5,7 @@ import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
@@ -64,11 +65,11 @@ public class CyberneticsHUD implements IGuiOverlay {
     }
 
     @Override
-    public void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
         PlayerAbilities abilities = AbilityHelper.getAbilities(Minecraft.getInstance().player).orElse(null);
         if(abilities == null || !abilities.hasAbility(CybAbilities.HUD.get())) return;
         if(!isEnabled) return;
-        elements.forEach(element -> element.render(gui, poseStack, partialTick, screenWidth, screenHeight));
+        elements.forEach(element -> element.render(gui, guiGraphics, partialTick, screenWidth, screenHeight));
     }
 
 

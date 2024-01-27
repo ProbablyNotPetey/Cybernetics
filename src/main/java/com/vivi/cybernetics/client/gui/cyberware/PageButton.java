@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.util.ITransparentWidget;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
@@ -34,7 +35,7 @@ public class PageButton extends AbstractButton implements ITransparentWidget {
     }
 
     @Override
-    public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
+    public void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
 
     }
 
@@ -49,25 +50,21 @@ public class PageButton extends AbstractButton implements ITransparentWidget {
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         visible = alpha > 0.0f;
         active = visible;
         canPress = left ? screen.getCurrentPage() > 0 : screen.getCurrentPage() < 2;
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        super.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
     }
 
     @Override
-    public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, TEXTURE);
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
+    public void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         float color = this.isHoveredOrFocused() ? 1.0F : 0.65F;
-        RenderSystem.setShaderColor(color, color, color, alpha);
+        guiGraphics.setColor(color, color, color, alpha);
+//        RenderSystem.setShaderColor(color, color, color, alpha);
         int v = left ? 0 : 10;
         int u;
         u = canPress ? 0 : 13;
-        blit(pPoseStack, this.x, this.y, this.width, this.height, u, v, this.width, this.height, 32, 32);
-        RenderSystem.disableBlend();
+        guiGraphics.blit(TEXTURE, this.getX(), this.getY(), this.width, this.height, u, v, this.width, this.height, 32, 32);
     }
 }

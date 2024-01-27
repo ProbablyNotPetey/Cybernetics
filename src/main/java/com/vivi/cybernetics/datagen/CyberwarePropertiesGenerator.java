@@ -4,7 +4,7 @@ import com.vivi.cybernetics.common.registry.CybItems;
 import com.vivi.cybernetics.common.registry.CybTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
-
+/*
 public class CyberwarePropertiesGenerator extends CyberwarePropertiesProvider{
     public CyberwarePropertiesGenerator(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         super(generator, existingFileHelper);
@@ -69,3 +69,4 @@ public class CyberwarePropertiesGenerator extends CyberwarePropertiesProvider{
 
     }
 }
+ */

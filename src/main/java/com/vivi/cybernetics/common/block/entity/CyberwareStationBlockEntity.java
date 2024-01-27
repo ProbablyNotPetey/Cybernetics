@@ -7,6 +7,7 @@ import com.vivi.cybernetics.common.block.CyberwareStationBlock;
 import com.vivi.cybernetics.common.menu.CyberwareStationMenu;
 import com.vivi.cybernetics.common.recipe.CyberwareStationRecipe;
 import com.vivi.cybernetics.common.registry.CybBlocks;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -243,7 +244,7 @@ public class CyberwareStationBlockEntity extends BlockEntity implements MenuProv
             for(int i = 0; i < 7; i++) {
                 itemHandler.extractItem(i, 1, false);
             }
-            ItemStack output = recipe.get().getResultItem();
+            ItemStack output = recipe.get().getResultItem(level.registryAccess());
             output.grow(itemHandler.getStackInSlot(7).getCount());
             itemHandler.setStackInSlot(7, output);
             resetProgress();
@@ -261,8 +262,8 @@ public class CyberwareStationBlockEntity extends BlockEntity implements MenuProv
         if(recipe.isEmpty()) return false;
         if(energyHandler.getEnergyStored() == 0) return false;
 
-        boolean canInsertIntoOutput = container.getItem(7).getItem() == recipe.get().getResultItem().getItem() || container.getItem(7).isEmpty();
-        boolean canInsertAmountIntoOutput = container.getItem(7).getMaxStackSize() >= container.getItem(7).getCount() + recipe.get().getResultItem().getCount();
+        boolean canInsertIntoOutput = container.getItem(7).getItem() == recipe.get().getResultItem(level.registryAccess()).getItem() || container.getItem(7).isEmpty();
+        boolean canInsertAmountIntoOutput = container.getItem(7).getMaxStackSize() >= container.getItem(7).getCount() + recipe.get().getResultItem(level.registryAccess()).getCount();
 
         return canInsertIntoOutput && canInsertAmountIntoOutput;
 

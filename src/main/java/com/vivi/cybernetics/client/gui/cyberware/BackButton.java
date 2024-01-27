@@ -4,6 +4,7 @@ package com.vivi.cybernetics.client.gui.cyberware;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
@@ -28,18 +29,14 @@ public class BackButton extends AbstractButton {
     }
 
     @Override
-    public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, TEXTURE);
+    public void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         float color = this.isHoveredOrFocused() ? 1.0F : 0.65F;
-        RenderSystem.setShaderColor(color, color, color, alpha);
-        setBlitOffset(60);
-        blit(pPoseStack, this.x, this.y, this.width, this.height, 0, 23, this.width, this.height, 32, 32);
-        setBlitOffset(0);
+        guiGraphics.setColor(color, color, color, alpha);
+        guiGraphics.blit(TEXTURE, getX(), getY(), 60, 0, 23, this.width, this.height, 32, 32);
     }
 
     @Override
-    public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
+    public void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
 
     }
 }
