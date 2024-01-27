@@ -2,7 +2,7 @@ plugins {
     id 'eclipse'
     id 'maven-publish'
     id 'java-library'
-    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
 }
@@ -16,7 +16,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
 
-    mappings channel: 'parchment', version: "2022.11.27-${minecraft_version}"
+    mappings channel: 'parchment', version: "2023.09.03-${minecraft_version}"
 //    mappings channel: 'official', version: "${minecraft_version}"
 
      accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
@@ -142,7 +142,7 @@ repositories {
 
 dependencies {
 
-    minecraft "net.minecraftforge:forge:${minecraft_version}-43.2.14"
+    minecraft "net.minecraftforge:forge:${minecraft_version}-47.2.1"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
 
@@ -162,16 +162,16 @@ dependencies {
     runtimeOnly fg.deobf("mekanism:Mekanism:${minecraft_version}-${mekanism_version}:generators")
     runtimeOnly fg.deobf("mekanism:Mekanism:${minecraft_version}-${mekanism_version}:tools")
 
-    runtimeOnly fg.deobf("maven.modrinth:the-one-probe:1.19-6.2.2")
+    runtimeOnly fg.deobf("maven.modrinth:the-one-probe:1.20.1-10.0.0")
 
-    runtimeOnly fg.deobf("maven.modrinth:cofh-core:10.3.0")
+    runtimeOnly fg.deobf("maven.modrinth:cofh-core:11.0.0")
 
-    runtimeOnly fg.deobf("maven.modrinth:xaeros-minimap:23.9.0_Forge_1.19.1")
+    runtimeOnly fg.deobf("maven.modrinth:xaeros-minimap:23.8.4_Forge_1.20")
 
     //added because lodestone is stupid
-    implementation fg.deobf("curse.maven:curios-309927:5049407")
+    implementation fg.deobf("maven.modrinth:curios:5.5.0+1.20.1")
+    implementation fg.deobf("maven.modrinth:farmers-delight:1.20.1-1.2.4")
 
-    implementation fg.deobf("curse.maven:farmers_delight-398521:3999157")
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
