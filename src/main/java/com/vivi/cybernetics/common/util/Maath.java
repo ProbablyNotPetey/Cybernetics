@@ -2,6 +2,7 @@ package com.vivi.cybernetics.common.util;
 
 import com.mojang.math.Vector3f;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec2;
 
 /**
  * Class containing shitty math functions that I still have to use for some reason
@@ -41,5 +42,15 @@ public class Maath {
     }
     public static float toY(float r, float t) {
         return r * Mth.sin(t);
+    }
+
+    /**
+     * Rotates a vector around angle theta
+     * @param in        input vector
+     * @param angle     angle to rotate (radians)
+     * @return          the new vector
+     */
+    public static Vec2 rotateVec(Vec2 in, float angle) {
+        return new Vec2(in.x * Mth.cos(angle) - in.y * Mth.sin(angle), in.x * Mth.sin(angle) + in.y * Mth.cos(angle));
     }
 }

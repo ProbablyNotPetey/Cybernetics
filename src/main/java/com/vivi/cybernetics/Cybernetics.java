@@ -5,6 +5,7 @@ import com.vivi.cybernetics.client.gui.cyberware.CyberwareScreen;
 import com.vivi.cybernetics.client.hud.AbilityHUD;
 import com.vivi.cybernetics.client.hud.CyberneticsHUD;
 import com.vivi.cybernetics.client.hud.MobEffectHUD;
+import com.vivi.cybernetics.client.particle.BlastWaveParticle;
 import com.vivi.cybernetics.client.shader.CybCoreShaders;
 import com.vivi.cybernetics.client.shader.CybPostShaders;
 import com.vivi.cybernetics.client.util.HudAnchor;
@@ -24,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -72,6 +74,7 @@ public class Cybernetics {
         CybAbilities.register(modEventBus);
         CybMobEffects.register(modEventBus);
         CybAttributes.register(modEventBus);
+        CybParticles.register(modEventBus);
 
         //Setup
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
@@ -117,6 +120,11 @@ public class Cybernetics {
         event.register(CyberwareInventory.class);
         event.register(PlayerEnergyStorage.class);
         event.register(PlayerAbilities.class);
+    }
+
+    @SubscribeEvent
+    public void registerParticles(RegisterParticleProvidersEvent event) {
+        event.register(CybParticles.BLAST_WAVE.get(), new BlastWaveParticle.Provider());
     }
 
 

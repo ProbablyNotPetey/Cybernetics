@@ -3,8 +3,10 @@ package com.vivi.cybernetics.common.item;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.common.registry.CybItems;
+import com.vivi.cybernetics.common.registry.CybParticles;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -15,6 +17,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PacketDistributor;
+import team.lodestar.lodestone.network.screenshake.PositionedScreenshakePacket;
+import team.lodestar.lodestone.registry.common.LodestonePacketRegistry;
+import team.lodestar.lodestone.systems.easing.Easing;
 
 public class KineticDischargerItem extends CyberwareItem {
     public KineticDischargerItem(Item.Properties properties) {
@@ -36,9 +42,9 @@ public class KineticDischargerItem extends CyberwareItem {
 //        Cybernetics.LOGGER.info("Spiking");
         player.fallDistance = 0;
 
-        Vec3 movement = player.getDeltaMovement();
-        if(movement.y > 0) movement = new Vec3(movement.x, 0.0, movement.z);
-        player.setDeltaMovement(movement.x, ((movement.y)- 0.5) * 2 , movement.z);
+        double y = player.getDeltaMovement().y;
+        if(y > 0) y = 0.0;
+        player.setDeltaMovement(0, (y- 0.6) * 2 , 0);
 //        if (player.isSprinting()) {
 //            float f = player.getYRot() * ((float)Math.PI / 180F);
 //            player.setDeltaMovement(player.getDeltaMovement().add((double)(-Mth.sin(f) * 0.2F), 0.0D, (double)(Mth.cos(f) * 0.2F)));
@@ -50,7 +56,7 @@ public class KineticDischargerItem extends CyberwareItem {
     public static void shockwave(Player player, Level level) {
         BlockPos pos = new BlockPos(player.position().x, player.getBoundingBox().minY - 0.5000001D, player.position().z);
 
-        BlockPos.betweenClosed(pos.offset(3, 0, 3), pos.offset(-3, 0, -3)).forEach(blockPos -> {
+        BlockPos.betweenClosed(pos.offset(2, 0, 2), pos.offset(-2, 0, -2)).forEach(blockPos -> {
 
             BlockPos difference = blockPos.subtract(pos);
             if(Math.abs(difference.getX()) == 3 && Math.abs(difference.getZ()) == 3) return;
@@ -67,6 +73,18 @@ public class KineticDischargerItem extends CyberwareItem {
             entity.hurt(DamageSource.playerAttack(player), 9.0f);
             entity.push(0, 0.8, 0);
         });
+
+
+        //todo: make this run 1 tick later
+        if(level instanceof ServerLevel server) {
+            server.sendParticles(CybParticles.BLAST_WAVE.get(), player.position().x, player.position().y + 0.01, player.position().z, 1, 0, 0, 0, 0);
+
+            //todo: fix screenshake not applying if you're not looking (extend PositionedScreenshakeInstance and write custom packed
+            LodestonePacketRegistry.LODESTONE_CHANNEL.send(
+                    PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(player.position().x, player.position().y, player.position().z, 10.0, player.level.dimension())),
+                    new PositionedScreenshakePacket(7, player.position(), 5.0f, 10.0f).setIntensity(0.65f).setEasing(Easing.EXPO_OUT, Easing.SINE_IN_OUT)
+            );
+        }
 
     }
 }
