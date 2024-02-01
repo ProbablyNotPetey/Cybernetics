@@ -1,9 +1,6 @@
 package com.vivi.cybernetics.common.ability;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.shader.BerserkRenderer;
-import com.vivi.cybernetics.client.util.Easing;
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -11,8 +8,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import team.lodestar.lodestone.systems.easing.Easing;
 
 import java.util.UUID;
 
@@ -43,7 +40,6 @@ public class BerserkAbilityType extends AbilityType {
         if(level.isClientSide) {
             //enable orange post shader
             BerserkRenderer.getInstance().start(20, Easing.EXPO_OUT);
-//            Minecraft.getInstance().gameRenderer.loadEffect(new ResourceLocation(Cybernetics.MOD_ID, "shaders/post/tint.json"));
         }
     }
 

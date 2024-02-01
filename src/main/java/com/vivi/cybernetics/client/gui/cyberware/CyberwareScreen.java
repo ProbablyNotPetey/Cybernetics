@@ -1,11 +1,9 @@
 package com.vivi.cybernetics.client.gui.cyberware;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.util.CybAbstractContainerScreen;
 import com.vivi.cybernetics.client.gui.util.TextWidget;
-import com.vivi.cybernetics.client.util.Easing;
 import com.vivi.cybernetics.client.util.FakeLocalPlayer;
 import com.vivi.cybernetics.client.util.MouseHelper;
 import com.vivi.cybernetics.client.util.ScreenHelper;
@@ -23,7 +21,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
+import team.lodestar.lodestone.systems.easing.Easing;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +82,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 
         entityWidget = new EntityWidget(leftPos + 91, topPos - 136, 60, fakePlayer)
                 .setBox(leftPos + 5, leftPos + 221, topPos + 5, topPos + 149);
-        moveWidget(entityWidget, leftPos + 91, topPos + 16, 20, Easing.QUART_OUT);
+        moveWidget(entityWidget, leftPos + 91, topPos + 16, 20, Easing.QUARTIC_OUT);
         addRenderableWidget(entityWidget);
 
 

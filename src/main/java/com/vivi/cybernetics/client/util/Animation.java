@@ -1,6 +1,7 @@
 package com.vivi.cybernetics.client.util;
 
 import net.minecraft.util.Mth;
+import team.lodestar.lodestone.systems.easing.Easing;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -39,7 +40,7 @@ public class Animation {
             isDone = true;
             return;
         }
-        float easedPercent = easing.ease(percent);
+        float easedPercent = easing.ease(percent, 0, 1, 1);
         setter.accept(Mth.lerp(easedPercent, oldValue, newValue));
     }
 

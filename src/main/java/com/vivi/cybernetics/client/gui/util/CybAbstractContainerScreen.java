@@ -1,15 +1,13 @@
 package com.vivi.cybernetics.client.gui.util;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.client.util.ScreenHelper;
-import com.vivi.cybernetics.client.util.Easing;
-import com.vivi.cybernetics.client.util.ScheduledTask;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import team.lodestar.lodestone.systems.easing.Easing;
 
 import java.util.ArrayList;
 import java.util.List;

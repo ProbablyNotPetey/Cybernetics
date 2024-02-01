@@ -12,7 +12,6 @@ import com.vivi.cybernetics.server.network.packet.c2s.C2SModifyAbilitiesPacket;
 import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import com.vivi.cybernetics.common.util.Maath;
-import com.vivi.cybernetics.client.util.Easing;
 import com.vivi.cybernetics.client.util.InputHelper;
 import com.vivi.cybernetics.client.util.RenderHelper;
 import com.vivi.cybernetics.client.util.ScreenHelper;
@@ -26,6 +25,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import org.joml.Matrix4f;
+import team.lodestar.lodestone.systems.easing.Easing;
 
 import java.util.List;
 

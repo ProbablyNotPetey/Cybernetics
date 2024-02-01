@@ -1,12 +1,12 @@
 package com.vivi.cybernetics.client.shader;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.vivi.cybernetics.client.util.Easing;
 import com.vivi.cybernetics.common.config.ClientConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.PostPass;
+import team.lodestar.lodestone.systems.easing.Easing;
 
 public class BerserkRenderer {
     private static final BerserkRenderer INSTANCE = new BerserkRenderer();
@@ -56,7 +56,7 @@ public class BerserkRenderer {
                 renderPhase = 0;
             }
             else {
-                progress = inEasing.ease(percent);
+                progress = inEasing.ease(percent, 0, 1, 1);
             }
         }
         else if(renderPhase == 2) {
@@ -67,7 +67,7 @@ public class BerserkRenderer {
                 progress = 0.0f;
             }
             else {
-                progress = 1 - outEasing.ease(percent);
+                progress = 1 - outEasing.ease(percent, 0, 1, 1);
             }
         }
 

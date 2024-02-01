@@ -1,12 +1,12 @@
 package com.vivi.cybernetics.client.gui.cyberware;
 
-import com.vivi.cybernetics.client.util.Easing;
 import com.vivi.cybernetics.common.cyberware.CyberwareSection;
 import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.server.network.packet.c2s.C2SSwitchActiveSlotPacket;
 import com.vivi.cybernetics.server.network.packet.c2s.C2SSwitchPagePacket;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import team.lodestar.lodestone.systems.easing.Easing;
 
 import java.util.Iterator;
 
