@@ -3,23 +3,18 @@ package com.vivi.cybernetics.client.particle;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Axis;
 import com.vivi.cybernetics.client.shader.CybCoreShaders;
 import com.vivi.cybernetics.client.util.RenderHelper;
-import com.vivi.cybernetics.common.util.Maath;
+import com.vivi.cybernetics.common.config.ClientConfig;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Quaternionf;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -47,9 +42,79 @@ public class BlastWaveParticle extends Particle {
     }
 
 
-
     @Override
-    public void render(VertexConsumer pBuffer, Camera camera, float pPartialTicks) {
+    public void render(VertexConsumer pBuffer, Camera pRenderInfo, float pPartialTicks) {
+        if(ClientConfig.simplifyShockwave.get()) {
+            renderFlat(pBuffer, pRenderInfo, pPartialTicks);
+        }
+        else {
+            renderTessellated(pBuffer, pRenderInfo, pPartialTicks);
+        }
+    }
+
+    public void renderTessellated(VertexConsumer pBuffer, Camera camera, float pPartialTicks) {
+        Vec3 cameraPos = camera.getPosition();
+
+        float x = (float)(Mth.lerp(pPartialTicks, this.xo, this.x) - cameraPos.x()) - radius;
+        float y = (float)(Mth.lerp(pPartialTicks, this.yo, this.y) - cameraPos.y());
+        float z = (float)(Mth.lerp(pPartialTicks, this.zo, this.z) - cameraPos.z()) - radius;
+
+        RenderSystem.enableBlend();
+//        RenderSystem.disableCull();
+        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+//        RenderSystem.disableTexture();
+
+        ShaderInstance shader = CybCoreShaders.getBlastWaveShader();
+        if(shader == null) return;
+
+        //uniforms
+        shader.safeGetUniform("Duration").set(lifetime);
+        shader.safeGetUniform("Time").set(age + pPartialTicks);
+
+        RenderSystem.setShader(() -> shader);
+        RenderHelper.resetShaderColor();
+
+
+        BufferBuilder buffer = Tesselator.getInstance().getBuilder();
+        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+
+        int scale = 64; //how many quads per row/column
+
+        List<Vector3f> verticies = new ArrayList<>();
+        List<Vector2f> uvs = new ArrayList<>();
+
+        float quadSize = radius * 2.0f / scale;
+        float uvSize = 1.0f/scale;
+        for(int r = 0; r < scale; r++) {
+            for(int c = 0; c < scale; c++) {
+                verticies.add(new Vector3f(0, 0, 0).add(r * quadSize, 0, c * quadSize).add(x, y, z));
+                verticies.add(new Vector3f(0, 0, quadSize).add(r * quadSize, 0, c * quadSize).add(x, y, z));
+                verticies.add(new Vector3f(quadSize, 0, quadSize).add(r * quadSize, 0, c * quadSize).add(x, y, z));
+                verticies.add(new Vector3f(quadSize, 0, 0).add(r * quadSize, 0, c * quadSize).add(x, y, z));
+
+                uvs.add(new Vector2f(0, 0).add(r * uvSize, c * uvSize));
+                uvs.add(new Vector2f(0, uvSize).add(r * uvSize, c * uvSize));
+                uvs.add(new Vector2f(uvSize, uvSize).add(r * uvSize, c * uvSize));
+                uvs.add(new Vector2f(uvSize, 0).add(r * uvSize, c * uvSize));
+
+            }
+        }
+
+        int j = this.getLightColor(pPartialTicks);
+
+        for(int i = 0; i < verticies.size(); i++) {
+            Vector3f vertex = verticies.get(i);
+            Vector2f uv = uvs.get(i);
+            pBuffer.vertex(vertex.x(), vertex.y(), vertex.z()).uv(uv.x(), uv.y()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+        }
+
+        Tesselator.getInstance().end();
+//        RenderSystem.enableTexture();
+//        RenderSystem.enableCull();
+        RenderSystem.disableBlend();
+    }
+
+    public void renderFlat(VertexConsumer pBuffer, Camera camera, float pPartialTicks) {
         Vec3 cameraPos = camera.getPosition();
 
 
@@ -68,6 +133,7 @@ public class BlastWaveParticle extends Particle {
         //uniforms
         shader.safeGetUniform("Duration").set(lifetime);
         shader.safeGetUniform("Time").set(age + pPartialTicks);
+        shader.safeGetUniform("VertexOffset").set(0); //disables vertex offsetting, as only using 1 quad
 
         RenderSystem.setShader(() -> shader);
         RenderHelper.resetShaderColor();
@@ -106,6 +172,8 @@ public class BlastWaveParticle extends Particle {
         RenderSystem.enableCull();
         RenderSystem.disableBlend();
     }
+
+
 
 
 //    @Override

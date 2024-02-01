@@ -19,7 +19,6 @@ in vec4 vertexColor;
 
 out vec4 fragColor;
 
-vec2 center = vec2(0, 0);
 float threshold = 0.25;
 
 void main() {
@@ -31,7 +30,7 @@ void main() {
     float movePercent = EaseOutCubic(percent);
 
     vec2 ndc = texCoord0 * 2 - 1;
-    float dist = distance(ndc, center);
+    float dist = length(ndc);
     vec4 color = vertexColor * ColorModulator;
 
     float f = movePercent - dist;

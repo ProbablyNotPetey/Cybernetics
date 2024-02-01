@@ -56,9 +56,7 @@ public class CapacityGuiComponent extends CybAbstractWidget {
         //draws from the top, not the bottom
 //        Cybernetics.LOGGER.info("Stored: " + energyStored + ", Max: " + maxEnergy);
 //        fillGradient(poseStack, x, y + (height - scaledHeight), x + width, y + height, 0xfffc3232, 0xff780e00); // color is ARGB
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        RenderSystem.setShaderTexture(0, TEXTURE);
+        RenderSystem.enableBlend();
         int u = capacity > maxCapacity ? 24 : 0;
         guiGraphics.blit(TEXTURE, getX(), getY() + (height - scaledHeight), u, height - scaledHeight, width, scaledHeight, 144, 144);
     }

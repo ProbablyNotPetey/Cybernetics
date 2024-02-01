@@ -80,7 +80,7 @@ public class KineticDischargerItem extends CyberwareItem {
 
             CybPackets.getInstance().send(
                     PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(player.position().x, player.position().y, player.position().z, 10.0, player.level().dimension())),
-                    new CustomPositionedScreenshakePacket(3, true, player.position(), 5.0f, 10.0f).setIntensity(0.7f).setEasing(Easing.EXPO_OUT, Easing.SINE_IN_OUT)
+                    new CustomPositionedScreenshakePacket(3, true, player.position(), 5.0f, 10.0f).setIntensity(0.775f).setEasing(Easing.EXPO_OUT, Easing.SINE_IN_OUT)
             );
         }
 

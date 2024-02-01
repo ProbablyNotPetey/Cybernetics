@@ -17,7 +17,12 @@ public class CybCreativeTabs{
         public static final RegistryObject<CreativeModeTab> TAB = CREATIVE_TABS.register("cybernetics",
             () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.cybernetics")).icon(() ->
                             new ItemStack(CybItems.MK2_OPTICS.get()))
-                    .displayItems((parameters, output) -> CybItems.ITEMS.getEntries().forEach((item) -> output.accept(item.get()))
+                    .displayItems((parameters, output) -> {
+                        CybItems.ITEMS.getEntries().forEach((item) -> output.accept(item.get()));
+                        CybBlocks.BLOCKS.getEntries().forEach(block -> {
+                            output.accept(block.get().asItem());
+                        });
+                    }
                     ).build());
 
     public static final void register(IEventBus eventBus) {

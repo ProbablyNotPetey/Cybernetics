@@ -7,6 +7,7 @@ import com.mojang.math.Axis;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.util.Maath;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -136,5 +137,8 @@ public class RenderHelper {
 
     public static void resetShaderColor() {
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+    public static void resetShaderColor(GuiGraphics guiGraphics) {
+        guiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 }

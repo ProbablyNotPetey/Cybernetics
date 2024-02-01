@@ -55,6 +55,5 @@ public class PreviewCapacityGuiComponent extends CapacityGuiComponent {
         int u = previewCapacity > maxCapacity ? 24 : 0;
         guiGraphics.blit(TEXTURE, getX(), getY() + (height - scaledNewHeight), u, height - scaledNewHeight, width, scaledNewHeight - scaledOldHeight, 144, 144);
 
-        RenderSystem.disableBlend();
     }
 }

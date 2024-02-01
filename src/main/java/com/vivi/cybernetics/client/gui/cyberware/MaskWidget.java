@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.client.gui.util.CybAbstractWidget;
 import com.vivi.cybernetics.client.gui.util.ITransparentWidget;
+import com.vivi.cybernetics.client.util.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
@@ -32,7 +33,12 @@ public class MaskWidget extends CybAbstractWidget implements ITransparentWidget 
     public void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         guiGraphics.setColor(1.0f, 1.0f, 1.0f, alpha);
 //        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, alpha);
+
+        //why is blend disabled here?? idk
+        RenderSystem.enableBlend();
         guiGraphics.blit(CyberwareScreen.TEXTURE, getX(), getY(), 300, 27, 9, width, height, 226, 154);
+//        RenderSystem.disableBlend();
+        RenderHelper.resetShaderColor(guiGraphics);
     }
 
     @Override

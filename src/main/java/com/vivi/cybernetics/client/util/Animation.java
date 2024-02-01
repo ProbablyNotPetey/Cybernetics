@@ -47,4 +47,13 @@ public class Animation {
         return isDone;
     }
 
+    @Override
+    public String toString() {
+        return "Animation{" +
+                "oldValue=" + oldValue +
+                ", newValue=" + newValue +
+                ", startTime=" + startTime +
+                ", duration=" + duration +
+                '}';
+    }
 }

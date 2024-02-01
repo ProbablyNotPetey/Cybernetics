@@ -14,6 +14,7 @@ import com.vivi.cybernetics.common.menu.CyberwareMenu;
 import com.vivi.cybernetics.common.menu.CyberwareSlot;
 import com.vivi.cybernetics.common.menu.InventorySlot;
 import com.vivi.cybernetics.server.network.CybPackets;
+import com.vivi.cybernetics.server.network.packet.c2s.C2SSwitchActiveSlotPacket;
 import com.vivi.cybernetics.server.network.packet.c2s.C2SSwitchPagePacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -60,6 +61,17 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
     @Override
     protected void init() {
         super.init();
+
+        currentState = null;
+
+//        Cybernetics.LOGGER.info("Initializing Screen");
+        //reset slots, pages on menu resize
+        this.getMenu().switchActiveSlots(null);
+        CybPackets.sendToServer(new C2SSwitchActiveSlotPacket());
+        this.getMenu().switchInventoryPage(-1);
+        CybPackets.sendToServer(new C2SSwitchPagePacket());
+
+
         LocalPlayer player = Minecraft.getInstance().player;
         fakePlayer = new FakeLocalPlayer(Minecraft.getInstance(), Minecraft.getInstance().level, player);
         previewCapacityValue = -1;
@@ -255,7 +267,9 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
     @Override
     public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float frameTimeDelta) {
         renderBackground(guiGraphics);
+        RenderSystem.enableBlend();
         super.render(guiGraphics, pMouseX, pMouseY, frameTimeDelta);
+        RenderSystem.disableBlend();
         currentState.render(guiGraphics, getPartialTick());
         renderTooltip(guiGraphics, pMouseX, pMouseY);
 
@@ -294,6 +308,7 @@ public class CyberwareScreen<T extends CyberwareMenu> extends CybAbstractContain
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        RenderSystem.disableBlend();
         if(MouseHelper.isHovering(capacityComponent.getX(), capacityComponent.getY(), capacityComponent.getWidth(), capacityComponent.getHeight(), mouseX, mouseY)) {
             guiGraphics.renderTooltip(font, capacityComponent.getTooltip(menu.getStoredCapacity(), menu.getMaxCapacity()), Optional.empty(), mouseX - leftPos, mouseY - topPos);
         }

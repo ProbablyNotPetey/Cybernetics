@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.util.CybAbstractWidget;
 import com.vivi.cybernetics.client.gui.util.ITransparentWidget;
+import com.vivi.cybernetics.client.util.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
@@ -34,9 +35,13 @@ public class ArrowWidget extends CybAbstractWidget implements ITransparentWidget
     }
 
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         this.visible = (alpha > 0.0f);
-        if(!visible) return;
+        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+    }
+
+    @Override
+    public void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         guiGraphics.setColor(1.0f, 1.0f, 1.0f, alpha);
         int u = 0, v = 0;
         switch (mode) {
@@ -60,6 +65,7 @@ public class ArrowWidget extends CybAbstractWidget implements ITransparentWidget
                 v = 20;
         }
         guiGraphics.blit(TEXTURE, getX(), getY(), u, v,  width, height, 48, 48);
+        RenderHelper.resetShaderColor(guiGraphics);
     }
 
     @Override

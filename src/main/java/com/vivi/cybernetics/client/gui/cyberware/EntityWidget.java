@@ -1,6 +1,8 @@
 package com.vivi.cybernetics.client.gui.cyberware;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.util.CybAbstractWidget;
 import com.vivi.cybernetics.client.gui.util.IScalableWidget;
 import com.vivi.cybernetics.client.util.RenderHelper;
@@ -69,5 +71,8 @@ public class EntityWidget extends CybAbstractWidget implements IScalableWidget {
         guiGraphics.pose().popPose();
         //7.5f * (float)Math.cos((getGameTime() - startTime + pPartialTick) / 40.0f)
         guiGraphics.disableScissor();
+
+        //rendering entity disables blend, for some reason.
+        RenderSystem.enableBlend();
     }
 }

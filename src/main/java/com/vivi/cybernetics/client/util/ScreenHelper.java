@@ -1,8 +1,8 @@
 package com.vivi.cybernetics.client.util;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
@@ -80,7 +80,7 @@ public class ScreenHelper {
         }
     }
 
-    private static void render(Screen screen, PoseStack poseStack, int mouseX, int mouseY, float frameTimeDelta) {
+    private static void render(Screen screen, GuiGraphics guiGraphics, int mouseX, int mouseY, float frameTimeDelta) {
         List<Animation> animationList = animations.get(screen);
         for(int i = 0; i < animationList.size(); i++) {
             Animation animation = animationList.get(i);
@@ -104,7 +104,7 @@ public class ScreenHelper {
 
     @SubscribeEvent
     public static void onRenderScreenPost(ScreenEvent.Render.Post event) {
-        render(event.getScreen(), event.getGuiGraphics().pose(), event.getMouseX(), event.getMouseY(), event.getPartialTick());
+        render(event.getScreen(), event.getGuiGraphics(), event.getMouseX(), event.getMouseY(), event.getPartialTick());
     }
 
     @SubscribeEvent

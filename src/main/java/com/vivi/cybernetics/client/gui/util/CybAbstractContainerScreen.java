@@ -55,34 +55,6 @@ public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu
     @Override
     public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float frameTimeDelta) {
         super.render(guiGraphics, pMouseX, pMouseY, frameTimeDelta);
-
-        //on the client so this is fine
-//        long currentGameTime = getGameTime();
-//        float partialTick = getPartialTick();
-//        for(int i = 0; i < widgetsToMove.size(); i++) {
-//            WidgetMovement movement = widgetsToMove.get(i);
-//            movement.update(currentGameTime, partialTick);
-//            if(movement.isDone()) {
-//                widgetsToMove.remove(i);
-//                i--;
-//            }
-//        }
-//        for(int i = 0; i < widgetsToScale.size(); i++) {
-//            WidgetScale scale = widgetsToScale.get(i);
-//            scale.update(currentGameTime, partialTick);
-//            if(scale.isDone()) {
-//                widgetsToScale.remove(i);
-//                i--;
-//            }
-//        }
-//        for(int i = 0; i < widgetsToAlpha.size(); i++) {
-//            WidgetAlpha alphaWidget = widgetsToAlpha.get(i);
-//            alphaWidget.update(currentGameTime, partialTick);
-//            if(alphaWidget.isDone()) {
-//                widgetsToAlpha.remove(i);
-//                i--;
-//            }
-//        }
     }
 
     public void moveWidget(AbstractWidget widget, int newX, int newY, int duration) {

@@ -4,6 +4,7 @@ package com.vivi.cybernetics.client.gui.cyberware;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.client.util.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -30,9 +31,11 @@ public class BackButton extends AbstractButton {
 
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        float color = this.isHoveredOrFocused() ? 1.0F : 0.65F;
+        //isHovered() instead of isHoveredOrFocused(), because idrk how focusing works lmao this is a bad hack
+        float color = this.isHovered() ? 1.0F : 0.65F;
         guiGraphics.setColor(color, color, color, alpha);
         guiGraphics.blit(TEXTURE, getX(), getY(), 60, 0, 23, this.width, this.height, 32, 32);
+        RenderHelper.resetShaderColor(guiGraphics);
     }
 
     @Override

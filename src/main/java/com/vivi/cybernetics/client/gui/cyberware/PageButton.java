@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.util.ITransparentWidget;
+import com.vivi.cybernetics.client.util.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -61,10 +62,12 @@ public class PageButton extends AbstractButton implements ITransparentWidget {
     public void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         float color = this.isHoveredOrFocused() ? 1.0F : 0.65F;
         guiGraphics.setColor(color, color, color, alpha);
+        RenderSystem.enableBlend();
 //        RenderSystem.setShaderColor(color, color, color, alpha);
         int v = left ? 0 : 10;
         int u;
         u = canPress ? 0 : 13;
         guiGraphics.blit(TEXTURE, this.getX(), this.getY(), this.width, this.height, u, v, this.width, this.height, 32, 32);
+        RenderHelper.resetShaderColor(guiGraphics);
     }
 }

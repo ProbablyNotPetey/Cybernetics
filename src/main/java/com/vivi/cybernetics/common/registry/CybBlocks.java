@@ -52,7 +52,7 @@ public class CybBlocks {
 
     //registers block items for every block registered
     public static void registerBlockItems(final RegisterEvent event) {
-        BLOCKS.getEntries().stream().forEach(block -> {
+        BLOCKS.getEntries().forEach(block -> {
             event.register(ForgeRegistries.Keys.ITEMS,
                     helper -> helper.register(new ResourceLocation(Objects.requireNonNull(block.getId().toString())), new BlockItem(block.get(), new Item.Properties())));
         });

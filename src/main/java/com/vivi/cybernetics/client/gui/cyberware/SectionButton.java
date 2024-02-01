@@ -1,8 +1,10 @@
 package com.vivi.cybernetics.client.gui.cyberware;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.client.gui.util.ITransparentWidget;
+import com.vivi.cybernetics.client.util.RenderHelper;
 import com.vivi.cybernetics.common.cyberware.CyberwareSection;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
@@ -77,12 +79,15 @@ public class SectionButton extends AbstractButton implements ITransparentWidget 
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         float color = this.isHoveredOrFocused() ? 1.0F : 0.65F;
-        guiGraphics.setColor(color, color, color, alpha);
 //        RenderSystem.setShaderColor(color, color, color, alpha);
 //            int u = this.isHoveredOrFocused() ? width : 0;
+//        RenderSystem.enableBlend();
         guiGraphics.enableScissor(boxLeft, boxTop, boxRight, boxBottom);
+        guiGraphics.setColor(color, color, color, alpha);
         guiGraphics.blit(texture, this.getX(), this.getY(), 0, 0, this.width, this.height, this.width, this.height);
         guiGraphics.disableScissor();
+//        RenderSystem.disableBlend();
+        RenderHelper.resetShaderColor(guiGraphics);
 
     }
 }
