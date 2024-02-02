@@ -1,18 +1,5 @@
 package com.vivi.cybernetics.datagen;
 
-import com.google.common.collect.Sets;
-import com.google.gson.JsonObject;
-import com.mojang.logging.LogUtils;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.resources.ResourceLocation;
-import org.slf4j.Logger;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Set;
 /*
 public class CybRecipeProvider extends RecipeProvider {
     private static final Logger LOGGER = LogUtils.getLogger();

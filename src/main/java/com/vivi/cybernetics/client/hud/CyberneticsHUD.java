@@ -1,6 +1,5 @@
 package com.vivi.cybernetics.client.hud;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.common.util.AbilityHelper;
@@ -10,7 +9,6 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CyberneticsHUD implements IGuiOverlay {

@@ -11,7 +11,6 @@ import com.vivi.cybernetics.common.ability.HUDAbilityType;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;

@@ -9,9 +9,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import team.lodestar.lodestone.systems.easing.Easing;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class CybAbstractContainerScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
 
     protected long time;

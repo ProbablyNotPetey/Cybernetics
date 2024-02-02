@@ -2,7 +2,6 @@ package com.vivi.cybernetics.common.ability;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 
 //This should be a registry

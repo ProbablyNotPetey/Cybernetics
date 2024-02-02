@@ -1,17 +1,5 @@
 package com.vivi.cybernetics.datagen;
 
-import com.vivi.cybernetics.common.registry.CybBlocks;
-import com.vivi.cybernetics.common.registry.CybItems;
-import com.vivi.cybernetics.common.registry.CybTags;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.Items;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.function.Consumer;
 /*
 public class CyberwareRecipesGenerator extends CybRecipeProvider {
     public CyberwareRecipesGenerator(DataGenerator pGenerator) {

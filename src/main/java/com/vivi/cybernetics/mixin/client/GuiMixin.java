@@ -1,6 +1,5 @@
 package com.vivi.cybernetics.mixin.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.client.hud.CyberneticsHUD;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;

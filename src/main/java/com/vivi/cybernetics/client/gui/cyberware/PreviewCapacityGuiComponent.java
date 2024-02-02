@@ -1,10 +1,7 @@
 package com.vivi.cybernetics.client.gui.cyberware;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
 
 public class PreviewCapacityGuiComponent extends CapacityGuiComponent {

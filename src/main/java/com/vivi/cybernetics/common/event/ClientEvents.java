@@ -2,13 +2,12 @@ package com.vivi.cybernetics.common.event;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.AbilityScreen;
-import com.vivi.cybernetics.client.hud.CyberneticsHUD;
+import com.vivi.cybernetics.client.util.InputHelper;
 import com.vivi.cybernetics.common.item.ReinforcedTendonsItem;
 import com.vivi.cybernetics.common.registry.*;
-import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import com.vivi.cybernetics.common.util.CyberwareHelper;
-import com.vivi.cybernetics.client.util.InputHelper;
+import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.server.network.packet.c2s.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;

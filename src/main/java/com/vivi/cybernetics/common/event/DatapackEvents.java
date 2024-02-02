@@ -1,8 +1,8 @@
 package com.vivi.cybernetics.common.event;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.server.data.CyberwarePropertiesReloadListener;
 import com.vivi.cybernetics.common.util.CyberwareHelper;
+import com.vivi.cybernetics.server.data.CyberwarePropertiesReloadListener;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

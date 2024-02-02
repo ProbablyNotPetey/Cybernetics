@@ -1,9 +1,7 @@
 package com.vivi.cybernetics.common.capability;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.ability.Ability;
 import com.vivi.cybernetics.common.ability.AbilityType;
-import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.server.network.packet.s2c.S2CSyncAbilitiesPacket;
 import net.minecraft.nbt.CompoundTag;
@@ -77,10 +75,8 @@ public class PlayerAbilities implements INBTSerializable<CompoundTag> {
     public boolean enableAbility(AbilityType type, boolean syncToClient) {
         Ability ability = getAbility(type);
         if(ability == null) return false;
-        Cybernetics.LOGGER.info("Ability not null");
         if(!ability.enable(player)) return false;
         if(!player.level().isClientSide && syncToClient) {
-            Cybernetics.LOGGER.info("Syncing abilities to client, ability to enable: " + CybAbilities.ABILITY_TYPE_REGISTRY.get().getKey(type));
             syncToClient((ServerPlayer) player, List.of(type), List.of());
         }
         return true;

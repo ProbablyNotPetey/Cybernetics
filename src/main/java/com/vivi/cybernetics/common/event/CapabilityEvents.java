@@ -1,7 +1,9 @@
 package com.vivi.cybernetics.common.event;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.common.capability.*;
+import com.vivi.cybernetics.common.capability.PlayerAbilityProvider;
+import com.vivi.cybernetics.common.capability.PlayerCyberwareProvider;
+import com.vivi.cybernetics.common.capability.PlayerEnergyProvider;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import com.vivi.cybernetics.common.util.CyberwareHelper;
 import net.minecraft.resources.ResourceLocation;

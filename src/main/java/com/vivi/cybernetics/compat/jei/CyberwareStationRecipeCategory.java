@@ -1,6 +1,5 @@
 package com.vivi.cybernetics.compat.jei;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.recipe.CyberwareStationRecipe;
 import com.vivi.cybernetics.common.registry.CybBlocks;

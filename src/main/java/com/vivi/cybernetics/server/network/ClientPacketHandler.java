@@ -1,18 +1,17 @@
 package com.vivi.cybernetics.server.network;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.hud.AbilityHUD;
 import com.vivi.cybernetics.client.hud.CyberneticsHUD;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
-import com.vivi.cybernetics.common.registry.CybAbilities;
-import com.vivi.cybernetics.server.data.CyberwarePropertiesReloadListener;
 import com.vivi.cybernetics.common.item.ReinforcedTendonsItem;
+import com.vivi.cybernetics.common.registry.CybAbilities;
+import com.vivi.cybernetics.common.util.AbilityHelper;
+import com.vivi.cybernetics.common.util.CyberwareHelper;
+import com.vivi.cybernetics.server.data.CyberwarePropertiesReloadListener;
 import com.vivi.cybernetics.server.network.packet.s2c.S2CSyncAbilitiesPacket;
 import com.vivi.cybernetics.server.network.packet.s2c.S2CSyncCyberwarePacket;
 import com.vivi.cybernetics.server.network.packet.s2c.S2CSyncCyberwarePropertiesPacket;
-import com.vivi.cybernetics.common.util.AbilityHelper;
-import com.vivi.cybernetics.common.util.CyberwareHelper;
 import com.vivi.cybernetics.server.network.packet.s2c.S2CToggleHUDPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
@@ -39,13 +38,11 @@ public class ClientPacketHandler {
 
     public static void handleSyncAbiilitiesPacket(NetworkEvent.Context ctx, S2CSyncAbilitiesPacket packet) {
         Player player = (Player)Minecraft.getInstance().level.getEntity(packet.getOwnerId());
-        Cybernetics.LOGGER.info("Hello I am on the client now.");
         PlayerAbilities abilities = new PlayerAbilities(player);
         abilities.deserializeNBT(packet.getAbilitiesData());
         AbilityHelper.getAbilities(player).ifPresent(playerAbilities -> {
             playerAbilities.copyFrom(abilities);
             packet.getAbilitiesToEnable().forEach(ability -> {
-                Cybernetics.LOGGER.info("Enabling ability" + ability);
                 playerAbilities.enableAbility(CybAbilities.ABILITY_TYPE_REGISTRY.get().getValue(ability), false);
             });
             packet.getAbilitiesToDisable().forEach(ability -> {

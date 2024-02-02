@@ -1,13 +1,12 @@
 package com.vivi.cybernetics.common.block.entity;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.common.util.ModEnergyStorage;
-import com.vivi.cybernetics.common.util.WrappedHandler;
 import com.vivi.cybernetics.common.block.CyberwareStationBlock;
 import com.vivi.cybernetics.common.menu.CyberwareStationMenu;
 import com.vivi.cybernetics.common.recipe.CyberwareStationRecipe;
 import com.vivi.cybernetics.common.registry.CybBlocks;
-import net.minecraft.client.Minecraft;
+import com.vivi.cybernetics.common.util.ModEnergyStorage;
+import com.vivi.cybernetics.common.util.WrappedHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

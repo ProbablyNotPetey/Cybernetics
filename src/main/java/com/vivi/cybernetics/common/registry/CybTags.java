@@ -1,16 +1,12 @@
 package com.vivi.cybernetics.common.registry;
 
 import com.vivi.cybernetics.Cybernetics;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
-
-import javax.swing.text.html.parser.Entity;
 
 public class CybTags {
 

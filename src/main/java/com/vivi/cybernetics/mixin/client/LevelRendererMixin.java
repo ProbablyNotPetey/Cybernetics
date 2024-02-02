@@ -5,7 +5,6 @@ import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.client.shader.BerserkRenderer;
-import com.vivi.cybernetics.client.shader.CybPostShaders;
 import com.vivi.cybernetics.client.shader.ScannerRenderer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;

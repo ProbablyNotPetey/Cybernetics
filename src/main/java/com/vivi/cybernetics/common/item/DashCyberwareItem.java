@@ -1,7 +1,6 @@
 package com.vivi.cybernetics.common.item;
 
 import com.vivi.cybernetics.common.ability.AbilityType;
-import com.vivi.cybernetics.common.registry.CybItems;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 

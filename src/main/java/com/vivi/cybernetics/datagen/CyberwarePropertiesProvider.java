@@ -1,26 +1,5 @@
 package com.vivi.cybernetics.datagen;
 
-import com.mojang.logging.LogUtils;
-import com.vivi.cybernetics.server.data.CyberwareProperties;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.ExistingFileHelper.ResourceType;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.slf4j.Logger;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 /*
 public abstract class CyberwarePropertiesProvider implements DataProvider {
 

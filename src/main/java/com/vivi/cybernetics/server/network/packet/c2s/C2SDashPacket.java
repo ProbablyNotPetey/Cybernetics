@@ -2,7 +2,6 @@ package com.vivi.cybernetics.server.network.packet.c2s;
 
 import com.vivi.cybernetics.common.ability.Ability;
 import com.vivi.cybernetics.common.ability.DashAbilityType;
-import com.vivi.cybernetics.common.item.DashCyberwareItem;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import com.vivi.cybernetics.server.network.packet.Packet;
 import net.minecraft.network.FriendlyByteBuf;

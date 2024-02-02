@@ -9,8 +9,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MenuType;
-import org.jetbrains.annotations.Nullable;
 
 public class SurgicalChamberCyberwareMenu extends CyberwareMenu {
     private final SurgicalChamberBlockEntity blockEntity;

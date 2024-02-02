@@ -1,6 +1,5 @@
 package com.vivi.cybernetics.common.ability;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.item.KineticDischargerItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;

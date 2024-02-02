@@ -12,10 +12,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Supplier;
 
 public class S2CSyncAbilitiesPacket extends Packet {

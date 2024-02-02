@@ -1,7 +1,5 @@
 package com.vivi.cybernetics.server.network.packet.c2s;
 
-import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.common.item.KineticDischargerItem;
 import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import com.vivi.cybernetics.server.network.packet.Packet;

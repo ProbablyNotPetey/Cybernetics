@@ -8,9 +8,10 @@ import com.vivi.cybernetics.client.util.RenderHelper;
 import com.vivi.cybernetics.common.config.ClientConfig;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -52,7 +53,7 @@ public class BlastWaveParticle extends Particle {
         }
     }
 
-    public void renderTessellated(VertexConsumer pBuffer, Camera camera, float pPartialTicks) {
+    public void renderTessellated(VertexConsumer consumer, Camera camera, float pPartialTicks) {
         Vec3 cameraPos = camera.getPosition();
 
         float x = (float)(Mth.lerp(pPartialTicks, this.xo, this.x) - cameraPos.x()) - radius;
@@ -105,7 +106,7 @@ public class BlastWaveParticle extends Particle {
         for(int i = 0; i < verticies.size(); i++) {
             Vector3f vertex = verticies.get(i);
             Vector2f uv = uvs.get(i);
-            pBuffer.vertex(vertex.x(), vertex.y(), vertex.z()).uv(uv.x(), uv.y()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+            buffer.vertex(vertex.x(), vertex.y(), vertex.z()).uv(uv.x(), uv.y()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
         }
 
         Tesselator.getInstance().end();
@@ -114,7 +115,7 @@ public class BlastWaveParticle extends Particle {
         RenderSystem.disableBlend();
     }
 
-    public void renderFlat(VertexConsumer pBuffer, Camera camera, float pPartialTicks) {
+    public void renderFlat(VertexConsumer consumer, Camera camera, float pPartialTicks) {
         Vec3 cameraPos = camera.getPosition();
 
 
@@ -155,10 +156,10 @@ public class BlastWaveParticle extends Particle {
         float vMin = 0;
         float vMax = 1;
         int j = this.getLightColor(pPartialTicks);
-        pBuffer.vertex(verticies[0].x(), verticies[0].y(), verticies[0].z()).uv(uMin, vMin).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
-        pBuffer.vertex(verticies[1].x(), verticies[1].y(), verticies[1].z()).uv(uMin, vMax).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
-        pBuffer.vertex(verticies[2].x(), verticies[2].y(), verticies[2].z()).uv(uMax, vMax).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
-        pBuffer.vertex(verticies[3].x(), verticies[3].y(), verticies[3].z()).uv(uMax, vMin).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+        buffer.vertex(verticies[0].x(), verticies[0].y(), verticies[0].z()).uv(uMin, vMin).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+        buffer.vertex(verticies[1].x(), verticies[1].y(), verticies[1].z()).uv(uMin, vMax).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+        buffer.vertex(verticies[2].x(), verticies[2].y(), verticies[2].z()).uv(uMax, vMax).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+        buffer.vertex(verticies[3].x(), verticies[3].y(), verticies[3].z()).uv(uMax, vMin).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
 
 //        pBuffer.vertex(verticies[0].x(), verticies[0].y(), verticies[0].z()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
 //        pBuffer.vertex(verticies[1].x(), verticies[1].y(), verticies[1].z()).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();

@@ -1,10 +1,10 @@
 package com.vivi.cybernetics.common.item;
 
+import com.vivi.cybernetics.client.util.TooltipHelper;
 import com.vivi.cybernetics.common.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.common.registry.CybCyberware;
 import com.vivi.cybernetics.common.registry.CybTags;
 import com.vivi.cybernetics.common.util.CyberwareHelper;
-import com.vivi.cybernetics.client.util.TooltipHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;

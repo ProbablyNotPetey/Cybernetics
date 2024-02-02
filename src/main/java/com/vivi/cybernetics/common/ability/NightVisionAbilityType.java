@@ -1,8 +1,6 @@
 package com.vivi.cybernetics.common.ability;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.common.registry.CybItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;

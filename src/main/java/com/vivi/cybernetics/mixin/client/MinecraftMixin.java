@@ -1,6 +1,5 @@
 package com.vivi.cybernetics.mixin.client;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.shader.ScannerRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;

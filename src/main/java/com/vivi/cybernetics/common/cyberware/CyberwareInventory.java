@@ -2,9 +2,9 @@ package com.vivi.cybernetics.common.cyberware;
 
 import com.vivi.cybernetics.common.config.CommonConfig;
 import com.vivi.cybernetics.common.item.CyberwareItem;
+import com.vivi.cybernetics.common.registry.CybCyberware;
 import com.vivi.cybernetics.server.network.CybPackets;
 import com.vivi.cybernetics.server.network.packet.s2c.S2CSyncCyberwarePacket;
-import com.vivi.cybernetics.common.registry.CybCyberware;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +16,10 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CyberwareInventory extends CombinedInvWrapper implements INBTSerializable<CompoundTag> {
 

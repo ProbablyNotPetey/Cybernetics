@@ -1,14 +1,11 @@
 package com.vivi.cybernetics.client.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.util.EnergyGuiComponent;
-import com.vivi.cybernetics.common.menu.CyberwareStationMenu;
 import com.vivi.cybernetics.client.util.MouseHelper;
+import com.vivi.cybernetics.common.menu.CyberwareStationMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;

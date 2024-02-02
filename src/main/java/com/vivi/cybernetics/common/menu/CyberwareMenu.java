@@ -1,16 +1,12 @@
 package com.vivi.cybernetics.common.menu;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.common.cyberware.CyberwareSectionType;
 import com.vivi.cybernetics.common.item.CyberwareItem;
-import com.vivi.cybernetics.common.registry.CybAttributes;
-import com.vivi.cybernetics.common.util.ToggleableSlot;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -19,9 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -235,7 +229,6 @@ public class CyberwareMenu extends AbstractContainerMenu {
                 if(shouldRemove) stacksToRemove.add(stack);
             }
 
-            Cybernetics.LOGGER.info("Client: " + isClient + ", stacksToAdd: " + stacksToAdd + ", stacksToRemove: " + stacksToRemove);
         }
     }
 

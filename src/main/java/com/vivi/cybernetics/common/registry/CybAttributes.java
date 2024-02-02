@@ -3,7 +3,6 @@ package com.vivi.cybernetics.common.registry;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.attribute.RangedIntAttribute;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

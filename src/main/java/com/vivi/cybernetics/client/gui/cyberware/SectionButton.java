@@ -1,18 +1,13 @@
 package com.vivi.cybernetics.client.gui.cyberware;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.vivi.cybernetics.client.gui.util.ITransparentWidget;
 import com.vivi.cybernetics.client.util.RenderHelper;
 import com.vivi.cybernetics.common.cyberware.CyberwareSection;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
 
 
 public class SectionButton extends AbstractButton implements ITransparentWidget {

@@ -2,7 +2,6 @@ package com.vivi.cybernetics.common.ability;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.hud.CyberneticsHUD;
-import com.vivi.cybernetics.common.registry.CybItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;

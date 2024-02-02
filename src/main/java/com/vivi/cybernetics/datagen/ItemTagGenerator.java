@@ -1,11 +1,5 @@
 package com.vivi.cybernetics.datagen;
 
-import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.common.registry.CybItems;
-import com.vivi.cybernetics.common.registry.CybTags;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
 /*
 public class ItemTagGenerator extends ItemTagsProvider {
     public ItemTagGenerator(DataGenerator pGenerator, BlockTagsProvider pBlockTagsProvider, ExistingFileHelper existingFileHelper) {

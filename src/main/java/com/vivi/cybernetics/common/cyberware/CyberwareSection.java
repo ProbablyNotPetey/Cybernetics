@@ -1,15 +1,11 @@
 package com.vivi.cybernetics.common.cyberware;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.item.CyberwareItem;
 import com.vivi.cybernetics.common.registry.CybTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CyberwareSection extends ItemStackHandler {
 
