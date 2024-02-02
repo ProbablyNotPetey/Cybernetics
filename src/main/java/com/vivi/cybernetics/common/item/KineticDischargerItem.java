@@ -1,5 +1,6 @@
 package com.vivi.cybernetics.common.item;
 
+import com.vivi.cybernetics.client.particle.BlastWaveParticleOptions;
 import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.common.registry.CybParticles;
 import com.vivi.cybernetics.common.util.AbilityHelper;
@@ -76,7 +77,7 @@ public class KineticDischargerItem extends CyberwareItem {
 
         //todo: make this run 1 tick later
         if(level instanceof ServerLevel server) {
-            server.sendParticles(CybParticles.BLAST_WAVE.get(), player.position().x, player.position().y + 0.01, player.position().z, 1, 0, 0, 0, 0);
+            server.sendParticles(new BlastWaveParticleOptions(CybParticles.BLAST_WAVE.get()), player.position().x, player.position().y + 0.01, player.position().z, 1, 0, 0, 0, 0);
 
             CybPackets.getInstance().send(
                     PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(player.position().x, player.position().y, player.position().z, 10.0, player.level().dimension())),

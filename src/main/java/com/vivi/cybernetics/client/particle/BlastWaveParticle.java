@@ -24,19 +24,19 @@ public class BlastWaveParticle extends Particle {
 
     private float radius;
 
-    protected BlastWaveParticle(ClientLevel pLevel, double pX, double pY, double pZ, double xd, double yd, double zd) {
+    protected BlastWaveParticle(BlastWaveParticleOptions options, ClientLevel pLevel, double pX, double pY, double pZ, double xd, double yd, double zd) {
         super(pLevel, pX, pY, pZ, xd, yd, zd);
 
         this.xd = xd;
         this.yd = yd;
         this.zd = zd;
-        this.lifetime = 20;
-        this.radius = 8.0f;
+        this.lifetime = options.duration;
+        this.radius = options.radius;
 
-        this.rCol = 1.0f;
-        this.gCol = 1.0f;
-        this.bCol = 1.0f;
-        this.alpha = 1.0f;
+        this.alpha = (options.argb >> 24 & 255) / 255.0f;
+        this.rCol = (options.argb >> 16 & 255) / 255.0f;
+        this.gCol = (options.argb >> 8 & 255) / 255.0f;
+        this.bCol = (options.argb & 255) / 255.0f;
 
         this.hasPhysics = false;
     }
@@ -251,12 +251,12 @@ public class BlastWaveParticle extends Particle {
         return false;
     }
 
-    public static class Provider implements ParticleProvider<SimpleParticleType> {
+    public static class Provider implements ParticleProvider<BlastWaveParticleOptions> {
 
         @Nullable
         @Override
-        public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            return new BlastWaveParticle(pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed);
+        public Particle createParticle(BlastWaveParticleOptions options, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
+            return new BlastWaveParticle(options, pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed);
         }
     }
 }
