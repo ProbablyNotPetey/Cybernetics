@@ -2,33 +2,19 @@ package com.vivi.cybernetics.client.particle;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.shader.CybCoreShaders;
 import com.vivi.cybernetics.client.util.CustomWorldParticleRenderType;
-import com.vivi.cybernetics.client.util.RenderHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.renderer.RenderStateShard;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 import team.lodestar.lodestone.registry.client.LodestoneRenderTypeRegistry;
-import team.lodestar.lodestone.registry.client.LodestoneShaderRegistry;
 import team.lodestar.lodestone.systems.particle.options.WorldParticleOptions;
 import team.lodestar.lodestone.systems.particle.render_types.LodestoneWorldParticleRenderType;
 import team.lodestar.lodestone.systems.particle.world.GenericParticle;
-import team.lodestar.lodestone.systems.rendering.StateShards;
-import team.lodestar.lodestone.systems.rendering.shader.ShaderHolder;
-
-import static team.lodestar.lodestone.registry.client.LodestoneRenderTypeRegistry.createGenericRenderType;
 
 
 public class FallingParticle extends GenericParticle<WorldParticleOptions> {

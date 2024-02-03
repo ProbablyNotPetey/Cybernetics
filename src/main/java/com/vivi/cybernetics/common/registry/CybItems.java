@@ -20,9 +20,6 @@ public class CybItems {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Cybernetics.MOD_ID);
 
-    public static final RegistryObject<Item> DEBUG = ITEMS.register("debug_item", () -> new DebugItem(new Item.Properties()));
-
-
     //Regular items
     public static final RegistryObject<Item>
             MOTOR = basicItem("motor"),

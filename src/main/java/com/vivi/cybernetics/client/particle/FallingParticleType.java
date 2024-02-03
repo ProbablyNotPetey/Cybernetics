@@ -2,9 +2,7 @@ package com.vivi.cybernetics.client.particle;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import org.jetbrains.annotations.Nullable;
 import team.lodestar.lodestone.systems.particle.options.WorldParticleOptions;

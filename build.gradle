@@ -170,7 +170,6 @@ dependencies {
 
     //added because lodestone is stupid
     implementation fg.deobf("maven.modrinth:curios:5.5.0+1.20.1")
-    implementation fg.deobf("maven.modrinth:farmers-delight:1.20.1-1.2.4")
 
 
     // Real mod deobf dependency examples - these get remapped to your current mappings

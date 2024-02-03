@@ -6,7 +6,6 @@ import com.vivi.cybernetics.client.gui.cyberware.CyberwareScreen;
 import com.vivi.cybernetics.client.hud.AbilityHUD;
 import com.vivi.cybernetics.client.hud.CyberneticsHUD;
 import com.vivi.cybernetics.client.hud.MobEffectHUD;
-import com.vivi.cybernetics.client.particle.BlastWaveParticle;
 import com.vivi.cybernetics.client.particle.BlastWaveParticleType;
 import com.vivi.cybernetics.client.particle.FallingParticleType;
 import com.vivi.cybernetics.client.shader.CybCoreShaders;

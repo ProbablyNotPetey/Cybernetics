@@ -42,11 +42,11 @@ public class KineticDischargerAbilityType extends AbilityType {
                     .setRandomOffset(5.0, 0.0, 5.0)
                     .setMotion(0.0, player.getDeltaMovement().y, 0.0);
 
-            float max = 6.0f;
+            float max = 4.0f;
             float min = 1.5f;
             RandomSource random = level.random;
 
-            for(int i = 0; i < 12; i++) {
+            for(int i = 0; i < 10; i++) {
 
                 double yaw2 = random.nextFloat() * Math.PI * 2, pitch2 = random.nextFloat() * Math.PI - Math.PI / 2, xDist = random.nextFloat() * (max - min) + min, yDist = 0, zDist = random.nextFloat() * (max - min) + min;
                 double xPos = Math.sin(yaw2) * Math.cos(pitch2) * xDist;
