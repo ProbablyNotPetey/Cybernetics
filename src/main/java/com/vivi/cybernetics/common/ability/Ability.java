@@ -32,8 +32,8 @@ public class Ability implements INBTSerializable<CompoundTag> {
 
     public void tick(Player player) {
         if(cooldown > -1) cooldown--;
-        if(elapsedTime != -1 && enabled) elapsedTime++;
         this.getType().tick(this, player.level(), player);
+        if(elapsedTime != -1 && enabled) elapsedTime++;
     }
 
     public boolean enable(Player player) {

@@ -252,12 +252,4 @@ public class BlastWaveParticle extends Particle {
         return false;
     }
 
-    public static class Provider implements ParticleProvider<BlastWaveParticleOptions> {
-
-        @Nullable
-        @Override
-        public Particle createParticle(BlastWaveParticleOptions options, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            return new BlastWaveParticle(options, pLevel, pX, pY, pZ, pXSpeed, pYSpeed, pZSpeed);
-        }
-    }
 }

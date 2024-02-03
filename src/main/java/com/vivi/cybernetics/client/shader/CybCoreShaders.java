@@ -34,6 +34,7 @@ public class CybCoreShaders implements ResourceManagerReloadListener {
     private ShaderInstance scanShader;
     private ShaderInstance circleProgressShader;
     private ShaderInstance blastWaveShader;
+    private ShaderInstance fallingParticleShader;
 
     public static ShaderInstance getScanShader() {
         return INSTANCE.scanShader;
@@ -45,12 +46,22 @@ public class CybCoreShaders implements ResourceManagerReloadListener {
     public static ShaderInstance getBlastWaveShader() {
         return INSTANCE.blastWaveShader;
     }
+    public static ShaderInstance getFallingParticleShader() {
+        return INSTANCE.fallingParticleShader;
+    }
 
     public void init() {
-        shaders.add(new ShaderReference("scan", DefaultVertexFormat.POSITION_TEX, shader -> scanShader = shader));
-        shaders.add(new ShaderReference("circle_progress", DefaultVertexFormat.POSITION_TEX, shader -> circleProgressShader = shader));
-        shaders.add(new ShaderReference("blast_wave", DefaultVertexFormat.PARTICLE, shader -> blastWaveShader = shader));
 
+        //misc
+        shaders.add(new ShaderReference("scan", DefaultVertexFormat.POSITION_TEX, shader -> scanShader = shader));
+
+        //gui shaders
+        shaders.add(new ShaderReference("circle_progress", DefaultVertexFormat.POSITION_TEX, shader -> circleProgressShader = shader));
+
+
+        //particle shaders
+        shaders.add(new ShaderReference("blast_wave", DefaultVertexFormat.PARTICLE, shader -> blastWaveShader = shader));
+        shaders.add(new ShaderReference("falling_particle", DefaultVertexFormat.PARTICLE, shader -> fallingParticleShader = shader));
 
         Minecraft.getInstance().submitAsync(() -> {
             final ResourceManager manager = Minecraft.getInstance().getResourceManager();

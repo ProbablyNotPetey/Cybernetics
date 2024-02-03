@@ -2,6 +2,7 @@ package com.vivi.cybernetics.common.registry;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.particle.BlastWaveParticleType;
+import com.vivi.cybernetics.client.particle.FallingParticleType;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -14,6 +15,10 @@ public class CybParticles {
 
     public static final RegistryObject<BlastWaveParticleType> BLAST_WAVE =
             PARTICLE_TYPES.register("blast_wave", () -> new BlastWaveParticleType(true));
+    public static final RegistryObject<FallingParticleType> FALLING_PARTICLE =
+            PARTICLE_TYPES.register("falling_particle", () -> new FallingParticleType(false));
+
+
 
     public static void register(IEventBus eventBus) {
         PARTICLE_TYPES.register(eventBus);

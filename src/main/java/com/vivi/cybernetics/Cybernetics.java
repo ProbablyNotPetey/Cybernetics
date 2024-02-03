@@ -7,6 +7,8 @@ import com.vivi.cybernetics.client.hud.AbilityHUD;
 import com.vivi.cybernetics.client.hud.CyberneticsHUD;
 import com.vivi.cybernetics.client.hud.MobEffectHUD;
 import com.vivi.cybernetics.client.particle.BlastWaveParticle;
+import com.vivi.cybernetics.client.particle.BlastWaveParticleType;
+import com.vivi.cybernetics.client.particle.FallingParticleType;
 import com.vivi.cybernetics.client.shader.CybCoreShaders;
 import com.vivi.cybernetics.client.shader.CybPostShaders;
 import com.vivi.cybernetics.client.util.HudAnchor;
@@ -115,7 +117,8 @@ public class Cybernetics {
 
     @SubscribeEvent
     public void registerParticles(RegisterParticleProvidersEvent event) {
-        event.registerSpecial(CybParticles.BLAST_WAVE.get(), new BlastWaveParticle.Provider());
+        event.registerSpecial(CybParticles.BLAST_WAVE.get(), new BlastWaveParticleType.Provider());
+        event.registerSpecial(CybParticles.FALLING_PARTICLE.get(), new FallingParticleType.Provider());
     }
 
 
