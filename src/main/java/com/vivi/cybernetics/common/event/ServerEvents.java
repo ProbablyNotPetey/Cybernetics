@@ -10,6 +10,7 @@ import com.vivi.cybernetics.common.registry.CybTags;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import com.vivi.cybernetics.common.util.CyberwareHelper;
 import com.vivi.cybernetics.server.network.CybPackets;
+import com.vivi.cybernetics.server.network.packet.s2c.S2CToggleBerserkPacket;
 import com.vivi.cybernetics.server.network.packet.s2c.S2CToggleHUDPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
@@ -24,6 +25,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -43,8 +45,23 @@ public class ServerEvents {
             }
         });
         AbilityHelper.getAbilities(player).ifPresent(PlayerAbilities::tickAbilities);
+        player.getCapability(Cybernetics.PLAYER_SPIKE).ifPresent(playerSpike -> {
+            if(playerSpike.isSpiking()) {
+                playerSpike.setTime(playerSpike.getTime() + 1);
+            }
+        });
         AbilityHelper.getAbilities(player).ifPresent(abilities -> {
 //            Cybernetics.LOGGER.info(event.side.isClient() + ", " + abilities.serializeNBT());
+        });
+    }
+
+    @SubscribeEvent
+    public static void onLivingFall(LivingFallEvent event) {
+        if(!(event.getEntity() instanceof Player player) || player.level().isClientSide) {
+            return;
+        }
+        player.getCapability(Cybernetics.PLAYER_SPIKE).ifPresent(playerSpike -> {
+            if(playerSpike.isSpiking()) event.setCanceled(true);
         });
     }
 
@@ -117,6 +134,8 @@ public class ServerEvents {
         if (!(event.getEntity() instanceof Player) || event.getLevel().isClientSide) return;
         ServerPlayer player = (ServerPlayer) event.getEntity();
         CybPackets.sendToClient(new S2CToggleHUDPacket(AbilityHelper.isEnabled(player, CybAbilities.HUD.get())), player);
+        //todo: this should be based on a tag.
+        CybPackets.sendToClient(new S2CToggleBerserkPacket(AbilityHelper.isEnabled(player, CybAbilities.MK1_BERSERK.get(), CybAbilities.MK2_BERSERK.get(), CybAbilities.MK3_BERSERK.get())), player);
     }
 
 }

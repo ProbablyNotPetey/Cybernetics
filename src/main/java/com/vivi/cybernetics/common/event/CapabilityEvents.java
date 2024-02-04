@@ -1,9 +1,10 @@
 package com.vivi.cybernetics.common.event;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.common.capability.PlayerAbilityProvider;
-import com.vivi.cybernetics.common.capability.PlayerCyberwareProvider;
-import com.vivi.cybernetics.common.capability.PlayerEnergyProvider;
+import com.vivi.cybernetics.common.capability.provider.PlayerAbilityProvider;
+import com.vivi.cybernetics.common.capability.provider.PlayerCyberwareProvider;
+import com.vivi.cybernetics.common.capability.provider.PlayerEnergyProvider;
+import com.vivi.cybernetics.common.capability.provider.PlayerSpikeProvider;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import com.vivi.cybernetics.common.util.CyberwareHelper;
 import net.minecraft.resources.ResourceLocation;
@@ -32,6 +33,9 @@ public class CapabilityEvents {
             if(!player.getCapability(Cybernetics.PLAYER_ABILITIES).isPresent()) {
                 event.addCapability(new ResourceLocation(Cybernetics.MOD_ID, "abilities"), new PlayerAbilityProvider(player));
             }
+            if(!player.getCapability(Cybernetics.PLAYER_SPIKE).isPresent()) {
+                event.addCapability(new ResourceLocation(Cybernetics.MOD_ID, "spike_data"), new PlayerSpikeProvider());
+            }
         }
     }
 
@@ -55,7 +59,11 @@ public class CapabilityEvents {
                     newStore.copyFrom(oldStore);
                 });
             });
-
+            event.getOriginal().getCapability(Cybernetics.PLAYER_SPIKE).ifPresent(oldStore -> {
+                event.getEntity().getCapability(Cybernetics.PLAYER_SPIKE).ifPresent(newStore -> {
+                    newStore.copyFrom(oldStore);
+                });
+            });
         }
         event.getOriginal().invalidateCaps();
     }

@@ -8,7 +8,6 @@ import com.vivi.cybernetics.client.util.InputHelper;
 import com.vivi.cybernetics.client.util.RenderHelper;
 import com.vivi.cybernetics.client.util.ScreenHelper;
 import com.vivi.cybernetics.common.ability.Ability;
-import com.vivi.cybernetics.common.ability.HiddenAbility;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.common.util.AbilityHelper;
@@ -54,7 +53,7 @@ public class AbilityScreen extends Screen {
 
         PlayerAbilities abilities = AbilityHelper.getAbilities(player).orElse(null);
         if(abilities == null) return;
-        List<Ability> filtered = abilities.getAbilities().stream().filter(ability -> !ability.getType().getClass().isAnnotationPresent(HiddenAbility.class)).toList();
+        List<Ability> filtered = abilities.getAbilities().stream().filter(ability -> !ability.getType().isHidden()).toList();
         int sections = filtered.size();
         float length = 360.0f / sections;
         for(int i = 0; i < sections; i++) {

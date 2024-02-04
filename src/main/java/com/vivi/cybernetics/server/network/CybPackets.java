@@ -3,10 +3,7 @@ package com.vivi.cybernetics.server.network;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.server.network.packet.c2s.*;
 import com.vivi.cybernetics.server.network.packet.lodestone.CustomPositionedScreenshakePacket;
-import com.vivi.cybernetics.server.network.packet.s2c.S2CSyncAbilitiesPacket;
-import com.vivi.cybernetics.server.network.packet.s2c.S2CSyncCyberwarePacket;
-import com.vivi.cybernetics.server.network.packet.s2c.S2CSyncCyberwarePropertiesPacket;
-import com.vivi.cybernetics.server.network.packet.s2c.S2CToggleHUDPacket;
+import com.vivi.cybernetics.server.network.packet.s2c.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -113,6 +110,12 @@ public class CybPackets {
                 .decoder(S2CToggleHUDPacket::new)
                 .encoder(S2CToggleHUDPacket::toBytes)
                 .consumerMainThread(S2CToggleHUDPacket::handle)
+                .add();
+
+        network.messageBuilder(S2CToggleBerserkPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(S2CToggleBerserkPacket::new)
+                .encoder(S2CToggleBerserkPacket::toBytes)
+                .consumerMainThread(S2CToggleBerserkPacket::handle)
                 .add();
 
 

@@ -1,6 +1,10 @@
 package com.vivi.cybernetics.server.network.packet.c2s;
 
+import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.common.capability.PlayerSpike;
 import com.vivi.cybernetics.common.item.KineticDischargerItem;
+import com.vivi.cybernetics.common.registry.CybAbilities;
+import com.vivi.cybernetics.common.util.AbilityHelper;
 import com.vivi.cybernetics.server.network.packet.Packet;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,7 +30,15 @@ public class C2SSpikeShockwavePacket extends Packet {
         NetworkEvent.Context ctx = sup.get();
         ctx.enqueueWork(() -> {
             ServerPlayer player = ctx.getSender();
-            KineticDischargerItem.shockwave(player, player.level());
+            int spikeTime = player.getCapability(Cybernetics.PLAYER_SPIKE).orElse(new PlayerSpike()).getTime();
+            KineticDischargerItem.shockwave(player, player.level(), spikeTime);
+
+
+            AbilityHelper.disableAbility(player, CybAbilities.KINETIC_DISCHARGER.get(), true);
+            player.getCapability(Cybernetics.PLAYER_SPIKE).ifPresent(playerSpike -> {
+                playerSpike.setSpiking(false);
+                playerSpike.setTime(-1);
+            });
         });
         return true;
     }

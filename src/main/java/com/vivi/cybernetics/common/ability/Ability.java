@@ -6,9 +6,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public class Ability implements INBTSerializable<CompoundTag> {
+public class Ability {
 
-    private AbilityType type;
+    private final AbilityType type;
     private boolean enabled;
     private int cooldown;
     private int elapsedTime = -1;
@@ -16,8 +16,14 @@ public class Ability implements INBTSerializable<CompoundTag> {
     public Ability(AbilityType type) {
         this.type = type;
     }
+
+    //todo: possibly make this a codec?
     public Ability(CompoundTag tag) {
-        deserializeNBT(tag);
+        ResourceLocation id = ResourceLocation.tryParse(tag.getString("id"));
+        type = CybAbilities.ABILITY_TYPE_REGISTRY.get().getValue(id);
+        enabled = tag.getBoolean("enabled");
+        cooldown = tag.getInt("cooldown");
+        elapsedTime = tag.getInt("elapsedTime");
     }
 
     private void onEnable(Player player) {
@@ -32,6 +38,9 @@ public class Ability implements INBTSerializable<CompoundTag> {
 
     public void tick(Player player) {
         if(cooldown > -1) cooldown--;
+        if(type.getDuration() != -1 && elapsedTime >= type.getDuration()) {
+            disable(player);
+        }
         this.getType().tick(this, player.level(), player);
         if(elapsedTime != -1 && enabled) elapsedTime++;
     }
@@ -75,21 +84,13 @@ public class Ability implements INBTSerializable<CompoundTag> {
         this.cooldown = cooldown;
     }
 
-    @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
         ResourceLocation id = CybAbilities.ABILITY_TYPE_REGISTRY.get().getKey(type);
         tag.putString("id", id.toString());
         tag.putBoolean("enabled", enabled);
         tag.putInt("cooldown", cooldown);
+        tag.putInt("elapsedTime", elapsedTime);
         return tag;
-    }
-
-    @Override
-    public void deserializeNBT(CompoundTag tag) {
-        ResourceLocation id = ResourceLocation.tryParse(tag.getString("id"));
-        type = CybAbilities.ABILITY_TYPE_REGISTRY.get().getValue(id);
-        enabled = tag.getBoolean("enabled");
-        cooldown = tag.getInt("cooldown");
     }
 }

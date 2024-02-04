@@ -14,7 +14,6 @@ import team.lodestar.lodestone.systems.particle.data.color.ColorParticleData;
 import java.awt.*;
 
 
-@HiddenAbility
 public class KineticDischargerAbilityType extends AbilityType {
 
     public KineticDischargerAbilityType() {
@@ -54,5 +53,10 @@ public class KineticDischargerAbilityType extends AbilityType {
                 builder.spawn(level, player.position().x + xPos, player.position().y - 3.0, player.position().z + zPos);
             }
         }
+    }
+
+    @Override
+    public boolean isHidden() {
+        return true;
     }
 }

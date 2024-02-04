@@ -15,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -59,7 +60,6 @@ public class ClientEvents {
                 && AbilityHelper.isEnabled(player, CybAbilities.KINETIC_DISCHARGER.get())) {
             //shockwave
             CybPackets.sendToServer(new C2SSpikeShockwavePacket());
-            CybPackets.sendToServer(new C2SSpikePacket());
         }
 
         if(player.onGround() || player.onClimbable()  || player.isInWater() || player.getAbilities().flying) {
@@ -74,7 +74,7 @@ public class ClientEvents {
         }
 
         //todo: fix
-        if(canSpike && !isSpiking && player.isShiftKeyDown() && isHighEnoughToSpike(player)) {
+        if(canSpike && !isSpiking && player.isShiftKeyDown() && isHighEnoughToSpike(player) && !AbilityHelper.isOnCooldown(player, CybAbilities.KINETIC_DISCHARGER.get())) {
             canSpike = false;
             isSpiking = true;
             CybPackets.sendToServer(new C2SSpikePacket());

@@ -1,5 +1,6 @@
 package com.vivi.cybernetics.common.item;
 
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.particle.BlastWaveParticleOptions;
 import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.common.registry.CybParticles;
@@ -17,6 +18,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.PacketDistributor;
 import team.lodestar.lodestone.systems.easing.Easing;
 
@@ -51,10 +54,11 @@ public class KineticDischargerItem extends CyberwareItem {
         player.hasImpulse = true;
     }
 
-    public static void shockwave(Player player, Level level) {
+    public static void shockwave(Player player, Level level, int spikeTime) {
 //        BlockPos pos = new BlockPos((int)player.position().x, (int)(player.getBoundingBox().minY - 0.5000001D), (int)player.position().z);
-        BlockPos pos = player.blockPosition().subtract(new Vec3i(0, 1, 0));
+        if(spikeTime == -1) return;
 
+        BlockPos pos = player.blockPosition().subtract(new Vec3i(0, 1, 0));
         BlockPos.betweenClosed(pos.offset(3, 0, 3), pos.offset(-3, 0, -3)).forEach(blockPos -> {
 
             BlockPos difference = blockPos.subtract(pos);
@@ -64,13 +68,14 @@ public class KineticDischargerItem extends CyberwareItem {
             level.levelEvent(2001, blockPos, Block.getId(block));
         });
 
-        AABB box = new AABB(player.blockPosition()).inflate(3);
+        AABB box = new AABB(player.blockPosition()).inflate(4);
         level.getEntities(player, box).forEach(entity -> {
             if (!(entity instanceof LivingEntity) || !entity.isAlive()) {
                 return;
             }
-            entity.hurt(level.damageSources().playerAttack(player), 9.0f);
-            entity.push(0, 0.8, 0);
+            float damage = 8.0f + (0.4f * Math.min(spikeTime, 60));
+            entity.hurt(level.damageSources().playerAttack(player), damage);
+            entity.push(0, (damage + 2) / 12, 0);
         });
 
 

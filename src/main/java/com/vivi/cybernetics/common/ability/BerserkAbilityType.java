@@ -15,7 +15,6 @@ import java.util.UUID;
 
 public class BerserkAbilityType extends AbilityType {
 
-    protected final int duration;
     protected final double damageBoost;
     protected final int regenAmp;
     protected final double speed;
@@ -23,8 +22,7 @@ public class BerserkAbilityType extends AbilityType {
     private static final UUID attackSpeedUUID = UUID.fromString("e12b8786-1e2f-4b72-b91a-fec38b02f905");
     private static final UUID fistAttackUUID = UUID.fromString("2415d2cf-bf8a-42e4-a62b-bd0eca1612aa");
     public BerserkAbilityType(ResourceLocation texture, int duration, int maxCooldown, double damageBoost, int regenAmp, double speed) {
-        super(maxCooldown, texture);
-        this.duration = duration;
+        super(maxCooldown, duration, texture);
         this.damageBoost = damageBoost;
         this.regenAmp = regenAmp;
         this.speed = speed;
@@ -105,10 +103,6 @@ public class BerserkAbilityType extends AbilityType {
 
             player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 319, 3, false, true, true));
             player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 319, regenAmp, false, true, true));
-        }
-
-        if(ability.getElapsedTime() >= duration) {
-            ability.disable(player);
         }
     }
 }

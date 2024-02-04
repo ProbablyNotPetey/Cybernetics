@@ -2,6 +2,7 @@ package com.vivi.cybernetics.server.network;
 
 import com.vivi.cybernetics.client.hud.AbilityHUD;
 import com.vivi.cybernetics.client.hud.CyberneticsHUD;
+import com.vivi.cybernetics.client.shader.BerserkRenderer;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
 import com.vivi.cybernetics.common.item.ReinforcedTendonsItem;
@@ -9,13 +10,11 @@ import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import com.vivi.cybernetics.common.util.CyberwareHelper;
 import com.vivi.cybernetics.server.data.CyberwarePropertiesReloadListener;
-import com.vivi.cybernetics.server.network.packet.s2c.S2CSyncAbilitiesPacket;
-import com.vivi.cybernetics.server.network.packet.s2c.S2CSyncCyberwarePacket;
-import com.vivi.cybernetics.server.network.packet.s2c.S2CSyncCyberwarePropertiesPacket;
-import com.vivi.cybernetics.server.network.packet.s2c.S2CToggleHUDPacket;
+import com.vivi.cybernetics.server.network.packet.s2c.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
+import team.lodestar.lodestone.systems.easing.Easing;
 
 public class ClientPacketHandler {
 
@@ -70,6 +69,15 @@ public class ClientPacketHandler {
         }
         else {
             CyberneticsHUD.getInstance().disable();
+        }
+    }
+
+    public static void handleBerserkPacket(NetworkEvent.Context ctx, S2CToggleBerserkPacket packet) {
+        if(packet.isOn()) {
+            BerserkRenderer.getInstance().start(0, Easing.LINEAR);
+        }
+        else {
+            BerserkRenderer.getInstance().stop(0, Easing.LINEAR);
         }
     }
 }

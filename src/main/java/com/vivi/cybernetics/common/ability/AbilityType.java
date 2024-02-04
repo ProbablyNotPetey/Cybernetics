@@ -8,18 +8,23 @@ import net.minecraft.world.level.Level;
 public class AbilityType {
 
     protected final int maxCooldown;
+    protected final int duration;
     protected final ResourceLocation texture;
     public AbilityType() {
-        this(-1, null);
+        this(-1, -1,null);
     }
     public AbilityType(int maxCooldown) {
-        this(maxCooldown, null);
+        this(maxCooldown, -1,null);
+    }
+    public AbilityType(int maxCooldown, int duration) {
+        this(maxCooldown, duration, null);
     }
     public AbilityType(ResourceLocation texture) {
-        this(-1, texture);
+        this(-1, -1, texture);
     }
-    public AbilityType(int maxCooldown, ResourceLocation texture) {
+    public AbilityType(int maxCooldown, int duration, ResourceLocation texture) {
         this.maxCooldown = maxCooldown;
+        this.duration = duration;
         this.texture = texture;
     }
 
@@ -36,8 +41,18 @@ public class AbilityType {
         }
     }
 
+    /**
+     * Whether or not this ability should be hidden from the player's ability menu. Defaults to false
+     */
+    public boolean isHidden() {
+        return false;
+    }
     public int getMaxCooldown() {
         return maxCooldown;
+    }
+
+    public int getDuration() {
+        return duration;
     }
 
     public ResourceLocation getTexture() {

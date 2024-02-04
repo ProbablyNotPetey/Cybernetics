@@ -13,6 +13,7 @@ import com.vivi.cybernetics.client.shader.CybPostShaders;
 import com.vivi.cybernetics.client.util.HudAnchor;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.capability.PlayerEnergyStorage;
+import com.vivi.cybernetics.common.capability.PlayerSpike;
 import com.vivi.cybernetics.common.config.ClientConfig;
 import com.vivi.cybernetics.common.config.CommonConfig;
 import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
@@ -48,6 +49,7 @@ public class Cybernetics {
     public static Capability<CyberwareInventory> CYBERWARE = CapabilityManager.get(new CapabilityToken<>() { });
     public static final Capability<PlayerAbilities> PLAYER_ABILITIES = CapabilityManager.get(new CapabilityToken<>() { });
     public static Capability<PlayerEnergyStorage> PLAYER_ENERGY = CapabilityManager.get(new CapabilityToken<>() { });
+    public static Capability<PlayerSpike> PLAYER_SPIKE = CapabilityManager.get(new CapabilityToken<>() { });
 
 
 

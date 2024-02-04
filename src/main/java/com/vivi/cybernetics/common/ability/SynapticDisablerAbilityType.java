@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 public class SynapticDisablerAbilityType extends AbilityType {
 
     public SynapticDisablerAbilityType() {
-        super(100);
+        super(100, 0);
     }
 
     @Override
@@ -22,13 +22,5 @@ public class SynapticDisablerAbilityType extends AbilityType {
             if(!(entity instanceof LivingEntity)) return;
             ((LivingEntity) entity).addEffect(new MobEffectInstance(CybMobEffects.PARALYZED.get(), 30, 0));
         });
-    }
-
-    @Override
-    public void tick(Ability ability, Level level, Player player) {
-        super.tick(ability, level, player);
-        if(ability.isEnabled()) {
-            ability.disable(player);
-        }
     }
 }

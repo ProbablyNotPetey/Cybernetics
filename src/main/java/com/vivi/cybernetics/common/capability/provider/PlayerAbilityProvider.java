@@ -1,7 +1,7 @@
-package com.vivi.cybernetics.common.capability;
+package com.vivi.cybernetics.common.capability.provider;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.common.cyberware.CyberwareInventory;
+import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -12,27 +12,27 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class PlayerCyberwareProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+public class PlayerAbilityProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-    private CyberwareInventory cyberwareInventory = null;
-    private final LazyOptional<CyberwareInventory> lazyContainer = LazyOptional.of(this::getOrCreate);
+    private PlayerAbilities playerAbilities = null;
+    private final LazyOptional<PlayerAbilities> lazyAbilities = LazyOptional.of(this::getOrCreate);
     private final Player owner;
-    public PlayerCyberwareProvider(Player owner) {
+    public PlayerAbilityProvider(Player owner) {
         this.owner = owner;
     }
-    private CyberwareInventory getOrCreate() {
-        if(cyberwareInventory == null) {
-            cyberwareInventory = CyberwareInventory.create(owner);
-        }
 
-        return cyberwareInventory;
+    private PlayerAbilities getOrCreate() {
+        if(playerAbilities == null) {
+            playerAbilities = new PlayerAbilities(owner);
+        }
+        return playerAbilities;
     }
 
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == Cybernetics.CYBERWARE) {
-            return lazyContainer.cast();
+        if(cap == Cybernetics.PLAYER_ABILITIES) {
+            return lazyAbilities.cast();
         }
         return LazyOptional.empty();
     }

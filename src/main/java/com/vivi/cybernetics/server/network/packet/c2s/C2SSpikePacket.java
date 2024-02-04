@@ -1,5 +1,6 @@
 package com.vivi.cybernetics.server.network.packet.c2s;
 
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import com.vivi.cybernetics.server.network.packet.Packet;
@@ -30,9 +31,17 @@ public class C2SSpikePacket extends Packet {
             ServerPlayer player = ctx.getSender();
             if(!AbilityHelper.isEnabled(player, CybAbilities.KINETIC_DISCHARGER.get())) {
                 AbilityHelper.enableAbility(player, CybAbilities.KINETIC_DISCHARGER.get(), true);
+                player.getCapability(Cybernetics.PLAYER_SPIKE).ifPresent(playerSpike -> {
+                    playerSpike.setSpiking(true);
+                    playerSpike.setTime(0);
+                });
             }
             else {
                 AbilityHelper.disableAbility(player, CybAbilities.KINETIC_DISCHARGER.get(), true);
+                player.getCapability(Cybernetics.PLAYER_SPIKE).ifPresent(playerSpike -> {
+                    playerSpike.setSpiking(false);
+                    playerSpike.setTime(-1);
+                });
             }
         });
         return true;

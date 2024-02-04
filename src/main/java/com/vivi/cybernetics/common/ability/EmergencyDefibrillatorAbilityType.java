@@ -5,11 +5,10 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-@HiddenAbility
 public class EmergencyDefibrillatorAbilityType extends AbilityType {
 
     public EmergencyDefibrillatorAbilityType() {
-        super(2400);
+        super(2400, 0);
     }
 
     @Override
@@ -22,10 +21,7 @@ public class EmergencyDefibrillatorAbilityType extends AbilityType {
     }
 
     @Override
-    public void tick(Ability ability, Level level, Player player) {
-        super.tick(ability, level, player);
-        if(ability.isEnabled()) {
-            ability.disable(player);
-        }
+    public boolean isHidden() {
+        return true;
     }
 }

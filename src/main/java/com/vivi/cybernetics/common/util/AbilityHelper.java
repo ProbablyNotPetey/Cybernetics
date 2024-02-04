@@ -6,6 +6,7 @@ import com.vivi.cybernetics.client.hud.CyberneticsHUD;
 import com.vivi.cybernetics.common.ability.Ability;
 import com.vivi.cybernetics.common.ability.AbilityType;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -55,6 +56,16 @@ public class AbilityHelper {
         if(abilities == null) return false;
         Ability ability = abilities.getAbility(type);
         return ability != null && ability.isEnabled();
+    }
+
+    public static boolean isEnabled(Player player, AbilityType... types) {
+        PlayerAbilities abilities = getAbilities(player).orElse(null);
+        if(abilities == null) return false;
+        for (AbilityType type : types) {
+            Ability ability = abilities.getAbility(type);
+            if (ability != null && ability.isEnabled()) return true;
+        }
+        return false;
     }
 
     public static boolean isOnCooldown(Player player, AbilityType type) {
