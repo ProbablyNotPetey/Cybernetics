@@ -2,6 +2,7 @@ package com.vivi.cybernetics.common.event;
 
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.AbilityScreen;
+import com.vivi.cybernetics.client.shader.ScannerRenderer;
 import com.vivi.cybernetics.client.util.InputHelper;
 import com.vivi.cybernetics.common.item.ReinforcedTendonsItem;
 import com.vivi.cybernetics.common.registry.*;
@@ -15,7 +16,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -43,6 +44,12 @@ public class ClientEvents {
         handleDoubleJump();
         handleSpike();
         handleDash();
+    }
+
+    @SubscribeEvent
+    public static void onEntityJoinLevelEvent(EntityJoinLevelEvent event) {
+        if (!(event.getEntity() instanceof Player) || !event.getLevel().isClientSide) return;
+        ScannerRenderer.getInstance().stop();
     }
 
     @SubscribeEvent

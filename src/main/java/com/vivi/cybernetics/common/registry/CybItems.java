@@ -81,7 +81,7 @@ public class CybItems {
             KINETIC_DISCHARGER = ITEMS.register("kinetic_discharger", () -> new KineticDischargerItem(cyberwareProps())),
 
             //SKIN
-            FIRE_RESISTANCE_SKIN = ITEMS.register("fire_resistance_skin", () -> new MobEffectCyberwareItem(cyberwareProps(), Triple.of(MobEffects.FIRE_RESISTANCE, 319, 0))),
+            FIRE_RESISTANCE_SKIN = ITEMS.register("fire_resistance_skin", () -> new MobEffectCyberwareItem(cyberwareProps(), Triple.of(MobEffects.FIRE_RESISTANCE, -1, 0))),
             PROJECTILE_DEFLECTOR = ITEMS.register("projectile_deflector", () -> new CyberwareItem(cyberwareProps())),
 
             //ARMS
@@ -95,12 +95,12 @@ public class CybItems {
 
             //LEGS
             REINFORCED_TENDONS = ITEMS.register("reinforced_tendons", () -> new ReinforcedTendonsItem(cyberwareProps())),
-            SPEED_LEGS = ITEMS.register("speed_legs", () -> new MobEffectCyberwareItem(cyberwareProps(), Triple.of(MobEffects.MOVEMENT_SPEED, 319, 1))),
+            SPEED_LEGS = ITEMS.register("speed_legs", () -> new MobEffectCyberwareItem(cyberwareProps(), Triple.of(MobEffects.MOVEMENT_SPEED, -1, 1))),
 
             //FEET
             BIONIC_FEET = ITEMS.register("bionic_feet", () -> new CyberwareItem(cyberwareProps())),
             SOUND_ABSORBENT_FEET = ITEMS.register("sound_absorbent_feet", () -> new CyberwareItem(cyberwareProps())),
-            JUMP_BOOST_FEET = ITEMS.register("jump_boost_feet", () -> new MobEffectCyberwareItem(cyberwareProps(), Triple.of(MobEffects.JUMP, 319, 2))),
+            JUMP_BOOST_FEET = ITEMS.register("jump_boost_feet", () -> new MobEffectCyberwareItem(cyberwareProps(), Triple.of(MobEffects.JUMP, -1, 2))),
             FULL_SPEED_FEET = ITEMS.register("full_speed_feet", () -> new CyberwareItem(cyberwareProps()))
     ;
 

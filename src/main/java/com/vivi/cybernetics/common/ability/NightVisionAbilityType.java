@@ -18,7 +18,7 @@ public class NightVisionAbilityType extends AbilityType {
         super.tick(ability, level, player);
         if(level.isClientSide) return;
         if(ability.isEnabled()) {
-            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 319, 0, false, false, false));
+            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, -1, 0, false, false, false));
         }
     }
 

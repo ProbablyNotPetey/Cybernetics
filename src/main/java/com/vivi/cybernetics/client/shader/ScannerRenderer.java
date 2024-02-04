@@ -3,6 +3,7 @@ package com.vivi.cybernetics.client.shader;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.util.RenderHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -45,7 +46,7 @@ public class ScannerRenderer {
     }
 
     /**
-     * Lot of this was based on Scannable by Sangar_, bc idk rendering stuff lol
+     * Lot of this was based on Scannable by Sangar_
      */
     public void renderScan(PoseStack poseStack, int renderTick, float partialTick, Camera camera, RenderTarget target) {
         if(!shouldRender) return;
@@ -100,10 +101,10 @@ public class ScannerRenderer {
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder buffer = tesselator.getBuilder();
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        buffer.vertex(0, height, -50).uv(0, 0).endVertex();
-        buffer.vertex(width, height, -50).uv(1, 0).endVertex();
-        buffer.vertex(width, 0, -50).uv(1, 1).endVertex();
-        buffer.vertex(0, 0, -50).uv(0, 1).endVertex();
+        buffer.vertex(width, 0, -50).uv(1, 0).endVertex();
+        buffer.vertex(width, height, -50).uv(1, 1).endVertex();
+        buffer.vertex(0, height, -50).uv(0, 1).endVertex();
+        buffer.vertex(0, 0, -50).uv(0, 0).endVertex();
         tesselator.end();
 
         //reset

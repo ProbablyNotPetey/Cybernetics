@@ -154,7 +154,7 @@ public class MobEffectHUD implements IHUDElement {
             float alpha = 1.0f;
 
             if(!effectInstance.isAmbient()) {
-                if (effectInstance.getDuration() <= 200) {
+                if (effectInstance.endsWithin(200)) {
                     int k = 10 - effectInstance.getDuration() / 20;
                     alpha = Mth.clamp((float)effectInstance.getDuration() / 10.0F / 5.0F * 0.5F, 0.0F, 0.5F) + Mth.cos((float)effectInstance.getDuration() * (float)Math.PI / 5.0F) * Mth.clamp((float)k / 10.0F * 0.25F, 0.0F, 0.25F);
                 }

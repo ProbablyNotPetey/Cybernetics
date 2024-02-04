@@ -1,6 +1,7 @@
 package com.vivi.cybernetics.common.event;
 
 import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.client.shader.ScannerRenderer;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.item.CyberwareItem;
 import com.vivi.cybernetics.common.registry.CybAbilities;
