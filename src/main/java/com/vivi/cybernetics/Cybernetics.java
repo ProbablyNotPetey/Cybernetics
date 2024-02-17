@@ -6,11 +6,12 @@ import com.vivi.cybernetics.client.gui.cyberware.CyberwareScreen;
 import com.vivi.cybernetics.client.hud.AbilityHUD;
 import com.vivi.cybernetics.client.hud.CyberneticsHUD;
 import com.vivi.cybernetics.client.hud.MobEffectHUD;
-import com.vivi.cybernetics.client.particle.BlastWaveParticleType;
-import com.vivi.cybernetics.client.particle.FallingParticleType;
+import com.vivi.cybernetics.client.particle.type.BlastWaveParticleType;
+import com.vivi.cybernetics.client.particle.type.FallingParticleType;
 import com.vivi.cybernetics.client.shader.CybCoreShaders;
 import com.vivi.cybernetics.client.shader.CybPostShaders;
 import com.vivi.cybernetics.client.util.HudAnchor;
+import com.vivi.cybernetics.client.worldevent.SynapticDisablerWorldEventRenderer;
 import com.vivi.cybernetics.common.capability.PlayerAbilities;
 import com.vivi.cybernetics.common.capability.PlayerEnergyStorage;
 import com.vivi.cybernetics.common.capability.PlayerSpike;
@@ -39,6 +40,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+import team.lodestar.lodestone.registry.client.LodestoneWorldEventRendererRegistry;
 
 @Mod(Cybernetics.MOD_ID)
 public class Cybernetics {
@@ -95,6 +97,8 @@ public class Cybernetics {
         CybPostShaders.getInstance().init();
         CyberneticsHUD.getInstance().addHUDElement(new AbilityHUD(HudAnchor.TOP_RIGHT, -162, 4));
         CyberneticsHUD.getInstance().addHUDElement(new MobEffectHUD(HudAnchor.MIDDLE_LEFT, 4, -79));
+
+        LodestoneWorldEventRendererRegistry.registerRenderer(CybWorldEvents.SYNAPTIC_DISABLER, new SynapticDisablerWorldEventRenderer());
     }
 
     @SubscribeEvent

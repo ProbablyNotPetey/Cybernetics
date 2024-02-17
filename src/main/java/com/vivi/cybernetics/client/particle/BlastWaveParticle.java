@@ -23,7 +23,7 @@ public class BlastWaveParticle extends Particle {
 
     private float radius;
 
-    protected BlastWaveParticle(BlastWaveParticleOptions options, ClientLevel pLevel, double pX, double pY, double pZ, double xd, double yd, double zd) {
+    public BlastWaveParticle(BlastWaveParticleOptions options, ClientLevel pLevel, double pX, double pY, double pZ, double xd, double yd, double zd) {
         super(pLevel, pX, pY, pZ, xd, yd, zd);
 
         this.xd = xd;

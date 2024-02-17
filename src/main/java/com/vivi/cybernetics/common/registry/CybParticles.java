@@ -1,8 +1,8 @@
 package com.vivi.cybernetics.common.registry;
 
 import com.vivi.cybernetics.Cybernetics;
-import com.vivi.cybernetics.client.particle.BlastWaveParticleType;
-import com.vivi.cybernetics.client.particle.FallingParticleType;
+import com.vivi.cybernetics.client.particle.type.BlastWaveParticleType;
+import com.vivi.cybernetics.client.particle.type.FallingParticleType;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;

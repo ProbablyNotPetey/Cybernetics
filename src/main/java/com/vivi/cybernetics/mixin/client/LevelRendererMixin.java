@@ -65,7 +65,8 @@ public class LevelRendererMixin {
         }
     }
 
-    private void copyDepthBuffer() {
+    @Unique
+    private void cybernetics$copyDepthBuffer() {
         if(depthRenderTarget == null) {
             depthRenderTarget = new TextureTarget(minecraft.getWindow().getWidth(), minecraft.getWindow().getHeight(), true, Minecraft.ON_OSX);
         }
@@ -89,7 +90,7 @@ public class LevelRendererMixin {
 
     @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/OutlineBufferSource;endOutlineBatch()V", shift = At.Shift.BEFORE))
     private void cybernetics$renderScan(PoseStack pPoseStack, float pPartialTick, long pFinishNanoTime, boolean pRenderBlockOutline, Camera pCamera, GameRenderer pGameRenderer, LightTexture pLightTexture, Matrix4f pProjectionMatrix, CallbackInfo ci) {
-        copyDepthBuffer();
+        cybernetics$copyDepthBuffer();
         ScannerRenderer.getInstance().renderScan(pPoseStack, ticks, pPartialTick, pCamera, depthRenderTarget);
     }
 
@@ -99,7 +100,7 @@ public class LevelRendererMixin {
         //This copies the Depth buffer before it's nuked to a new render target
         //only done on fabulous graphics
         if(transparencyChain != null) {
-            copyDepthBuffer();
+            cybernetics$copyDepthBuffer();
         }
 
     }

@@ -1,6 +1,8 @@
-package com.vivi.cybernetics.client.particle;
+package com.vivi.cybernetics.client.particle.type;
 
 import com.mojang.serialization.Codec;
+import com.vivi.cybernetics.client.particle.BlastWaveParticle;
+import com.vivi.cybernetics.client.particle.BlastWaveParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
