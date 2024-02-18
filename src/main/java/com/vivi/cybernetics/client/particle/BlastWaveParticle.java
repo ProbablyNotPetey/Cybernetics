@@ -10,11 +10,11 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import team.lodestar.lodestone.systems.rendering.shader.ExtendedShaderInstance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +63,7 @@ public class BlastWaveParticle extends Particle {
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 //        RenderSystem.disableTexture();
 
-        ShaderInstance shader = CybCoreShaders.getBlastWaveShader();
+        ExtendedShaderInstance shader = (ExtendedShaderInstance) CybCoreShaders.BLAST_WAVE.getInstance().get();
         if(shader == null) return;
 
         //uniforms
@@ -110,6 +110,7 @@ public class BlastWaveParticle extends Particle {
         Tesselator.getInstance().end();
 //        RenderSystem.enableTexture();
 //        RenderSystem.enableCull();
+        shader.setUniformDefaults();
         RenderSystem.disableBlend();
     }
 
@@ -126,7 +127,7 @@ public class BlastWaveParticle extends Particle {
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 //        RenderSystem.disableTexture();
 
-        ShaderInstance shader = CybCoreShaders.getBlastWaveShader();
+        ExtendedShaderInstance shader = (ExtendedShaderInstance) CybCoreShaders.BLAST_WAVE.getInstance().get();
         if(shader == null) return;
 
         //uniforms
@@ -167,6 +168,7 @@ public class BlastWaveParticle extends Particle {
 
 
         Tesselator.getInstance().end();
+        shader.setUniformDefaults();
 //        RenderSystem.enableTexture();
         RenderSystem.enableCull();
         RenderSystem.disableBlend();

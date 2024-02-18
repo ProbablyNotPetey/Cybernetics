@@ -1,5 +1,7 @@
 #version 150
 
+#define PI 3.1415926536f
+
 in vec2 texCoord0;
 
 out vec4 fragColor;

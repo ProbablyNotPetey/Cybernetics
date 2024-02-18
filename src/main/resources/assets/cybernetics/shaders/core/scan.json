@@ -5,7 +5,7 @@
         "dstrgb": "one"
     },
     "vertex": "position_tex",
-    "fragment": "scan",
+    "fragment": "cybernetics:scan",
     "attributes": [
         "Position",
         "UV0"

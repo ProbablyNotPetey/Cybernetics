@@ -3,7 +3,6 @@ package com.vivi.cybernetics.client.shader;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.util.RenderHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -12,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import team.lodestar.lodestone.systems.rendering.shader.ExtendedShaderInstance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +58,7 @@ public class ScannerRenderer {
             return;
         }
 
-        ShaderInstance shader = CybCoreShaders.getScanShader();
+        ExtendedShaderInstance shader = (ExtendedShaderInstance) CybCoreShaders.SCAN.getInstance().get();
         if(shader == null) return;
 
 //        RenderTarget target = Minecraft.getInstance().getMainRenderTarget();
@@ -108,6 +108,7 @@ public class ScannerRenderer {
         tesselator.end();
 
         //reset
+        shader.setUniformDefaults();
         RenderSystem.restoreProjectionMatrix();
         RenderSystem.setShader(() -> oldShader);
         RenderSystem.depthMask(true);

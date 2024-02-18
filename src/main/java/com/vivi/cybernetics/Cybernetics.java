@@ -8,7 +8,6 @@ import com.vivi.cybernetics.client.hud.CyberneticsHUD;
 import com.vivi.cybernetics.client.hud.MobEffectHUD;
 import com.vivi.cybernetics.client.particle.type.BlastWaveParticleType;
 import com.vivi.cybernetics.client.particle.type.FallingParticleType;
-import com.vivi.cybernetics.client.shader.CybCoreShaders;
 import com.vivi.cybernetics.client.shader.CybPostShaders;
 import com.vivi.cybernetics.client.util.HudAnchor;
 import com.vivi.cybernetics.client.worldevent.SynapticDisablerWorldEventRenderer;
@@ -93,7 +92,6 @@ public class Cybernetics {
         MenuScreens.register(CybMenuTypes.PLAYER_CYBERWARE_MENU.get(), CyberwareScreen<PlayerCyberwareMenu>::new);
         MenuScreens.register(CybMenuTypes.SURGICAL_CHAMBER_CYBERWARE_MENU.get(), CyberwareScreen<SurgicalChamberCyberwareMenu>::new);
 
-        CybCoreShaders.getInstance().init();
         CybPostShaders.getInstance().init();
         CyberneticsHUD.getInstance().addHUDElement(new AbilityHUD(HudAnchor.TOP_RIGHT, -162, 4));
         CyberneticsHUD.getInstance().addHUDElement(new MobEffectHUD(HudAnchor.MIDDLE_LEFT, 4, -79));

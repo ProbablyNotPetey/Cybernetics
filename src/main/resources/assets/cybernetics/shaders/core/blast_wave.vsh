@@ -1,8 +1,8 @@
 #version 150
 
 #moj_import <fog.glsl>
-#moj_import <easings.glsl>
-#moj_import <fast_noise_lite.glsl>
+#moj_import <cybernetics:easings.glsl>
+#moj_import <cybernetics:fast_noise_lite.glsl>
 
 in vec3 Position;
 in vec2 UV0;

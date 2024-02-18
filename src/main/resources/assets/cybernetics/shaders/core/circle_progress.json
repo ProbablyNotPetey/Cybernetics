@@ -5,7 +5,7 @@
         "dstrgb": "1-srcalpha"
     },
     "vertex": "position_tex",
-    "fragment": "circle_progress",
+    "fragment": "cybernetics:circle_progress",
     "attributes": [
         "Position",
         "UV0"

@@ -12,20 +12,20 @@ public class CybRenderTypes extends RenderStateShard {
 
     //LodestoneRenderTypeRegistry.ADDITIVE_TEXTURE_TRIANGLE is quad based
     public static final RenderTypeProvider SPHERE_ADDITIVE_TEXTURE = new RenderTypeProvider((texture) ->
-            LodestoneRenderTypeRegistry.createGenericRenderType("cybernetics:triangle_additive_texture",
-            DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.TRIANGLES, LodestoneRenderTypeRegistry.builder()
+            LodestoneRenderTypeRegistry.createGenericRenderType(texture.getNamespace() + "sphere_additive_texture",
+            DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, LodestoneRenderTypeRegistry.builder()
                     .setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorTexLightmapShader))
                     .setTransparencyState(StateShards.ADDITIVE_TRANSPARENCY)
                     .setTextureState(texture)
-                    .setCullState(CULL)));
+                    .setCullState(NO_CULL)));
 
     public static final RenderTypeProvider SPHERE_TEXTURE = new RenderTypeProvider((texture) ->
-            LodestoneRenderTypeRegistry.createGenericRenderType("cybernetics:triangle_texture",
-                    DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.TRIANGLES, LodestoneRenderTypeRegistry.builder()
+            LodestoneRenderTypeRegistry.createGenericRenderType(texture.getNamespace() + ":sphere_triangle_texture",
+                    DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, LodestoneRenderTypeRegistry.builder()
                             .setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorTexLightmapShader))
                             .setTransparencyState(StateShards.NORMAL_TRANSPARENCY)
                             .setTextureState(texture)
-                            .setCullState(CULL)));
+                            .setCullState(NO_CULL)));
 
 
     private CybRenderTypes(String pName, Runnable pSetupState, Runnable pClearState) {

@@ -11,12 +11,12 @@ import com.vivi.cybernetics.common.ability.HUDAbilityType;
 import com.vivi.cybernetics.common.util.AbilityHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
+import team.lodestar.lodestone.systems.rendering.shader.ExtendedShaderInstance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -183,7 +183,7 @@ public class AbilityHUD implements IHUDElement {
 
 
 
-                ShaderInstance shader = CybCoreShaders.getCircleProgressShader();
+                ExtendedShaderInstance shader = (ExtendedShaderInstance) CybCoreShaders.CIRCLE_PROGRESS.getInstance().get();
                 float progress = (ability.getCooldown() - partialTick) / ability.getType().getMaxCooldown();
                 shader.safeGetUniform("Progress").set(progress);
 
@@ -205,7 +205,7 @@ public class AbilityHUD implements IHUDElement {
                 Tesselator.getInstance().end();
 
 
-
+                shader.setUniformDefaults();
                 RenderSystem.disableBlend();
             }
         }

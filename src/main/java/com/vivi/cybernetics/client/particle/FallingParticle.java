@@ -26,7 +26,7 @@ public class FallingParticle extends GenericParticle<WorldParticleOptions> {
 //            .setTextureState(RenderStateShard.TextureStateShard.NO_TEXTURE)
 //            .setCullState(RenderStateShard.NO_CULL));
     public static final LodestoneWorldParticleRenderType FALLING_PARTICLE = new CustomWorldParticleRenderType(
-            LodestoneRenderTypeRegistry.ADDITIVE_PARTICLE, CybCoreShaders::getFallingParticleShader, null,
+            LodestoneRenderTypeRegistry.ADDITIVE_PARTICLE, CybCoreShaders.FALLING_PARTICLE.getInstance(), null,
             GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
 
     public FallingParticle(ClientLevel world, WorldParticleOptions options, double x, double y, double z, double xd, double yd, double zd) {

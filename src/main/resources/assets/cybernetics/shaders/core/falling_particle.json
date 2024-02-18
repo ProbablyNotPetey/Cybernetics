@@ -5,7 +5,7 @@
         "dstrgb": "1-srcalpha"
     },
     "vertex": "particle",
-    "fragment": "falling_particle",
+    "fragment": "cybernetics:falling_particle",
     "attributes": [
         "Position",
         "UV0",

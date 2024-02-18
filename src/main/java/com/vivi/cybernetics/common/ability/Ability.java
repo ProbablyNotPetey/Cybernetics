@@ -4,7 +4,6 @@ import com.vivi.cybernetics.common.registry.CybAbilities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.util.INBTSerializable;
 
 public class Ability {
 

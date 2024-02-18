@@ -1,6 +1,5 @@
 package com.vivi.cybernetics.common.item;
 
-import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.particle.BlastWaveParticleOptions;
 import com.vivi.cybernetics.common.registry.CybAbilities;
 import com.vivi.cybernetics.common.registry.CybParticles;
@@ -18,8 +17,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.PacketDistributor;
 import team.lodestar.lodestone.systems.easing.Easing;
 
