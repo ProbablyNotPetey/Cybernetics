@@ -1,11 +1,14 @@
 package com.vivi.cybernetics.common.worldevent;
 
+import com.vivi.cybernetics.client.util.RenderHelper;
+import com.vivi.cybernetics.client.worldevent.SynapticDisablerWorldEventRenderer;
 import com.vivi.cybernetics.common.registry.CybWorldEvents;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import org.joml.Vector3f;
+import team.lodestar.lodestone.systems.rendering.LodestoneRenderType;
 import team.lodestar.lodestone.systems.worldevent.WorldEventInstance;
 
 public class SynapticDisablerWorldEvent extends WorldEventInstance {
@@ -16,6 +19,8 @@ public class SynapticDisablerWorldEvent extends WorldEventInstance {
 
     private int age;
     private int lightColor;
+    private LodestoneRenderType outerRenderType;
+    private LodestoneRenderType innerRenderType;
     public SynapticDisablerWorldEvent() {
         super(CybWorldEvents.SYNAPTIC_DISABLER);
     }
@@ -60,6 +65,10 @@ public class SynapticDisablerWorldEvent extends WorldEventInstance {
     @Override
     public void start(Level level) {
         this.age = 0;
+        if(level.isClientSide) {
+            outerRenderType = (LodestoneRenderType) SynapticDisablerWorldEventRenderer.SPHERE.apply(SynapticDisablerWorldEventRenderer.TEXTURE);
+            innerRenderType = (LodestoneRenderType) SynapticDisablerWorldEventRenderer.SPHERE.apply(SynapticDisablerWorldEventRenderer.TEXTURE);
+        }
     }
 
     @Override
@@ -67,6 +76,7 @@ public class SynapticDisablerWorldEvent extends WorldEventInstance {
         if(age == lifetime) {
             end(level);
         }
+//        Cybernetics.LOGGER.info("Ticking!");
 
         if(level.isClientSide) {
             //this doesnt work for some reason idrk
@@ -77,6 +87,15 @@ public class SynapticDisablerWorldEvent extends WorldEventInstance {
 
 
         age++;
+    }
+
+    @Override
+    public void end(Level level) {
+        super.end(level);
+        if(level.isClientSide) {
+            RenderHelper.removeRenderType(outerRenderType);
+            RenderHelper.removeRenderType(innerRenderType);
+        }
     }
 
     public Vector3f getPosition() {
@@ -98,5 +117,12 @@ public class SynapticDisablerWorldEvent extends WorldEventInstance {
 
     public float getRadius() {
         return radius;
+    }
+
+    public LodestoneRenderType getOuterRenderType() {
+        return outerRenderType;
+    }
+    public LodestoneRenderType getInnerRenderType() {
+        return innerRenderType;
     }
 }

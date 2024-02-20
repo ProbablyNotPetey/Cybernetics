@@ -2,6 +2,7 @@ package com.vivi.cybernetics.client.util;
 
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.vivi.cybernetics.Cybernetics;
@@ -9,10 +10,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.joml.Quaternionf;
+import team.lodestar.lodestone.handlers.RenderHandler;
+
+import java.util.HashMap;
+
+import static team.lodestar.lodestone.systems.rendering.StateShards.NORMAL_TRANSPARENCY;
 
 public class RenderHelper {
 
@@ -138,5 +145,14 @@ public class RenderHelper {
     }
     public static void resetShaderColor(GuiGraphics guiGraphics) {
         guiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+
+    public static void removeRenderType(RenderType renderType) {
+        final boolean isParticle = renderType.toString().contains("particle");
+        HashMap<RenderType, BufferBuilder> buffers = isParticle ? RenderHandler.PARTICLE_BUFFERS : RenderHandler.BUFFERS;
+        buffers.remove(renderType);
+        if (NORMAL_TRANSPARENCY.equals(team.lodestar.lodestone.helpers.RenderHelper.getTransparencyShard(renderType))) {
+            RenderHandler.TRANSPARENT_RENDER_TYPES.remove(renderType);
+        }
     }
 }

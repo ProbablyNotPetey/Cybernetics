@@ -20,7 +20,7 @@ public class SynapticDisablerAbilityType extends AbilityType {
         if(level.isClientSide) return;
         //do stuff;
         //todo: implement
-        WorldEventHandler.addWorldEvent(level, new SynapticDisablerWorldEvent().setPosition(player.position().toVector3f()).setLifetime(10).setRadius(5.0f));
+        WorldEventHandler.addWorldEvent(level, new SynapticDisablerWorldEvent().setPosition(player.position().toVector3f()).setLifetime(100).setRadius(5.0f));
         level.getEntities(player, player.getBoundingBox().inflate(4, 0, 4)).forEach(entity -> {
             if(!(entity instanceof LivingEntity)) return;
             ((LivingEntity) entity).addEffect(new MobEffectInstance(CybMobEffects.PARALYZED.get(), 30, 0));
