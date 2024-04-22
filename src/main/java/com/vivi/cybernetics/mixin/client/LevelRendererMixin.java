@@ -4,6 +4,7 @@ package com.vivi.cybernetics.mixin.client;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.vivi.cybernetics.client.rendering.ICybLevelRenderer;
 import com.vivi.cybernetics.client.shader.BerserkRenderer;
 import com.vivi.cybernetics.client.shader.ScannerRenderer;
 import net.minecraft.client.Camera;
@@ -23,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import javax.annotation.Nullable;
 
 @Mixin(LevelRenderer.class)
-public class LevelRendererMixin {
+public class LevelRendererMixin implements ICybLevelRenderer {
 
     @Shadow @Final private RenderBuffers renderBuffers;
     @Shadow @Final private Minecraft minecraft;
@@ -115,5 +116,10 @@ public class LevelRendererMixin {
         //renders all post shaders
         BerserkRenderer.getInstance().render(pPoseStack, ticks, pPartialTick);
         minecraft.getMainRenderTarget().bindWrite(false);
+    }
+
+    @Override
+    public RenderTarget cybernetics$getDepthRenderTarget() {
+        return depthRenderTarget;
     }
 }

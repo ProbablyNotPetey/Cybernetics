@@ -67,6 +67,7 @@ public class ScreenHelper {
     private static void tick(Screen screen) {
         currentTime++;
         List<ScheduledTask> taskList = tasks.get(screen);
+        if(taskList == null) return;
         for(int i = 0; i < taskList.size(); i++) {
             ScheduledTask task = taskList.get(i);
             if(task.continuous() && currentTime >= task.startTime() && (task.endTime() == -1 || currentTime <= task.endTime())) {
@@ -86,6 +87,7 @@ public class ScreenHelper {
 
     private static void render(Screen screen, GuiGraphics guiGraphics, int mouseX, int mouseY, float frameTimeDelta) {
         List<Animation> animationList = animations.get(screen);
+        if(animationList == null) return;
         for(int i = 0; i < animationList.size(); i++) {
             Animation animation = animationList.get(i);
             animation.update(getGameTime(), getPartialTick());

@@ -26,7 +26,7 @@ public class CybCoreShaders {
             CIRCLE_PROGRESS = register(new ResourceLocation(Cybernetics.MOD_ID, "circle_progress"), DefaultVertexFormat.POSITION_TEX, "Progress"),
             BLAST_WAVE = register(new ResourceLocation(Cybernetics.MOD_ID, "blast_wave"), DefaultVertexFormat.PARTICLE, "Duration", "Time"),
             FALLING_PARTICLE = register(new ResourceLocation(Cybernetics.MOD_ID, "falling_particle"), DefaultVertexFormat.PARTICLE),
-            SYNAPTIC_DISABLER = register(new ResourceLocation(Cybernetics.MOD_ID, "synaptic_disabler"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, "Center", "InvViewMat", "CameraPos", "Inverted")
+            SYNAPTIC_DISABLER = register(new ResourceLocation(Cybernetics.MOD_ID, "synaptic_disabler"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, "Center", "InvViewMat", "CameraPos", "Inverted", "DepthBuffer")
 
     ;
 

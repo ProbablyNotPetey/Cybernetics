@@ -53,7 +53,7 @@ void main() {
 
     vec4 color = vec4(0, 0, 0, 0);
 
-    float depth = texture2D(DepthBuffer, texCoord0).r;
+    float depth = texture(DepthBuffer, texCoord0).r;
     vec3 pos = worldPos(depth);
 
     //distance from world position to center, in blocks

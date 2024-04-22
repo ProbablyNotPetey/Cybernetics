@@ -1,6 +1,7 @@
 #version 150
 
 uniform sampler2D Sampler0;
+uniform sampler2D DepthBuffer;
 
 uniform vec4 ColorModulator;
 
@@ -36,7 +37,11 @@ void main() {
     }
     float fresnel = 1 - dot(viewVector, newNormals);
 
-    fragColor = fresnel * blue;
+//    fragColor = mix(color, blue, fresnel);
+    fragColor = blue * fresnel;
+//    fragColor = vec4(depth, 0, 0, 1);
 //    fragColor = vertexColor;
 //    fragColor = vec4(Inverted, Inverted, Inverted, 1);
+
+//    fragColor = color * ColorModulator;
 }

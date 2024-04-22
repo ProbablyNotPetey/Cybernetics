@@ -1,17 +1,23 @@
 package com.vivi.cybernetics.common.worldevent;
 
+import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.util.RenderHelper;
 import com.vivi.cybernetics.client.worldevent.SynapticDisablerWorldEventRenderer;
 import com.vivi.cybernetics.common.registry.CybWorldEvents;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import org.joml.Vector3f;
+import team.lodestar.lodestone.handlers.RenderHandler;
+import team.lodestar.lodestone.registry.client.LodestoneRenderTypeRegistry;
 import team.lodestar.lodestone.systems.rendering.LodestoneRenderType;
 import team.lodestar.lodestone.systems.worldevent.WorldEventInstance;
 
 public class SynapticDisablerWorldEvent extends WorldEventInstance {
+
+    private static int renderTypeID = 0;
 
     private Vector3f pos;
     private int lifetime;
@@ -66,8 +72,7 @@ public class SynapticDisablerWorldEvent extends WorldEventInstance {
     public void start(Level level) {
         this.age = 0;
         if(level.isClientSide) {
-            outerRenderType = (LodestoneRenderType) SynapticDisablerWorldEventRenderer.SPHERE.apply(SynapticDisablerWorldEventRenderer.TEXTURE);
-            innerRenderType = (LodestoneRenderType) SynapticDisablerWorldEventRenderer.SPHERE.apply(SynapticDisablerWorldEventRenderer.TEXTURE);
+            initRenderTypes();
         }
     }
 
@@ -83,6 +88,7 @@ public class SynapticDisablerWorldEvent extends WorldEventInstance {
             //todo: fix
             BlockPos bPos = new BlockPos((int)pos.x(), (int)pos.y(), (int)pos.z());
             this.lightColor = level.hasChunkAt(bPos) ? LevelRenderer.getLightColor(level, bPos) : 0;
+
         }
 
 
@@ -93,9 +99,16 @@ public class SynapticDisablerWorldEvent extends WorldEventInstance {
     public void end(Level level) {
         super.end(level);
         if(level.isClientSide) {
-            RenderHelper.removeRenderType(outerRenderType);
-            RenderHelper.removeRenderType(innerRenderType);
+            if(outerRenderType != null) RenderHelper.removeRenderType(outerRenderType);
+            if(innerRenderType != null) RenderHelper.removeRenderType(innerRenderType);
+            Cybernetics.LOGGER.debug("# of buffers: " + RenderHandler.BUFFERS.size());
         }
+    }
+
+    public void initRenderTypes() {
+        outerRenderType = LodestoneRenderTypeRegistry.copyAndStore(renderTypeID++, SynapticDisablerWorldEventRenderer.SPHERE_TYPE);
+        innerRenderType = LodestoneRenderTypeRegistry.copyAndStore(renderTypeID++, SynapticDisablerWorldEventRenderer.SPHERE_TYPE);
+
     }
 
     public Vector3f getPosition() {
