@@ -31,7 +31,7 @@ public class BackButton extends AbstractButton {
         //isHovered() instead of isHoveredOrFocused(), because idrk how focusing works lmao this is a bad hack
         float color = this.isHovered() ? 1.0F : 0.65F;
         guiGraphics.setColor(color, color, color, alpha);
-        guiGraphics.blit(TEXTURE, getX(), getY(), 60, 0, 23, this.width, this.height, 32, 32);
+        guiGraphics.blit(TEXTURE, getX(), getY(), 250, 0, 23, this.width, this.height, 32, 32);
         RenderHelper.resetShaderColor(guiGraphics);
     }
 

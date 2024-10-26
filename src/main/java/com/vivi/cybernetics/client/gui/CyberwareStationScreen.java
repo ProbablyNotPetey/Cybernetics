@@ -3,6 +3,7 @@ package com.vivi.cybernetics.client.gui;
 import com.vivi.cybernetics.Cybernetics;
 import com.vivi.cybernetics.client.gui.util.EnergyGuiComponent;
 import com.vivi.cybernetics.client.util.MouseHelper;
+import com.vivi.cybernetics.client.util.RenderHelper;
 import com.vivi.cybernetics.common.menu.CyberwareStationMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -46,8 +47,8 @@ public class CyberwareStationScreen extends AbstractContainerScreen<CyberwareSta
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        guiGraphics.drawString(font, this.title, this.titleLabelX, this.titleLabelY - 2, 4210752);
-        guiGraphics.drawString(font, this.playerInventoryTitle, this.inventoryLabelX + 10, this.inventoryLabelY + 9, 4210752);
+        guiGraphics.drawString(font, this.title, this.titleLabelX, this.titleLabelY - 2, 4210752, false);
+        guiGraphics.drawString(font, this.playerInventoryTitle, this.inventoryLabelX + 10, this.inventoryLabelY + 9, 4210752, false);
         if(MouseHelper.isHovering(energyGuiComponent.getX(), energyGuiComponent.getY(), energyGuiComponent.getWidth(), energyGuiComponent.getHeight(), mouseX, mouseY)) {
             guiGraphics.renderTooltip(font, energyGuiComponent.getTooltip(menu.getStoredEnergy(), menu.getMaxEnergy()), Optional.empty(), mouseX - startX, mouseY - startY);
         }

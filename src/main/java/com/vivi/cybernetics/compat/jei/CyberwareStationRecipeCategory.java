@@ -29,11 +29,11 @@ public class CyberwareStationRecipeCategory implements IRecipeCategory<Cyberware
     private final IDrawable icon;
     private final IDrawableAnimated arrow;
 
-    private final int x = 4;
+    private final int x = 15;
     private final int y = 12;
 
     public CyberwareStationRecipeCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, x, y, 168, 72);
+        this.background = helper.createDrawable(TEXTURE, x, y, 168 - 11, 72);
         this.icon = helper.createDrawableItemStack(new ItemStack(CybBlocks.CYBERWARE_STATION_BLOCK.get()));
         this.arrow = helper.drawableBuilder(TEXTURE, 0, 176, 105, 14)
                 .buildAnimated(100, IDrawableAnimated.StartDirection.LEFT, false);
