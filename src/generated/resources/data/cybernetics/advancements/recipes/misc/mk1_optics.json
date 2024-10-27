@@ -17,5 +17,6 @@
     "recipes": [
       "cybernetics:mk1_optics"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }

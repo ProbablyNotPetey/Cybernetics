@@ -1,22 +1,44 @@
 package com.vivi.cybernetics.datagen;
 
-/*
+
+import com.mojang.logging.LogUtils;
+import com.vivi.cybernetics.server.data.CyberwareProperties;
+import net.minecraft.data.CachedOutput;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.slf4j.Logger;
+
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+
 public abstract class CyberwarePropertiesProvider implements DataProvider {
 
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final ResourceType PROPERTIES = new ResourceType(PackType.SERVER_DATA, ".json", "cyberware_properties");
+    private static final ExistingFileHelper.ResourceType PROPERTIES = new ExistingFileHelper.ResourceType(PackType.SERVER_DATA, ".json", "cyberware_properties");
     protected ExistingFileHelper existingFileHelper;
-    private final DataGenerator.PathProvider pathProvider;
+    private final PackOutput.PathProvider pathProvider;
     private final Map<Item, CyberwareProperties> properties = new HashMap<>();
 
-    public CyberwarePropertiesProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
+    public CyberwarePropertiesProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         this.existingFileHelper = existingFileHelper;
-        this.pathProvider = generator.createPathProvider(DataGenerator.Target.DATA_PACK, "cyberware_properties");
+        this.pathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, "cyberware_properties");
     }
 
     @Override
-    public void run(CachedOutput pOutput) throws IOException {
+    public CompletableFuture<?> run(CachedOutput pOutput) {
         properties.clear();
+        List<CompletableFuture<?>> list = new ArrayList<>();
         addProperties();
         properties.forEach((item, properties) -> {
             ResourceLocation id = ForgeRegistries.ITEMS.getKey(item);
@@ -24,13 +46,9 @@ public abstract class CyberwarePropertiesProvider implements DataProvider {
                 throw new IllegalArgumentException("Unknown item: " + item.toString());
             }
             Path path = pathProvider.json(id);
-            try {
-                DataProvider.saveStable(pOutput, properties.serialize(), path);
-            }
-            catch(IOException e) {
-                LOGGER.error("Couldn't save properties {}", path, e);
-            }
+            list.add(DataProvider.saveStable(pOutput, properties.serialize(), path));
         });
+        return CompletableFuture.allOf(list.toArray(new CompletableFuture<?>[0]));
     }
 
     public abstract void addProperties();
@@ -132,4 +150,3 @@ public abstract class CyberwarePropertiesProvider implements DataProvider {
         }
     }
 }
- */

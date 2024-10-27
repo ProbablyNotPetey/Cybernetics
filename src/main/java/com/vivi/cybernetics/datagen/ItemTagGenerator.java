@@ -1,13 +1,25 @@
 package com.vivi.cybernetics.datagen;
 
-/*
+
+import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.common.registry.CybItems;
+import com.vivi.cybernetics.common.registry.CybTags;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.data.ExistingFileHelper;
+
+import java.util.concurrent.CompletableFuture;
+
 public class ItemTagGenerator extends ItemTagsProvider {
-    public ItemTagGenerator(DataGenerator pGenerator, BlockTagsProvider pBlockTagsProvider, ExistingFileHelper existingFileHelper) {
-        super(pGenerator, pBlockTagsProvider, Cybernetics.MOD_ID, existingFileHelper);
+    public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> pLookupProvider, CompletableFuture<TagsProvider.TagLookup<Block>> pBlockTags, ExistingFileHelper existingFileHelper) {
+        super(output, pLookupProvider, pBlockTags, Cybernetics.MOD_ID, existingFileHelper);
     }
 
     @Override
-    protected void addTags() {
+    protected void addTags(HolderLookup.Provider pProvider) {
 
         //section tags
         this.tag(CybTags.HEAD_SECTION).add(
@@ -71,4 +83,3 @@ public class ItemTagGenerator extends ItemTagsProvider {
         this.tag(CybTags.DASH_ITEMS).add(CybItems.MK1_DASH.get(), CybItems.MK2_DASH.get());
     }
 }
- */

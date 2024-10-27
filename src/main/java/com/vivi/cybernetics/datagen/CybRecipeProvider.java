@@ -1,44 +1,55 @@
 package com.vivi.cybernetics.datagen;
 
-/*
-public class CybRecipeProvider extends RecipeProvider {
+
+import com.google.common.collect.Sets;
+import com.google.gson.JsonObject;
+import com.mojang.logging.LogUtils;
+import net.minecraft.data.CachedOutput;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.resources.ResourceLocation;
+import org.slf4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+
+
+public abstract class CybRecipeProvider extends RecipeProvider {
     private static final Logger LOGGER = LogUtils.getLogger();
     protected final boolean generateAdvancements;
-    public CybRecipeProvider(DataGenerator pGenerator) {
-        this(pGenerator, true);
+    public CybRecipeProvider(PackOutput output) {
+        this(output, true);
     }
 
-    public CybRecipeProvider(DataGenerator generator, boolean generateAdvancements) {
-        super(generator);
+    public CybRecipeProvider(PackOutput output, boolean generateAdvancements) {
+        super(output);
         this.generateAdvancements = generateAdvancements;
     }
 
 
     @Override
-    public void run(CachedOutput pOutput) {
+    public CompletableFuture<?> run(CachedOutput pOutput) {
         Set<ResourceLocation> set = Sets.newHashSet();
-        buildCraftingRecipes((p_236366_) -> {
-            if (!set.add(p_236366_.getId())) {
-                throw new IllegalStateException("Duplicate recipe " + p_236366_.getId());
+        List<CompletableFuture<?>> list = new ArrayList<>();
+        buildRecipes((finishedRecipe) -> {
+            if (!set.add(finishedRecipe.getId())) {
+                throw new IllegalStateException("Duplicate recipe " + finishedRecipe.getId());
             } else {
-                saveRecipe(pOutput, p_236366_.serializeRecipe(), this.recipePathProvider.json(p_236366_.getId()));
+                list.add(DataProvider.saveStable(pOutput, finishedRecipe.serializeRecipe(), this.recipePathProvider.json(finishedRecipe.getId())));
                 if(generateAdvancements) {
-                    JsonObject jsonobject = p_236366_.serializeAdvancement();
+                    JsonObject jsonobject = finishedRecipe.serializeAdvancement();
                     if (jsonobject != null) {
-                        saveAdvancement(pOutput, jsonobject, this.advancementPathProvider.json(p_236366_.getAdvancementId()));
+                        CompletableFuture<?> saveFuture = saveAdvancement(pOutput, finishedRecipe, jsonobject);
+                        if(saveFuture != null) {
+                            list.add(saveFuture);
+                        }
                     }
                 }
             }
         });
-    }
-
-    private static void saveRecipe(CachedOutput pOutput, JsonObject pRecipeJson, Path pPath) {
-        try {
-            DataProvider.saveStable(pOutput, pRecipeJson, pPath);
-        } catch (IOException ioexception) {
-            LOGGER.error("Couldn't save recipe {}", pPath, ioexception);
-        }
-
+        return CompletableFuture.allOf(list.toArray(new CompletableFuture<?>[0]));
     }
 }
-*/

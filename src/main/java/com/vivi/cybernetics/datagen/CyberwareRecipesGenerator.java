@@ -1,16 +1,28 @@
 package com.vivi.cybernetics.datagen;
 
-/*
+
+import com.vivi.cybernetics.common.registry.CybBlocks;
+import com.vivi.cybernetics.common.registry.CybItems;
+import com.vivi.cybernetics.common.registry.CybTags;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.world.item.Items;
+import net.minecraftforge.common.Tags;
+
+import java.util.function.Consumer;
+
 public class CyberwareRecipesGenerator extends CybRecipeProvider {
-    public CyberwareRecipesGenerator(DataGenerator pGenerator) {
-        super(pGenerator);
+    public CyberwareRecipesGenerator(PackOutput output) {
+        super(output);
     }
 
     @Override
-    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+    protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
 
         //Blocks
-        ShapedRecipeBuilder.shaped(CybBlocks.CYBERWARE_STATION_BLOCK.get().asItem())
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, CybBlocks.CYBERWARE_STATION_BLOCK.get().asItem())
                 .define('I', CybTags.INGOTS_STEEL)
                 .define('C', CybItems.PRINTED_CIRCUIT_BOARD.get())
                 .define('R', Tags.Items.STORAGE_BLOCKS_REDSTONE)
@@ -21,7 +33,7 @@ public class CyberwareRecipesGenerator extends CybRecipeProvider {
                 .unlockedBy("has_printed_circuit_board", has(CybItems.PRINTED_CIRCUIT_BOARD.get()))
                 .save(consumer);
 
-        ShapedRecipeBuilder.shaped(CybBlocks.SURGICAL_CHAMBER_BLOCK.get().asItem())
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, CybBlocks.SURGICAL_CHAMBER_BLOCK.get().asItem())
                 .define('N', CybItems.NEURAL_INTERFACE.get())
                 .define('R', Tags.Items.STORAGE_BLOCKS_REDSTONE)
                 .define('P', CybItems.PRINTED_CIRCUIT_BOARD.get())
@@ -33,7 +45,7 @@ public class CyberwareRecipesGenerator extends CybRecipeProvider {
                 .save(consumer);
 
         //Crafting items
-        ShapedRecipeBuilder.shaped(CybItems.PRINTED_CIRCUIT_BOARD.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CybItems.PRINTED_CIRCUIT_BOARD.get())
                 .define('R', Items.COMPARATOR)
                 .define('C', Tags.Items.INGOTS_COPPER)
                 .define('S', CybTags.INGOTS_STEEL)
@@ -42,7 +54,7 @@ public class CyberwareRecipesGenerator extends CybRecipeProvider {
                 .unlockedBy("has_steel", has(CybTags.INGOTS_STEEL))
                 .save(consumer);
 
-        ShapedRecipeBuilder.shaped(CybItems.MOTOR.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CybItems.MOTOR.get())
                 .define('S', CybTags.INGOTS_STEEL)
                 .define('P', Items.PISTON)
                 .define('R', Tags.Items.DUSTS_REDSTONE)
@@ -53,7 +65,7 @@ public class CyberwareRecipesGenerator extends CybRecipeProvider {
                 .unlockedBy("has_piston", has(Items.PISTON))
                 .save(consumer);
 
-        ShapedRecipeBuilder.shaped(CybItems.NEURAL_INTERFACE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CybItems.NEURAL_INTERFACE.get())
                 .define('R', Tags.Items.DUSTS_REDSTONE)
                 .define('C', Tags.Items.INGOTS_COPPER)
                 .define('P', CybItems.PRINTED_CIRCUIT_BOARD.get())
@@ -62,7 +74,7 @@ public class CyberwareRecipesGenerator extends CybRecipeProvider {
                 .unlockedBy("has_printed_circuit_board", has(CybItems.PRINTED_CIRCUIT_BOARD.get()))
                 .save(consumer);
 
-        ShapedRecipeBuilder.shaped(CybItems.LENS.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CybItems.LENS.get())
                 .define('G', Tags.Items.GLASS)
                 .define('R', Tags.Items.DUSTS_REDSTONE)
                 .pattern("GGG")
@@ -137,4 +149,3 @@ public class CyberwareRecipesGenerator extends CybRecipeProvider {
 
     }
 }
- */

@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_neural_interface": {
+    "has_glass": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "cybernetics:neural_interface"
-            ]
+            "tag": "forge:glass"
           }
         ]
       },
@@ -15,20 +13,21 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cybernetics:surgical_chamber"
+        "recipe": "cybernetics:lens"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_neural_interface",
+      "has_glass",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "cybernetics:surgical_chamber"
+      "cybernetics:lens"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

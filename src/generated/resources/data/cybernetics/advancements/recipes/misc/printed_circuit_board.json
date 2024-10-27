@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_piston": {
+    "has_steel": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:piston"
-            ]
+            "tag": "forge:ingots/steel"
           }
         ]
       },
@@ -15,20 +13,21 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cybernetics:motor"
+        "recipe": "cybernetics:printed_circuit_board"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_piston",
+      "has_steel",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "cybernetics:motor"
+      "cybernetics:printed_circuit_board"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

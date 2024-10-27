@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_printed_circuit_board": {
+    "has_piston": {
       "conditions": {
         "items": [
           {
             "items": [
-              "cybernetics:printed_circuit_board"
+              "minecraft:piston"
             ]
           }
         ]
@@ -15,20 +15,21 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cybernetics:cyberware_station"
+        "recipe": "cybernetics:motor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_printed_circuit_board",
+      "has_piston",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "cybernetics:cyberware_station"
+      "cybernetics:motor"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

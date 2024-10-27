@@ -1,11 +1,13 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_steel": {
+    "has_neural_interface": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/steel"
+            "items": [
+              "cybernetics:neural_interface"
+            ]
           }
         ]
       },
@@ -13,20 +15,21 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cybernetics:printed_circuit_board"
+        "recipe": "cybernetics:surgical_chamber"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_steel",
+      "has_neural_interface",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "cybernetics:printed_circuit_board"
+      "cybernetics:surgical_chamber"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

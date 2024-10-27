@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cybernetics:night_vision_eyes"
+        "recipe": "cybernetics:mk2_berserk"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,8 @@
   ],
   "rewards": {
     "recipes": [
-      "cybernetics:night_vision_eyes"
+      "cybernetics:mk2_berserk"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }

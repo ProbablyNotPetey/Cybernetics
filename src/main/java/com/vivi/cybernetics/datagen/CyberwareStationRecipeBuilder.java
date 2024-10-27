@@ -1,10 +1,35 @@
 package com.vivi.cybernetics.datagen;
 
-/*
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.vivi.cybernetics.common.registry.CybRecipeTypes;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
 public class CyberwareStationRecipeBuilder implements RecipeBuilder {
     private Item result;
     private int count;
     private Ingredient input;
+    private final RecipeCategory category = RecipeCategory.MISC;
     private final List<Ingredient> ingredients = new ArrayList<>();
     private final Advancement.Builder advancement = Advancement.Builder.advancement();
 
@@ -68,7 +93,7 @@ public class CyberwareStationRecipeBuilder implements RecipeBuilder {
     public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ResourceLocation id) {
         this.ensureValid(id);
         this.advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(RequirementsStrategy.OR);
-        pFinishedRecipeConsumer.accept(new Result(id, result, count, input, ingredients, advancement, new ResourceLocation(id.getNamespace(), "recipes/" + this.result.getItemCategory().getRecipeFolderName() + "/" + id.getPath())));
+        pFinishedRecipeConsumer.accept(new Result(id, result, count, input, ingredients, advancement, new ResourceLocation(id.getNamespace(), "recipes/" + this.category.getFolderName() + "/" + id.getPath())));
     }
 
     private void ensureValid(ResourceLocation pId) {
@@ -141,5 +166,3 @@ public class CyberwareStationRecipeBuilder implements RecipeBuilder {
         }
     }
 }
-
- */

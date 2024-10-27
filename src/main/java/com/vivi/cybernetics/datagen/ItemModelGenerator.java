@@ -1,9 +1,24 @@
 package com.vivi.cybernetics.datagen;
 
-/*
+import com.vivi.cybernetics.Cybernetics;
+import com.vivi.cybernetics.common.registry.CybItems;
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
+import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class ItemModelGenerator extends ItemModelProvider {
-    public ItemModelGenerator(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, Cybernetics.MOD_ID, existingFileHelper);
+    public ItemModelGenerator(PackOutput output, ExistingFileHelper existingFileHelper) {
+        super(output, Cybernetics.MOD_ID, existingFileHelper);
     }
 
     @Override
@@ -62,4 +77,3 @@ public class ItemModelGenerator extends ItemModelProvider {
         return null;
     }
 }
- */

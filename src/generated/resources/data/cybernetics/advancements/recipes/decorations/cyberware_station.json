@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cybernetics:neural_interface"
+        "recipe": "cybernetics:cyberware_station"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,8 @@
   ],
   "rewards": {
     "recipes": [
-      "cybernetics:neural_interface"
+      "cybernetics:cyberware_station"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

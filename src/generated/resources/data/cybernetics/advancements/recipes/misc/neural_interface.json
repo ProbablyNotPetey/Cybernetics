@@ -1,11 +1,13 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_glass": {
+    "has_printed_circuit_board": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:glass"
+            "items": [
+              "cybernetics:printed_circuit_board"
+            ]
           }
         ]
       },
@@ -13,20 +15,21 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cybernetics:lens"
+        "recipe": "cybernetics:neural_interface"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_glass",
+      "has_printed_circuit_board",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "cybernetics:lens"
+      "cybernetics:neural_interface"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

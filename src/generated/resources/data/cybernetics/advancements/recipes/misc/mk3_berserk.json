@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cybernetics:mk1_berserk"
+        "recipe": "cybernetics:mk3_berserk"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,8 @@
   ],
   "rewards": {
     "recipes": [
-      "cybernetics:mk1_berserk"
+      "cybernetics:mk3_berserk"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }
