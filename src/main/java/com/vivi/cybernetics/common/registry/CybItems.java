@@ -27,7 +27,10 @@ public class CybItems {
             PRINTED_CIRCUIT_BOARD = basicItem("printed_circuit_board"),
             LENS = basicItem("lens"),
             FLUX_CORE = basicItem("flux_core"),
-            STIMULANT_INJECTOR = basicItem("stimulant_injector")
+            STIMULANT_INJECTOR = basicItem("stimulant_injector"),
+            SURGICAL_STEEL_INGOT = basicItem("surgical_steel_ingot"),
+            SURGICAL_STEEL_NUGGET = basicItem("surgical_steel_nugget"),
+            SURGICAL_STEEL_PLATE = basicItem("surgical_steel_plate")
     ;
 
     //Capacity shards
@@ -46,7 +49,7 @@ public class CybItems {
 
             //HEAD
             OVERCAPACITY_HEAD = ITEMS.register("overcapacity_head", () -> new CyberwareItem(cyberwareProps())),
-            CARBON_FIBER_SKULL = ITEMS.register("carbon_fiber_skull", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(Attributes.ARMOR, new AttributeModifier(UUID.fromString("7588e022-9e81-4c44-85e8-82979dec2e0c"), "Armor Boost Head", 2.0, AttributeModifier.Operation.ADDITION)))),
+            CARBON_FIBER_SKULL = ITEMS.register("carbon_fiber_skull", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(Attributes.ARMOR, new AttributeModifier(UUID.fromString("7588e022-9e81-4c44-85e8-82979dec2e0c"), "Armor Boost Head", 3.0, AttributeModifier.Operation.ADDITION)))),
             MK1_BERSERK = ITEMS.register("mk1_berserk", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.MK1_BERSERK)),
             MK2_BERSERK = ITEMS.register("mk2_berserk", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.MK2_BERSERK)),
             MK3_BERSERK = ITEMS.register("mk3_berserk", () -> new SimpleAbilityCyberwareItem(cyberwareProps(), CybAbilities.MK3_BERSERK)),
@@ -98,7 +101,7 @@ public class CybItems {
             SPEED_LEGS = ITEMS.register("speed_legs", () -> new MobEffectCyberwareItem(cyberwareProps(), Triple.of(MobEffects.MOVEMENT_SPEED, -1, 1))),
 
             //FEET
-            BIONIC_FEET = ITEMS.register("bionic_feet", () -> new CyberwareItem(cyberwareProps())),
+            BIONIC_FEET = ITEMS.register("bionic_feet", () -> new AttributeCyberwareItem(cyberwareProps(), Pair.of(Attributes.ARMOR, new AttributeModifier(UUID.fromString("0ed6d159-8d23-4eb1-8087-6d602b8afff8"), "Armor Boost Feet", 2.0, AttributeModifier.Operation.ADDITION)))),
             SOUND_ABSORBENT_FEET = ITEMS.register("sound_absorbent_feet", () -> new CyberwareItem(cyberwareProps())),
             JUMP_BOOST_FEET = ITEMS.register("jump_boost_feet", () -> new MobEffectCyberwareItem(cyberwareProps(), Triple.of(MobEffects.JUMP, -1, 2))),
             FULL_SPEED_FEET = ITEMS.register("full_speed_feet", () -> new CyberwareItem(cyberwareProps()))

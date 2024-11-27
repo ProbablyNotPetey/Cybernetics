@@ -33,7 +33,7 @@ public class CybBlocks {
 
     public static final RegistryObject<Block>
             FREEZER_BLOCK = BLOCKS.register("freezer", () -> new FreezerBlock(BlockBehaviour.Properties.of().pushReaction(PushReaction.BLOCK).sound(SoundType.METAL))),
-            CYBERWARE_STATION_BLOCK = BLOCKS.register("cyberware_station", () -> new CyberwareStationBlock(BlockBehaviour.Properties.of().pushReaction(PushReaction.BLOCK).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.5F).lightLevel(litBlockEmission(5)))),
+            CYBERWARE_STATION_BLOCK = BLOCKS.register("cyberware_station", () -> new CyberwareStationBlock(BlockBehaviour.Properties.of().pushReaction(PushReaction.BLOCK).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.5F).lightLevel(litBlockEmission(11)))),
             SURGICAL_CHAMBER_BLOCK = BLOCKS.register("surgical_chamber", () -> new SurgicalChamberBlock(BlockBehaviour.Properties.of().pushReaction(PushReaction.BLOCK).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.5F)))
     ;
 
